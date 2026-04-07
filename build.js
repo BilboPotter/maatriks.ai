@@ -15,6 +15,7 @@ const ROOT = __dirname;
 const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+const ASSETS = path.join(SRC, 'assets');
 
 function getSiteHost(siteUrl) {
   try {
@@ -76,6 +77,13 @@ function build() {
   fs.mkdirSync(stylesDir, { recursive: true });
   fs.writeFileSync(path.join(stylesDir, 'main.css'), css, 'utf8');
   console.log('  built: styles/main.css');
+
+  // Copy root assets
+  const faviconPath = path.join(ASSETS, 'favicon.svg');
+  if (fs.existsSync(faviconPath)) {
+    fs.writeFileSync(path.join(DIST, 'favicon.svg'), fs.readFileSync(faviconPath, 'utf8'), 'utf8');
+    console.log('  built: favicon.svg');
+  }
 
   // Copy JS (only files that exist)
   const scriptsDir = path.join(SRC, 'scripts');
