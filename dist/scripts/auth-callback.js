@@ -6,12 +6,12 @@
  * doesn't open within a timeout.
  *
  * Config values (injected at build time):
- *   maatriks://auth/callback
- *   maatriks
+ *   kinetic://auth/callback
+ *   kinetic
  */
 
 (function () {
-  var DEEP_LINK = 'maatriks://auth/callback';
+  var DEEP_LINK = 'kinetic://auth/callback';
   var TIMEOUT_MS = 3000;
 
   var card = document.getElementById('auth-card');

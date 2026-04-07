@@ -2,7 +2,7 @@
   <!-- Nav -->
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <a href="/" class="nav-logo">{{companyName}}<span>.</span></a>
-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="document.querySelector('.nav-links').classList.toggle('open');this.setAttribute('aria-expanded',this.getAttribute('aria-expanded')==='false')">
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" type="button">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links">
@@ -53,22 +53,13 @@
         </ul>
         <p>This data is yours. It exists to power your training experience and will not be used for advertising, marketing, or data mining purposes.</p>
 
-        <h3>AI coaching data</h3>
-        <p>{{appName}} uses AI to provide personalized coaching. When you interact with the AI coach, we store:</p>
+        <h3>AI workout feedback and programming data</h3>
+        <p>{{appName}} uses AI to generate structured workout feedback and to prepare future workout programming. For that functionality, we may store:</p>
         <ul>
-          <li>Your conversation history with the AI coach</li>
-          <li>Context sent to the AI model (relevant workout history, preferences, and goals)</li>
-          <li>AI-generated training recommendations and program adjustments</li>
+          <li>Context sent to the AI model, such as relevant workout history, preferences, and goals</li>
+          <li>AI-generated workout feedback and next-session planning output</li>
         </ul>
-        <p>See the <strong>"AI coaching and your data"</strong> section below for details on how this data is processed.</p>
-
-        <h3>Subscription and payment data</h3>
-        <p>Subscriptions are processed through Apple App Store or Google Play Store via RevenueCat. We do <strong>not</strong> collect or store your payment card details, billing address, or direct financial information. We receive only:</p>
-        <ul>
-          <li>Subscription status (active, expired, trial)</li>
-          <li>Purchase date and renewal date</li>
-          <li>Store transaction identifiers</li>
-        </ul>
+        <p>See the <strong>"AI workout feedback and your data"</strong> section below for details on how this data is processed.</p>
 
         <h3>Technical and usage data</h3>
         <p>To keep the app running and fix issues, we may collect:</p>
@@ -83,33 +74,31 @@
         <h2>How we use your information</h2>
         <p>We use your information to:</p>
         <ul>
-          <li><strong>Provide the service</strong> — authenticate your identity, store your workouts, deliver AI coaching</li>
+          <li><strong>Provide the service</strong> — authenticate your identity, store your workouts, deliver AI-generated feedback, and prepare upcoming training sessions</li>
           <li><strong>Personalize your experience</strong> — tailor training recommendations based on your history and goals</li>
           <li><strong>Communicate with you</strong> — respond to support requests, send critical account notifications</li>
           <li><strong>Improve the app</strong> — diagnose bugs, understand usage patterns, improve features</li>
-          <li><strong>Process subscriptions</strong> — manage your subscription status and entitlements</li>
         </ul>
         <p>We do <strong>not</strong> use your information to show you ads, build advertising profiles, or sell to data brokers.</p>
 
         <!-- ──────────────────────────────────────── -->
-        <h2>AI coaching and your data</h2>
-        <p>{{appName}} uses the Anthropic Claude API to power its AI coaching features. When you interact with the AI coach:</p>
+        <h2>AI workout feedback and your data</h2>
+        <p>{{appName}} uses a configured third-party AI provider to generate workout feedback and next-session planning. When that processing happens:</p>
         <ul>
-          <li>Relevant context (your recent workouts, preferences, goals, and conversation history) is sent to Anthropic's Claude API to generate responses</li>
-          <li>Anthropic processes this data solely to generate the AI response. Under Anthropic's API terms, data sent through the API is <strong>not used to train their models</strong></li>
-          <li>Your AI coaching data is stored in our database to provide conversation continuity and training context</li>
+          <li>Relevant context, such as recent workouts, preferences, and goals, may be sent to the provider to generate output</li>
+          <li>The provider processes that data solely to generate the requested response for the app</li>
+          <li>The generated output may be stored in our database to support workout history and session continuity</li>
         </ul>
-        <p>We do not use your workout data, coaching conversations, or health information for advertising, marketing, or any use-based data mining purposes.</p>
+        <p>We do not use your workout data or generated feedback for advertising, marketing, or any use-based data mining purposes.</p>
 
         <!-- ──────────────────────────────────────── -->
         <h2>Third-party service providers</h2>
         <p>We use a limited number of third-party services to operate {{appName}}. Each handles your data only as needed to deliver their specific service:</p>
         <ul>
           <li><strong>Supabase</strong> — database hosting and authentication infrastructure. Your account data and workout logs are stored on Supabase's infrastructure. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a></li>
-          <li><strong>Anthropic</strong> — AI coaching functionality via the Claude API. Processes conversation context to generate coaching responses. <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Anthropic Privacy Policy</a></li>
-          <li><strong>RevenueCat</strong> — subscription management and payment processing coordination with Apple and Google. <a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener">RevenueCat Privacy Policy</a></li>
-          <li><strong>Apple</strong> — authentication (Apple Sign-In) and payment processing (App Store). <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a></li>
-          <li><strong>Google</strong> — authentication (Google Sign-In) and payment processing (Google Play). <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+          <li><strong>Configured AI provider</strong> — AI inference for workout feedback and programming. Provider choice may change over time as the product evolves.</li>
+          <li><strong>Apple</strong> — authentication when Sign in with Apple is used. <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a></li>
+          <li><strong>Google</strong> — authentication when Google Sign-In is used. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
         </ul>
         <p>We do not use advertising networks, remarketing services, or third-party tracking pixels.</p>
 
@@ -137,8 +126,7 @@
         <h2>Account deletion</h2>
         <p>You can delete your account at any time from within the {{appName}} app. When you delete your account:</p>
         <ul>
-          <li>Your profile, workout history, AI coaching data, and preferences are permanently deleted</li>
-          <li>Your subscription is <strong>not</strong> automatically cancelled — you must cancel it separately through your device's subscription settings</li>
+          <li>Your profile, workout history, AI-generated feedback data, and preferences are permanently deleted</li>
           <li>Deletion is irreversible. We cannot recover your data after deletion</li>
         </ul>
         <p>For step-by-step instructions, see our <a href="{{deleteAccountUrl}}">account deletion page</a>. If you are unable to delete your account through the app, contact us at <a href="mailto:{{supportEmail}}">{{supportEmail}}</a> and we will process it manually.</p>
@@ -188,10 +176,7 @@
         <p>We do not share your data with third parties for the purpose of tracking you across apps and websites. We do not use advertising identifiers (IDFA/GAID) or participate in ad networks.</p>
 
         <h3>Data linked to your identity</h3>
-        <p>The following data is linked to your identity: email address, display name, workout logs, AI coaching history, and subscription status. This data is used to provide and personalize the service.</p>
-
-        <h3>In-app purchases and subscriptions</h3>
-        <p>All purchases and subscriptions are processed through Apple App Store or Google Play. Payment is governed by Apple's or Google's terms of service. Subscription management (cancellation, renewal, billing) is handled through your device's subscription settings, not within the app. We use RevenueCat to coordinate subscription status between the app and the stores.</p>
+        <p>The following data is linked to your identity: email address, display name, workout logs, training preferences, and generated workout feedback. This data is used to provide and personalize the service.</p>
 
         <!-- ──────────────────────────────────────── -->
         <h2>International data transfers</h2>

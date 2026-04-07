@@ -6,12 +6,12 @@
  * if the app doesn't open within a timeout.
  *
  * Config values (injected at build time):
- *   maatriks://update-password
- *   maatriks
+ *   kinetic://update-password
+ *   kinetic
  */
 
 (function () {
-  var DEEP_LINK = 'maatriks://update-password';
+  var DEEP_LINK = 'kinetic://update-password';
   var TIMEOUT_MS = 3000;
 
   var card = document.getElementById('auth-card');

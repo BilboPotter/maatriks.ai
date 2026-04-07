@@ -16,12 +16,21 @@ const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 
+function getSiteHost(siteUrl) {
+  try {
+    return new URL(siteUrl).host;
+  } catch {
+    return siteUrl.replace(/^https?:\/\//, '').replace(/\/+$/, '');
+  }
+}
+
 // Route definitions: source page → output path
 const ROUTES = [
   { page: 'index.html', out: 'index.html', title: `${CONFIG.appName} — ${CONFIG.appTagline}`, description: CONFIG.appDescription },
   { page: 'privacy.html', out: 'privacy/index.html', title: `Privacy Policy — ${CONFIG.companyName}`, description: `Privacy policy for ${CONFIG.appName} by ${CONFIG.companyName}.` },
   { page: 'support.html', out: 'support/index.html', title: `Support — ${CONFIG.companyName}`, description: `Get help with ${CONFIG.appName}. Contact ${CONFIG.supportEmail}.` },
   { page: 'delete-account.html', out: 'delete-account/index.html', title: `Delete Account — ${CONFIG.companyName}`, description: `How to delete your ${CONFIG.appName} account and what happens to your data.` },
+  { page: 'forgot-password.html', out: 'forgot-password/index.html', title: `Reset Password — ${CONFIG.appName}`, description: `How to reset your ${CONFIG.appName} password.` },
   { page: 'auth-callback.html', out: 'auth/callback/index.html', title: `Redirecting — ${CONFIG.appName}`, description: `Authentication redirect for ${CONFIG.appName}.` },
   { page: 'update-password.html', out: 'update-password/index.html', title: `Update Password — ${CONFIG.appName}`, description: `Password recovery redirect for ${CONFIG.appName}.` },
 ];
@@ -84,7 +93,7 @@ function build() {
   }
 
   // CNAME for GitHub Pages custom domain
-  fs.writeFileSync(path.join(DIST, 'CNAME'), 'maatriks.ai\n', 'utf8');
+  fs.writeFileSync(path.join(DIST, 'CNAME'), `${getSiteHost(CONFIG.siteUrl)}\n`, 'utf8');
   console.log('  built: CNAME');
 
   // 404.html — redirect to home for GitHub Pages SPA-like behavior

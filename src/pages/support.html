@@ -2,7 +2,7 @@
   <!-- Nav -->
   <nav class="nav" role="navigation" aria-label="Main navigation">
     <a href="/" class="nav-logo">{{companyName}}<span>.</span></a>
-    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" onclick="document.querySelector('.nav-links').classList.toggle('open');this.setAttribute('aria-expanded',this.getAttribute('aria-expanded')==='false')">
+    <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" type="button">
       <span></span><span></span><span></span>
     </button>
     <ul class="nav-links">
@@ -36,7 +36,7 @@
           </div>
           <div class="card">
             <h3>Password reset</h3>
-            <p>If the in-app password reset isn't working, or you're not receiving the reset email, let us know.</p>
+            <p>If the in-app password reset isn't working, or you're not receiving the reset email, start with our <a href="{{forgotPasswordUrl}}">password reset help page</a> or contact us directly.</p>
           </div>
           <div class="card">
             <h3>Account deletion</h3>
@@ -44,7 +44,7 @@
           </div>
           <div class="card">
             <h3>General app help</h3>
-            <p>Questions about features, subscriptions, or how the AI coaching works? We're happy to explain.</p>
+            <p>Questions about features, workout feedback, or how the app handles your training plan? We're happy to help.</p>
           </div>
         </div>
 
