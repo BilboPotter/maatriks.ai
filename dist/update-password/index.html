@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Password — Maatriks</title>
+  <meta name="description" content="Password recovery redirect for Maatriks.">
+  <meta name="theme-color" content="#050505">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+<div class="page">
+  <div class="auth-page">
+    <div class="lines-bg"></div>
+    <div class="auth-card" id="auth-card">
+      <div class="auth-spinner" id="spinner"></div>
+      <h1>Update Password</h1>
+      <p>Redirecting you to Maatriks to complete your password update...</p>
+      <div class="auth-status" id="status">Opening app</div>
+
+      <div class="auth-fallback" id="fallback">
+        <h3>App didn't open?</h3>
+        <ol>
+          <li>Make sure <strong>Maatriks</strong> is installed on your device</li>
+          <li>Open the app manually and try resetting your password from Settings</li>
+          <li>If the problem persists, <a href="/support">contact support</a></li>
+        </ol>
+        <div style="margin-top:24px;">
+          <a href="#" class="btn btn-outline" style="margin-right:8px;">App Store</a>
+          <a href="#" class="btn btn-outline">Google Play</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/scripts/update-password.js"></script>
+</div>
+
+</body>
+</html>

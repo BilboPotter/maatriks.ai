@@ -1,0 +1,17 @@
+{
+  "companyName": "Maatriks",
+  "appName": "Maatriks",
+  "appTagline": "AI-powered gym coach",
+  "appDescription": "A mobile app that uses artificial intelligence to build, adapt, and coach your training — rep by rep, session by session.",
+  "supportEmail": "support@maatriks.ai",
+  "siteUrl": "https://maatriks.ai",
+  "privacyUrl": "/privacy",
+  "supportUrl": "/support",
+  "deleteAccountUrl": "/delete-account",
+  "iosAppStoreUrl": "#",
+  "googlePlayUrl": "#",
+  "deepLinkScheme": "maatriks",
+  "authCallbackDeepLink": "maatriks://auth/callback",
+  "passwordResetDeepLink": "maatriks://update-password",
+  "lastUpdated": "2026-04-07"
+}
