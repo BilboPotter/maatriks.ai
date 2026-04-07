@@ -42,6 +42,19 @@ function interpolate(html, vars) {
   });
 }
 
+function createHtmlAliases(routeOut) {
+  if (routeOut === 'index.html') {
+    return [];
+  }
+
+  if (!routeOut.endsWith('/index.html')) {
+    return [];
+  }
+
+  const routeBase = routeOut.slice(0, -'/index.html'.length);
+  return [`${routeBase}.html`];
+}
+
 function build() {
   // Clean dist
   if (fs.existsSync(DIST)) {
@@ -70,6 +83,13 @@ function build() {
     fs.mkdirSync(path.dirname(outPath), { recursive: true });
     fs.writeFileSync(outPath, html, 'utf8');
     console.log(`  built: ${route.out}`);
+
+    for (const alias of createHtmlAliases(route.out)) {
+      const aliasPath = path.join(DIST, alias);
+      fs.mkdirSync(path.dirname(aliasPath), { recursive: true });
+      fs.writeFileSync(aliasPath, html, 'utf8');
+      console.log(`  built: ${alias}`);
+    }
   }
 
   // Copy CSS
