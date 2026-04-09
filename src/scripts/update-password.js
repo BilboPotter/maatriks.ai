@@ -7,7 +7,6 @@
  *
  * Config values (injected at build time):
  *   {{passwordResetDeepLink}}
- *   {{deepLinkScheme}}
  */
 
 (function () {
@@ -28,9 +27,9 @@
 
     var params = {};
     raw.split('&').forEach(function (pair) {
-      var parts = pair.split('=');
-      if (parts.length === 2) {
-        params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1]);
+      var idx = pair.indexOf('=');
+      if (idx !== -1) {
+        params[decodeURIComponent(pair.slice(0, idx))] = decodeURIComponent(pair.slice(idx + 1));
       }
     });
 

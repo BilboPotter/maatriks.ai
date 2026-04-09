@@ -29,6 +29,15 @@
     });
   }
 
+  // Active nav highlighting
+  var currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
+  document.querySelectorAll('.nav-links a').forEach(function (link) {
+    var href = link.getAttribute('href').replace(/\/+$/, '') || '/';
+    if (currentPath === href || (href !== '/' && currentPath.indexOf(href) === 0)) {
+      link.classList.add('active');
+    }
+  });
+
   // Mobile nav toggle
   var toggle = document.querySelector('.nav-toggle');
   if (toggle) {

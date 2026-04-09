@@ -11,7 +11,6 @@
   "forgotPasswordUrl": "/forgot-password",
   "iosAppStoreUrl": "#",
   "googlePlayUrl": "#",
-  "deepLinkScheme": "kinetic",
   "authCallbackDeepLink": "kinetic://auth/callback",
   "passwordResetDeepLink": "kinetic://update-password",
   "lastUpdated": "2026-04-07"

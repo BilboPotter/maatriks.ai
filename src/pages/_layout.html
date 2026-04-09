@@ -5,14 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{pageTitle}}</title>
   <meta name="description" content="{{pageDescription}}">
+  <link rel="canonical" href="{{canonicalUrl}}">
+  <meta property="og:title" content="{{pageTitle}}">
+  <meta property="og:description" content="{{pageDescription}}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{canonicalUrl}}">
   <meta name="theme-color" content="#050505">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="alternate" type="application/rss+xml" title="{{companyName}} Blog" href="/blog/feed.xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
 {{content}}
+<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <div class="cookie-banner-inner">
+    <p>This site uses cookies for analytics.</p>
+    <div class="cookie-banner-actions">
+      <button type="button" class="btn btn-primary cookie-accept" id="cookie-accept">Accept</button>
+      <button type="button" class="btn btn-ghost cookie-decline" id="cookie-decline">Decline</button>
+    </div>
+  </div>
+</div>
+<script src="/scripts/consent.js"></script>
 </body>
 </html>
