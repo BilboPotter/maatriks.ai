@@ -103,6 +103,40 @@ function interpolate(html, vars) {
   });
 }
 
+function resolvePartials(html) {
+  return html.replace(/\{\{>\s*([\w-]+)\s*\}\}/g, function (match, name) {
+    const partialPath = path.join(SRC, 'partials', `${name}.html`);
+    if (fs.existsSync(partialPath)) {
+      return fs.readFileSync(partialPath, 'utf8');
+    }
+
+    console.warn(`  warning: partial not found: ${name}`);
+    return match;
+  });
+}
+
+function copyDirSync(src, dest, relativeRoot) {
+  if (!fs.existsSync(src)) {
+    return;
+  }
+
+  fs.mkdirSync(dest, { recursive: true });
+
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    const relativePath = relativeRoot ? `${relativeRoot}/${entry.name}` : entry.name;
+
+    if (entry.isDirectory()) {
+      copyDirSync(srcPath, destPath, relativePath);
+      continue;
+    }
+
+    fs.copyFileSync(srcPath, destPath);
+    console.log(`  copied: assets/${relativePath}`);
+  }
+}
+
 function createHtmlAliases(routeOut) {
   if (routeOut === 'index.html') {
     return [];
@@ -241,7 +275,8 @@ function build() {
 
   // Build each route
   for (const route of ROUTES) {
-    const rawContent = fs.readFileSync(path.join(SRC, 'pages', route.page), 'utf8');
+    let rawContent = fs.readFileSync(path.join(SRC, 'pages', route.page), 'utf8');
+    rawContent = resolvePartials(rawContent);
     const composedContent = composePage(route, rawContent, navPartial, footerPartial, jsMap);
 
     const canonicalUrl = CONFIG.siteUrl + route.canonical;
@@ -273,7 +308,10 @@ function build() {
     }
   }
 
-  // Copy root assets
+  // Copy assets
+  copyDirSync(ASSETS, path.join(DIST, 'assets'));
+
+  // Copy root favicon for backwards compatibility
   const faviconPath = path.join(ASSETS, 'favicon.svg');
   if (fs.existsSync(faviconPath)) {
     fs.writeFileSync(path.join(DIST, 'favicon.svg'), fs.readFileSync(faviconPath, 'utf8'), 'utf8');
@@ -284,8 +322,8 @@ function build() {
   const blogRoute = { layout: 'default', pageClass: 'content-page' };
   const posts = loadBlogPosts();
   if (posts.length > 0) {
-    const blogIndexTemplate = fs.readFileSync(path.join(SRC, 'pages', 'blog-index.html'), 'utf8');
-    const blogPostTemplate = fs.readFileSync(path.join(SRC, 'pages', 'blog-post.html'), 'utf8');
+    const blogIndexTemplate = resolvePartials(fs.readFileSync(path.join(SRC, 'pages', 'blog-index.html'), 'utf8'));
+    const blogPostTemplate = resolvePartials(fs.readFileSync(path.join(SRC, 'pages', 'blog-post.html'), 'utf8'));
 
     // Build blog index
     const blogListHtml = posts.map(post =>
@@ -350,7 +388,7 @@ function build() {
 
   // 404.html
   const notFoundRoute = { layout: 'default', pageClass: 'content-page' };
-  const notFoundRaw = fs.readFileSync(path.join(SRC, 'pages', '404.html'), 'utf8');
+  const notFoundRaw = resolvePartials(fs.readFileSync(path.join(SRC, 'pages', '404.html'), 'utf8'));
   const notFoundComposed = composePage(notFoundRoute, notFoundRaw, navPartial, footerPartial, jsMap);
   const notFoundVars = {
     ...CONFIG,

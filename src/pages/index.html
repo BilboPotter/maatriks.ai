@@ -1,121 +1,265 @@
-    <!-- Hero -->
-    <section class="hero">
-      <div class="lines-bg"></div>
-      <div class="glow-orb glow-orb-1"></div>
-      <div class="container hero-content">
-        <div class="section-label">{{appTagline}}</div>
-        <h1><span class="accent">{{appName}}</span></h1>
-        <p class="lead">{{appDescription}}</p>
+    <div class="story-shell" id="story-shell">
+      <svg class="snake-line" id="snake-line" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path class="snake-path-bg" id="snake-path-bg"></path>
+        <path class="snake-path-lit" id="snake-path-lit"></path>
+      </svg>
 
-        <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-          <a href="{{iosAppStoreUrl}}" class="btn btn-primary" aria-label="Download on the App Store">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z"/><path d="M15.5 8.5c-.28-1.5-1.5-2.5-3-2.5-2 0-3.5 2-3.5 4.5s1.5 4.5 3.5 4.5c1.5 0 2.7-1 3-2.5"/><path d="M12 6V2"/></svg>
-            App Store
-          </a>
-          <a href="{{googlePlayUrl}}" class="btn btn-outline" aria-label="Get it on Google Play">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Google Play
-          </a>
+      <section class="hero story-section story-section--hero" id="hero">
+        <div class="hero-bg">
+          <img src="/assets/hero-gym.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async">
+        </div>
+
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <div class="section-label">Adaptive Workout Programming</div>
+            <h1>Training that <span class="accent">adapts</span> after every session.</h1>
+            <p class="lead">
+              {{appName}} builds the workout, captures what you actually did, gives structured AI feedback,
+              and shows whether the plan is working.
+            </p>
+
+            <div class="hero-actions">
+              {{> store-badges}}
+            </div>
+
+            <div class="hero-points">
+              <span>Personalized onboarding</span>
+              <span>Real workout logging</span>
+              <span>Post-session coaching</span>
+            </div>
+          </div>
+
+          <div class="hero-phone story-phone" data-snake-anchor>
+            <div class="device">
+              <div class="device-inner">
+                {{> phone-workout}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-section journey-section-clean phone-left" id="step-onboard">
+        <div class="container journey-inner">
+          <div class="journey-header reveal">
+            <div class="step-number">1</div>
+            <h2>Onboard</h2>
+          </div>
+
+          <div class="story-phone reveal reveal-left" data-snake-anchor>
+            <div class="device">
+              <div class="device-inner">
+                {{> phone-onboarding}}
+              </div>
+            </div>
+          </div>
+
+          <div class="journey-body reveal">
+            <p>
+              Tell maatriks how often you train, how long sessions should be, and what kind of plan you want.
+              The app uses that context to build your first week instead of dropping you into a generic template.
+            </p>
+            <div class="card journey-card">
+              <h3>Program shape before the first session</h3>
+              <p>Session length and training constraints set the cap for every workout the model programs after this step.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-section journey-section-photo phone-right" id="step-log">
+        <picture class="split-photo">
+          <source media="(min-width: 769px)" srcset="/assets/bg-log-workout.webp">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="893" loading="lazy" decoding="async">
+        </picture>
+
+        <div class="container journey-inner">
+          <div class="journey-header reveal">
+            <div class="step-number">2</div>
+            <h2>Log Workout</h2>
+          </div>
+
+          <div class="story-phone reveal reveal-right" data-snake-anchor>
+            <div class="device">
+              <div class="device-inner">
+                {{> phone-workout-leg}}
+              </div>
+            </div>
+          </div>
+
+          <div class="journey-body reveal">
+            <p>
+              Log sets, reps, and load as you train. The workout screen is built around what actually happened,
+              so future sessions can react to performance instead of pretending the plan was followed perfectly.
+            </p>
+            <div class="card journey-card">
+              <h3>Capture the real session</h3>
+              <p>The timeline keeps completed, active, and upcoming sets distinct, which makes the next recommendation defensible.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-section journey-section-clean journey-section-accent phone-left" id="step-feedback">
+        <div class="container journey-inner">
+          <div class="journey-header reveal">
+            <div class="step-number">3</div>
+            <h2>Get Feedback</h2>
+          </div>
+
+          <div class="story-phone reveal reveal-left" data-snake-anchor>
+            <div class="device">
+              <div class="device-inner">
+                {{> phone-feedback}}
+              </div>
+            </div>
+          </div>
+
+          <div class="journey-body reveal">
+            <p>
+              After the workout, maatriks summarizes the session and turns the raw log into structured coaching.
+              You get context on volume, streaks, and what the app will adapt next time.
+            </p>
+            <div class="card journey-card">
+              <h3>Useful output, not generic praise</h3>
+              <p>The feedback ties performance back to recent training load so adjustments are grounded in the session data.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="journey-section journey-section-photo phone-right" id="step-results">
+        <picture class="split-photo">
+          <source media="(min-width: 769px)" srcset="/assets/bg-results.webp">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="894" loading="lazy" decoding="async">
+        </picture>
+
+        <div class="container journey-inner">
+          <div class="journey-header reveal">
+            <div class="step-number">4</div>
+            <h2>Look at Results</h2>
+          </div>
+
+          <div class="story-phone reveal reveal-right" data-snake-anchor>
+            <div class="device">
+              <div class="device-inner">
+                {{> phone-dashboard}}
+              </div>
+            </div>
+          </div>
+
+          <div class="journey-body reveal">
+            <p>
+              Progress stays visible across streaks, workout history, PRs, and monthly volume. You can tell whether
+              the plan is working without digging through old notes or spreadsheets.
+            </p>
+            <div class="card journey-card">
+              <h3>Progress at a glance</h3>
+              <p>Calendar state, volume comparisons, and recent workouts sit in one view so the training loop closes cleanly.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="stats-section section-block" id="stats">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="section-label">Stats</div>
+          <h2>Built around the full training loop</h2>
+          <p>Placeholder metrics for now, but the section structure is ready for real numbers once they are available.</p>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card reveal">
+            <div class="stat-value" data-count-end="10000" data-count-suffix="+">0</div>
+            <div class="stat-title">Workouts Logged</div>
+          </article>
+          <article class="stat-card reveal">
+            <div class="stat-value" data-count-end="4.8" data-count-decimals="1">0</div>
+            <div class="stat-title">App Store Rating</div>
+          </article>
+          <article class="stat-card reveal">
+            <div class="stat-value" data-count-end="2500" data-count-suffix="+">0</div>
+            <div class="stat-title">Active Users</div>
+          </article>
+          <article class="stat-card reveal">
+            <div class="stat-value" data-count-end="50000" data-count-suffix="+">0</div>
+            <div class="stat-title">Sets Tracked</div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- Marquee -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <div class="marquee-item"><span class="dot"></span>AI-Powered Coaching</div>
-        <div class="marquee-item"><span class="dot"></span>Personalized Programs</div>
-        <div class="marquee-item"><span class="dot"></span>Rep by Rep Tracking</div>
-        <div class="marquee-item"><span class="dot"></span>Adaptive Training</div>
-        <div class="marquee-item"><span class="dot"></span>Session Intelligence</div>
-        <div class="marquee-item"><span class="dot"></span>Progress Analytics</div>
-        <div class="marquee-item"><span class="dot"></span>AI-Powered Coaching</div>
-        <div class="marquee-item"><span class="dot"></span>Personalized Programs</div>
-        <div class="marquee-item"><span class="dot"></span>Rep by Rep Tracking</div>
-        <div class="marquee-item"><span class="dot"></span>Adaptive Training</div>
-        <div class="marquee-item"><span class="dot"></span>Session Intelligence</div>
-        <div class="marquee-item"><span class="dot"></span>Progress Analytics</div>
-      </div>
-    </div>
+    <section class="reviews-section section-block" id="reviews">
+      <picture class="split-photo split-photo-left">
+        <source media="(min-width: 769px)" srcset="/assets/bg-reviews.webp">
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="893" loading="lazy" decoding="async">
+      </picture>
 
-    <!-- Features -->
-    <section class="container" style="padding-top:0;padding-bottom:0;">
-      <h2 class="sr-only">Features</h2>
-      <div class="features reveal">
-        <div class="feature">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a5 5 0 0 1 5 5v3a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"/><path d="M12 15v7"/><path d="M8 22h8"/></svg>
-          </div>
-          <h3>Workout Feedback</h3>
-          <p>Get structured post-session feedback based on what you actually completed and how it compares to recent training.</p>
+      <div class="container reviews-layout">
+        <div class="reviews-copy reveal">
+          <div class="section-label">Reviews</div>
+          <h2>Early feedback from lifters using the loop</h2>
+          <p>These are placeholders until real testimonials are approved, but the carousel and interaction model are in place.</p>
         </div>
-        <div class="feature">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <h3>Adaptive Programs</h3>
-          <p>Your next workout is generated from your schedule, preferences, and recent performance instead of a static template.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-          </div>
-          <h3>Training History</h3>
-          <p>Track sessions, streaks, PRs, and volume so progress stays visible across the whole training loop.</p>
-        </div>
-      </div>
 
-      <div class="stat-strip reveal">
-        <div class="stat">
-          <div class="stat-value">3</div>
-          <div class="stat-label">Core Tabs</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">AI</div>
-          <div class="stat-label">Feedback</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">iOS + Android</div>
-          <div class="stat-label">Mobile First</div>
+        <div class="reviews-carousel reveal" data-carousel>
+          <div class="reviews-track" data-carousel-track tabindex="0" aria-label="User reviews">
+            <article class="review-card">
+              <div class="review-stars">★★★★★</div>
+              <p>"Finally an app that reacts to what I actually finished instead of shaming me for missing one day."</p>
+              <div class="review-author">Marcus, powerbuilding focus</div>
+            </article>
+            <article class="review-card">
+              <div class="review-stars">★★★★★</div>
+              <p>"The post-session notes are what keep me using it. I get a clear reason for the next progression."</p>
+              <div class="review-author">Sofia, 4-day split</div>
+            </article>
+            <article class="review-card">
+              <div class="review-stars">★★★★★</div>
+              <p>"The workout logger is fast enough mid-session, and the dashboard makes trends obvious without extra charts."</p>
+              <div class="review-author">Daniel, intermediate lifter</div>
+            </article>
+            <article class="review-card">
+              <div class="review-stars">★★★★★</div>
+              <p>"It feels like a coach reviewing the training log instead of a template app with a chatbot bolted on."</p>
+              <div class="review-author">Elli, hypertrophy block</div>
+            </article>
+          </div>
+
+          <div class="reviews-controls">
+            <button type="button" class="carousel-button" data-carousel-prev aria-label="Previous review">&larr;</button>
+            <div class="carousel-dots" data-carousel-dots></div>
+            <button type="button" class="carousel-button" data-carousel-next aria-label="Next review">&rarr;</button>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Resources -->
-    <div class="container">
-      <div class="section-divider"></div>
+    <section class="newsletter-section section-block" id="newsletter">
+      <div class="container newsletter-inner reveal">
+        <div class="section-label">Newsletter</div>
+        <h2>Stay in the loop</h2>
+        <p>Training tips, feature updates, and early product drops. For now, signup routes through email until the backend is wired.</p>
 
-      <section class="section reveal">
-        <div class="section-label">Resources</div>
-        <h2>Need help?</h2>
-        <p>Whether you need to review our privacy practices, get support, or manage your account.</p>
+        <form class="newsletter-form" data-newsletter-form>
+          <label class="sr-only" for="newsletter-email">Email address</label>
+          <input id="newsletter-email" name="email" type="email" placeholder="you@domain.com" autocomplete="email" required>
+          <button type="submit" class="btn btn-primary">Join Newsletter</button>
+        </form>
+        <p class="newsletter-note" data-newsletter-note></p>
+      </div>
+    </section>
 
-        <div class="quick-links">
-          <a href="{{privacyUrl}}" class="quick-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="0"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Privacy Policy
-          </a>
-          <a href="{{supportUrl}}" class="quick-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            Support
-          </a>
-          <a href="{{deleteAccountUrl}}" class="quick-link">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-            Delete Account
-          </a>
+    <section class="download-section section-block" id="download">
+      <div class="container download-inner reveal">
+        <div class="section-label">Download</div>
+        <h2>Ready to train smarter?</h2>
+        <p>Start with the app, then let the programming and review loop compound over time.</p>
+
+        <div class="download-actions">
+          {{> store-badges}}
         </div>
-      </section>
-
-      <!-- Contact -->
-      <div class="section-divider"></div>
-
-      <section class="section reveal">
-        <div class="section-label">Contact</div>
-        <h2>Get in touch</h2>
-        <p>For support, privacy questions, or anything else:</p>
-        <a href="mailto:{{supportEmail}}" class="email-link" style="display:inline-flex;align-items:center;gap:10px;background:var(--black-4);border:1px solid var(--border);border-left:3px solid var(--amber);padding:14px 20px;margin:16px 0;font-family:var(--font-mono);font-size:14px;color:var(--amber);transition:all 220ms ease;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="0"/><polyline points="22,4 12,13 2,4"/></svg>
-          {{supportEmail}}
-        </a>
-      </section>
-    </div>
+      </div>
+    </section>
