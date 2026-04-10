@@ -63,6 +63,9 @@ const rightArrowHtml = '&rarr;';
               <LegacyPartial name="phone-workout" />
             </div>
           </div>
+          <div class="hero-preview-mobile">
+            <LegacyPartial name="preview-loop-mobile" />
+          </div>
         </div>
       </div>
     </section>
@@ -74,7 +77,14 @@ const rightArrowHtml = '&rarr;';
           <h2>Onboard</h2>
         </div>
 
-        <div class="story-phone reveal reveal-left" data-snake-anchor>
+        <div class="journey-copy reveal">
+          <p>
+            Tell maatriks how often you train, how long sessions should be, and what kind of plan you want.
+            The app uses that context to build your first week instead of dropping you into a generic template.
+          </p>
+        </div>
+
+        <div class="story-phone story-phone-desktop reveal reveal-left" data-snake-anchor>
           <div class="device">
             <div class="device-inner">
               <LegacyPartial name="phone-onboarding" />
@@ -82,11 +92,11 @@ const rightArrowHtml = '&rarr;';
           </div>
         </div>
 
-        <div class="journey-body reveal">
-          <p>
-            Tell maatriks how often you train, how long sessions should be, and what kind of plan you want.
-            The app uses that context to build your first week instead of dropping you into a generic template.
-          </p>
+        <div class="story-preview reveal">
+          <LegacyPartial name="preview-onboarding-mobile" />
+        </div>
+
+        <div class="journey-support reveal">
           <div class="card journey-card">
             <h3>Program shape before the first session</h3>
             <p>Session length and training constraints set the cap for every workout the model programs after this step.</p>
@@ -107,7 +117,14 @@ const rightArrowHtml = '&rarr;';
           <h2>Log Workout</h2>
         </div>
 
-        <div class="story-phone reveal reveal-right" data-snake-anchor>
+        <div class="journey-copy reveal">
+          <p>
+            Log sets, reps, and load as you train. The workout screen is built around what actually happened,
+            so future sessions can react to performance instead of pretending the plan was followed perfectly.
+          </p>
+        </div>
+
+        <div class="story-phone story-phone-desktop reveal reveal-right" data-snake-anchor>
           <div class="device">
             <div class="device-inner">
               <LegacyPartial name="phone-workout-leg" />
@@ -115,11 +132,11 @@ const rightArrowHtml = '&rarr;';
           </div>
         </div>
 
-        <div class="journey-body reveal">
-          <p>
-            Log sets, reps, and load as you train. The workout screen is built around what actually happened,
-            so future sessions can react to performance instead of pretending the plan was followed perfectly.
-          </p>
+        <div class="story-preview reveal">
+          <LegacyPartial name="preview-workout-mobile" />
+        </div>
+
+        <div class="journey-support reveal">
           <div class="card journey-card">
             <h3>Capture the real session</h3>
             <p>The timeline keeps completed, active, and upcoming sets distinct, which makes the next recommendation defensible.</p>
@@ -135,7 +152,14 @@ const rightArrowHtml = '&rarr;';
           <h2>Get Feedback</h2>
         </div>
 
-        <div class="story-phone reveal reveal-left" data-snake-anchor>
+        <div class="journey-copy reveal">
+          <p>
+            After the workout, maatriks summarizes the session and turns the raw log into structured coaching.
+            You get context on volume, streaks, and what the app will adapt next time.
+          </p>
+        </div>
+
+        <div class="story-phone story-phone-desktop reveal reveal-left" data-snake-anchor>
           <div class="device">
             <div class="device-inner">
               <LegacyPartial name="phone-feedback" />
@@ -143,11 +167,11 @@ const rightArrowHtml = '&rarr;';
           </div>
         </div>
 
-        <div class="journey-body reveal">
-          <p>
-            After the workout, maatriks summarizes the session and turns the raw log into structured coaching.
-            You get context on volume, streaks, and what the app will adapt next time.
-          </p>
+        <div class="story-preview reveal">
+          <LegacyPartial name="preview-feedback-mobile" />
+        </div>
+
+        <div class="journey-support reveal">
           <div class="card journey-card">
             <h3>Useful output, not generic praise</h3>
             <p>The feedback ties performance back to recent training load so adjustments are grounded in the session data.</p>
@@ -168,7 +192,14 @@ const rightArrowHtml = '&rarr;';
           <h2>Look at Results</h2>
         </div>
 
-        <div class="story-phone reveal reveal-right" data-snake-anchor>
+        <div class="journey-copy reveal">
+          <p>
+            Progress stays visible across streaks, workout history, PRs, and monthly volume. You can tell whether
+            the plan is working without digging through old notes or spreadsheets.
+          </p>
+        </div>
+
+        <div class="story-phone story-phone-desktop reveal reveal-right" data-snake-anchor>
           <div class="device">
             <div class="device-inner">
               <LegacyPartial name="phone-dashboard" />
@@ -176,11 +207,11 @@ const rightArrowHtml = '&rarr;';
           </div>
         </div>
 
-        <div class="journey-body reveal">
-          <p>
-            Progress stays visible across streaks, workout history, PRs, and monthly volume. You can tell whether
-            the plan is working without digging through old notes or spreadsheets.
-          </p>
+        <div class="story-preview reveal">
+          <LegacyPartial name="preview-results-mobile" />
+        </div>
+
+        <div class="journey-support reveal">
           <div class="card journey-card">
             <h3>Progress at a glance</h3>
             <p>Calendar state, volume comparisons, and recent workouts sit in one view so the training loop closes cleanly.</p>
