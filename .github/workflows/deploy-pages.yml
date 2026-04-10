@@ -26,12 +26,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
 
-      - name: Build site
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build legacy baseline
         run: node build.js
 
       - name: Verify auth handoff build output
         run: node verify-build.js
+
+      - name: Build Astro site
+        run: npm run astro:build
+
+      - name: Verify Astro parity
+        run: npm run astro:verify
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
@@ -39,7 +49,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: astro-dist
 
   deploy:
     needs: build

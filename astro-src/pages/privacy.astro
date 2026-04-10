@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../lib/site.mjs';
+import { loadLegacyPage } from '../lib/legacy.mjs';
+
+const content = loadLegacyPage('privacy.html');
+---
+
+<BaseLayout
+  pageTitle={`Privacy Policy — ${siteConfig.appName}`}
+  pageDescription={`Privacy policy for ${siteConfig.appName}, operated by ${siteConfig.companyName}.`}
+  canonicalUrl={`${siteConfig.siteUrl}/privacy`}
+  pageClass="content-page"
+>
+  <Fragment set:html={content} />
+</BaseLayout>

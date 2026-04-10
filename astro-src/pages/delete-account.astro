@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../lib/site.mjs';
+import { loadLegacyPage } from '../lib/legacy.mjs';
+
+const content = loadLegacyPage('delete-account.html');
+---
+
+<BaseLayout
+  pageTitle={`Delete Account — ${siteConfig.appName}`}
+  pageDescription={`How to delete your ${siteConfig.appName} account and what happens to your data.`}
+  canonicalUrl={`${siteConfig.siteUrl}/delete-account`}
+  pageClass="content-page"
+  robotsContent="noindex, nofollow"
+>
+  <Fragment set:html={content} />
+</BaseLayout>

@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../lib/site.mjs';
+import { loadLegacyPage } from '../lib/legacy.mjs';
+
+const content = loadLegacyPage('index.html');
+---
+
+<BaseLayout
+  pageTitle={`${siteConfig.appName} — ${siteConfig.appTagline}`}
+  pageDescription={siteConfig.appDescription}
+  canonicalUrl={`${siteConfig.siteUrl}/`}
+  mainStyle="padding:0;"
+>
+  <Fragment set:html={content} />
+</BaseLayout>

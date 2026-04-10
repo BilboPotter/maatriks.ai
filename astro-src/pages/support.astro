@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../lib/site.mjs';
+import { loadLegacyPage } from '../lib/legacy.mjs';
+
+const content = loadLegacyPage('support.html');
+---
+
+<BaseLayout
+  pageTitle={`Support — ${siteConfig.appName}`}
+  pageDescription={`Get help with ${siteConfig.appName}. Contact ${siteConfig.supportEmail}.`}
+  canonicalUrl={`${siteConfig.siteUrl}/support`}
+  pageClass="content-page"
+>
+  <Fragment set:html={content} />
+</BaseLayout>

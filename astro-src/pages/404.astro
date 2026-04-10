@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../lib/site.mjs';
+---
+
+<BaseLayout
+  pageTitle={`Page Not Found — ${siteConfig.appName}`}
+  pageDescription="The page you are looking for does not exist."
+  canonicalUrl={siteConfig.siteUrl}
+  pageClass="content-page"
+  robotsContent="noindex"
+>
+  <div class="container">
+    <h1>Page not found</h1>
+    <p class="lead">The page you're looking for doesn't exist or has been moved.</p>
+    <a href="/" class="btn btn-outline" style="margin-top:24px;">Go to homepage</a>
+  </div>
+</BaseLayout>

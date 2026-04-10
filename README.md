@@ -2,6 +2,8 @@
 
 Static public website for the mobile app and launch support surface.
 
+The active deployment target is Astro static output. The legacy `build.js` pipeline is still kept in the repo as a parity baseline while the migration is being finalized.
+
 This repo owns:
 
 - homepage
@@ -36,13 +38,31 @@ Important values:
 
 ## Build
 
+Active deployment build:
+
+```bash
+npm run astro:build
+```
+
+Active output:
+
+- `astro-dist/`
+
+Legacy parity baseline:
+
 ```bash
 node build.js
 ```
 
-Output goes to:
+Legacy output:
 
 - `dist/`
+
+Parity check:
+
+```bash
+npm run astro:verify
+```
 
 ## Blog Authoring
 
@@ -72,7 +92,7 @@ The newest post is featured automatically on `/blog`, and the rest of the archiv
 After building, preview the generated site with any static server. Example:
 
 ```bash
-python3 -m http.server 4321 -d dist
+python3 -m http.server 4321 -d astro-dist
 ```
 
 Then open:

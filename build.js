@@ -663,6 +663,7 @@ function build() {
     pageDescription: `The page you are looking for does not exist.`,
     canonicalUrl: CONFIG.siteUrl,
     robotsMeta: '<meta name="robots" content="noindex">\n  ',
+    criticalCss: criticalCss,
     referrerPolicy: DEFAULT_REFERRER_POLICY,
     securityMeta: '',
     consentBanner: COOKIE_BANNER_HTML,

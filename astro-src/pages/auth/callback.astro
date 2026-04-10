@@ -1,0 +1,20 @@
+---
+import AuthLayout from '../../layouts/AuthLayout.astro';
+import { siteConfig } from '../../lib/site.mjs';
+import { loadLegacyPage } from '../../lib/legacy.mjs';
+import { getPublicAssetManifest } from '../../lib/public-assets.mjs';
+
+const assets = getPublicAssetManifest();
+const content = loadLegacyPage('auth-callback.html').replace(
+  '/scripts/auth-callback.js',
+  assets.scripts['auth-callback.js'].href
+);
+---
+
+<AuthLayout
+  pageTitle={`Redirecting — ${siteConfig.appName}`}
+  pageDescription={`Authentication redirect for ${siteConfig.appName}.`}
+  canonicalUrl={`${siteConfig.siteUrl}/auth/callback`}
+>
+  <Fragment set:html={content} />
+</AuthLayout>

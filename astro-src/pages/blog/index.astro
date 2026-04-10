@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../lib/site.mjs';
+import { loadBlogPosts, renderBlogIndexContent } from '../../lib/blog.mjs';
+
+const posts = loadBlogPosts();
+const content = renderBlogIndexContent(posts);
+---
+
+<BaseLayout
+  pageTitle={`Blog — ${siteConfig.appName}`}
+  pageDescription={`Writing from ${siteConfig.appName} on training, programming, product design, and building the app.`}
+  canonicalUrl={`${siteConfig.siteUrl}/blog`}
+  pageClass="content-page blog-page"
+>
+  <Fragment set:html={content} />
+</BaseLayout>

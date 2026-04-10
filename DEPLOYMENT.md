@@ -2,10 +2,17 @@
 
 ## GitHub Pages
 
-This repo is set up to build as a static site with:
+This repo now deploys the Astro static build:
+
+```bash
+npm run astro:build
+```
+
+The legacy builder is still run in CI as a parity baseline:
 
 ```bash
 node build.js
+npm run astro:verify
 ```
 
 Recommended GitHub Pages setup:
@@ -16,6 +23,15 @@ Recommended GitHub Pages setup:
 4. Set the custom domain to `maatriks.ai`.
 5. Enable HTTPS in Pages settings after DNS resolves.
 6. Verify the custom domain in GitHub Pages settings.
+
+The GitHub Actions workflow now:
+
+1. installs dependencies with `npm ci`
+2. builds the legacy baseline into `dist/`
+3. verifies auth output
+4. builds Astro into `astro-dist/`
+5. verifies Astro matches the legacy output
+6. uploads `astro-dist/` to GitHub Pages
 
 ## DNS For `maatriks.ai`
 
@@ -39,7 +55,7 @@ Important:
 
 - keep existing mail records unless you intentionally change email providers
 - do not remove unrelated verification TXT records
-- the repo build already writes `dist/CNAME` from `site.config.json`
+- the Astro deployment build writes `astro-dist/CNAME` from `site.config.json`
 
 ## Veebimajutus Notes
 
