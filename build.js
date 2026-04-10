@@ -320,7 +320,6 @@ function renderBlogArchive(posts) {
           <p class="blog-feature-label">Latest writing</p>
           <h2>Essays and product notes</h2>
         </div>
-        <a href="/blog/feed.xml" class="blog-section-link">RSS feed</a>
       </div>
 
       <div class="blog-list">
