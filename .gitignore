@@ -4,4 +4,5 @@ design-system/
 dist/
 *.jpeg
 *.png
+!src/assets/favicon-*.png
 logo-concepts/

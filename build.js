@@ -313,11 +313,53 @@ function build() {
   // Copy assets
   copyDirSync(ASSETS, path.join(DIST, 'assets'));
 
-  // Copy root favicon for backwards compatibility
+  // Copy root favicon (SVG) for backwards compatibility
   const faviconPath = path.join(ASSETS, 'favicon.svg');
   if (fs.existsSync(faviconPath)) {
     fs.writeFileSync(path.join(DIST, 'favicon.svg'), fs.readFileSync(faviconPath, 'utf8'), 'utf8');
     console.log('  built: favicon.svg');
+  }
+
+  // Build favicon.ico from pre-rendered PNGs (ICO = header + directory + embedded PNGs)
+  const icoSizes = [16, 32, 48];
+  const icoPngs = icoSizes
+    .map(s => ({ size: s, path: path.join(ASSETS, `favicon-${s}.png`) }))
+    .filter(f => fs.existsSync(f.path))
+    .map(f => ({ size: f.size, data: fs.readFileSync(f.path) }));
+
+  if (icoPngs.length > 0) {
+    const count = icoPngs.length;
+    const headerSize = 6;
+    const dirSize = 16 * count;
+    let offset = headerSize + dirSize;
+
+    // ICO header: reserved(2) + type=1(2) + count(2)
+    const header = Buffer.alloc(headerSize);
+    header.writeUInt16LE(0, 0);
+    header.writeUInt16LE(1, 2);
+    header.writeUInt16LE(count, 4);
+
+    const dirEntries = Buffer.alloc(dirSize);
+    const pngBuffers = [];
+
+    for (let i = 0; i < count; i++) {
+      const { size, data } = icoPngs[i];
+      const w = size >= 256 ? 0 : size;
+      const h = size >= 256 ? 0 : size;
+      dirEntries.writeUInt8(w, i * 16);           // width
+      dirEntries.writeUInt8(h, i * 16 + 1);       // height
+      dirEntries.writeUInt8(0, i * 16 + 2);       // color palette
+      dirEntries.writeUInt8(0, i * 16 + 3);       // reserved
+      dirEntries.writeUInt16LE(1, i * 16 + 4);    // color planes
+      dirEntries.writeUInt16LE(32, i * 16 + 6);   // bits per pixel
+      dirEntries.writeUInt32LE(data.length, i * 16 + 8);  // size
+      dirEntries.writeUInt32LE(offset, i * 16 + 12);      // offset
+      pngBuffers.push(data);
+      offset += data.length;
+    }
+
+    fs.writeFileSync(path.join(DIST, 'favicon.ico'), Buffer.concat([header, dirEntries, ...pngBuffers]));
+    console.log('  built: favicon.ico');
   }
 
   // Blog
