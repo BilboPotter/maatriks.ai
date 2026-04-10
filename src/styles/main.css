@@ -2553,8 +2553,7 @@ input:focus-visible {
 }
 
 .footer-brand {
-  display: inline-flex;
-  align-items: center;
+  display: block;
 }
 
 .footer-brand-link {
@@ -2570,6 +2569,8 @@ input:focus-visible {
 }
 
 .footer-email {
+  display: inline-flex;
+  width: fit-content;
   margin-top: 16px;
 }
 
@@ -2580,9 +2581,11 @@ input:focus-visible {
 }
 
 .footer-links {
-  display: flex;
-  gap: 24px;
+  display: grid;
+  gap: 10px;
   list-style: none;
+  justify-items: end;
+  text-align: right;
 }
 
 .footer-links a {
@@ -3193,7 +3196,8 @@ input:focus-visible {
   }
 
   .footer-links {
-    flex-wrap: wrap;
+    justify-items: start;
+    text-align: left;
     gap: 16px;
   }
 
