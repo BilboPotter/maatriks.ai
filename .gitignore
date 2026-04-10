@@ -1,8 +1,12 @@
 .DS_Store
 node_modules/
+.astro/
+astro-dist/
 design-system/
 dist/
 *.jpeg
 *.png
 !src/assets/favicon-*.png
 logo-concepts/
+favicon_logo-concepts/
+maatriks brand/

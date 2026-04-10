@@ -32,6 +32,11 @@
 
   --primary: #ff8a1f;
   --accent: #ffb347;
+  --warm-glow: #ffd080;
+  --hot-core: #ffe8c0;
+  --deep: #e06800;
+  --shadow-orange: #b85a00;
+  --dark-shadow: #8a4500;
   --gradient: linear-gradient(135deg, #ff8a1f, #ffb347);
   --primary-muted: rgba(255, 138, 31, 0.12);
   --primary-glow: rgba(255, 138, 31, 0.34);
@@ -44,21 +49,30 @@
   --text-secondary: #8e8e9a;
   --text-muted: #4a4a5a;
 
-  --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", "SFMono-Regular", monospace;
+  --font-body: "DM Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
 
   --max-width: 1200px;
   --page-pad: 60px;
   --page-pad-mobile: 24px;
   --section-pad: clamp(88px, 10vw, 128px);
 
+  --radius-input: 10px;
+  --radius-button: 10px;
+  --radius-surface: 12px;
+  --radius-pill: 20px;
+  --radius-round: 999px;
+
   --shadow-xl: 0 28px 80px rgba(0, 0, 0, 0.46);
   --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.28);
   --shadow-card: 0 18px 48px rgba(0, 0, 0, 0.18);
 
-  --motion-fast: 160ms;
-  --motion-base: 220ms;
-  --motion-slow: 320ms;
+  --fast: 160ms;
+  --base: 220ms;
+  --slow: 320ms;
+  --motion-fast: var(--fast);
+  --motion-base: var(--base);
+  --motion-slow: var(--slow);
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
 
   --device-width: 320px;
@@ -297,16 +311,31 @@ input:focus-visible {
 }
 
 .nav-logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
   color: var(--text);
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
 }
 
 .nav-logo:hover {
   color: var(--text);
   opacity: 0.84;
+}
+
+.nav-brand-lockup,
+.nav-brand-mark {
+  display: block;
+}
+
+.nav-brand-lockup {
+  width: auto;
+  height: 24px;
+}
+
+.nav-brand-mark {
+  display: none;
+  width: 28px;
+  height: 28px;
 }
 
 .nav-links {
@@ -373,6 +402,7 @@ input:focus-visible {
   min-height: 48px;
   padding: 12px 24px;
   border: 1px solid transparent;
+  border-radius: var(--radius-button);
   background: transparent;
   color: var(--text);
   font-family: var(--font-body);
@@ -422,6 +452,7 @@ input:focus-visible {
   padding: 28px 28px 28px 32px;
   border: 1px solid var(--border);
   border-left: 3px solid var(--primary);
+  border-radius: var(--radius-surface);
   background: rgba(18, 18, 26, 0.92);
   box-shadow: var(--shadow-card);
 }
@@ -443,7 +474,7 @@ input:focus-visible {
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  border-radius: 14px;
+  border-radius: var(--radius-surface);
 }
 
 .download-badge:hover {
@@ -1448,7 +1479,7 @@ input:focus-visible {
   align-items: center;
   justify-content: center;
   border: 1px solid var(--primary);
-  border-radius: 10px;
+  border-radius: var(--radius-button);
   color: var(--primary);
   font-family: var(--font-mono);
   font-size: 11px;
@@ -1517,7 +1548,7 @@ input:focus-visible {
   gap: 10px;
   padding: 18px;
   border-left: 3px solid var(--primary);
-  border-radius: 12px;
+  border-radius: var(--radius-surface);
   background: var(--surface);
 }
 
@@ -2522,11 +2553,20 @@ input:focus-visible {
 }
 
 .footer-brand {
-  color: var(--text);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-brand-link {
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-brand-lockup {
+  display: block;
+  width: auto;
+  height: 30px;
+  max-width: min(100%, 172px);
 }
 
 .footer-email {
@@ -2868,6 +2908,10 @@ input:focus-visible {
     padding: 0 var(--page-pad-mobile);
   }
 
+  .nav-brand-lockup {
+    height: 21px;
+  }
+
   .nav-links {
     display: none;
     position: absolute;
@@ -3182,6 +3226,16 @@ input:focus-visible {
     flex: 1;
     min-height: 40px;
     padding: 10px 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .nav-brand-lockup {
+    display: none;
+  }
+
+  .nav-brand-mark {
+    display: block;
   }
 }
 

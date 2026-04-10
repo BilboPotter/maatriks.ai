@@ -1,121 +1,104 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="maatriks.ai favicon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="maatriks logo mark — clean modern 3D on dark">
   <defs>
-    <radialGradient id="bgGrad" cx="50%" cy="45%" r="60%">
-      <stop offset="0%" stop-color="#111118"/>
-      <stop offset="100%" stop-color="#050505"/>
+    <!-- Background radial gradient — subtle brightening behind mark -->
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="45%">
+      <stop offset="0%" stop-color="#0f0f14"/>
+      <stop offset="100%" stop-color="#08080C"/>
     </radialGradient>
-    <radialGradient id="nodeGlow">
+
+    <!-- Bar gradients — bright highlight on leading edge, darkens quickly -->
+    <!-- Bottom bar gradient -->
+    <linearGradient id="barBottom" x1="14" y1="64" x2="70" y2="79" gradientUnits="userSpaceOnUse">
       <stop offset="0%" stop-color="#ffb347"/>
-      <stop offset="60%" stop-color="#ff8a1f"/>
-      <stop offset="100%" stop-color="#e06800"/>
-    </radialGradient>
-    <radialGradient id="nodeAccent">
-      <stop offset="0%" stop-color="#ffd080"/>
-      <stop offset="50%" stop-color="#ffb347"/>
-      <stop offset="100%" stop-color="#ff8a1f"/>
-    </radialGradient>
-    <radialGradient id="dimNode">
-      <stop offset="0%" stop-color="#252535"/>
-      <stop offset="100%" stop-color="#15151f"/>
-    </radialGradient>
-    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur"/>
-      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <stop offset="15%" stop-color="#ff8a1f"/>
+      <stop offset="35%" stop-color="#e06800"/>
+      <stop offset="100%" stop-color="#b85a00"/>
+    </linearGradient>
+    <!-- Middle bar gradient -->
+    <linearGradient id="barMiddle" x1="22" y1="43" x2="78" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffb347"/>
+      <stop offset="15%" stop-color="#ff8a1f"/>
+      <stop offset="35%" stop-color="#e06800"/>
+      <stop offset="100%" stop-color="#b85a00"/>
+    </linearGradient>
+    <!-- Top bar gradient -->
+    <linearGradient id="barTop" x1="30" y1="22" x2="86" y2="37" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffb347"/>
+      <stop offset="15%" stop-color="#ff8a1f"/>
+      <stop offset="35%" stop-color="#e06800"/>
+      <stop offset="100%" stop-color="#b85a00"/>
+    </linearGradient>
+
+    <!-- Sheen gradients — faint lighter band across upper portion of each bar -->
+    <!-- Bottom bar sheen -->
+    <linearGradient id="sheenBottom" x1="0" y1="64" x2="0" y2="79" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="35%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
+    </linearGradient>
+    <!-- Middle bar sheen -->
+    <linearGradient id="sheenMiddle" x1="0" y1="43" x2="0" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="35%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
+    </linearGradient>
+    <!-- Top bar sheen -->
+    <linearGradient id="sheenTop" x1="0" y1="22" x2="0" y2="37" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="35%" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.08"/>
+    </linearGradient>
+
+    <!-- Drop shadow filter — crisp, defined, moderate blur -->
+    <filter id="dropShadow" x="-10%" y="-10%" width="130%" height="150%">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.55"/>
     </filter>
-    <filter id="bloom" x="-200%" y="-200%" width="500%" height="500%">
+
+    <!-- Ambient ground shadow — soft, spread beneath the entire mark -->
+    <filter id="ambientShadow" x="-20%" y="-10%" width="140%" height="140%">
       <feGaussianBlur in="SourceGraphic" stdDeviation="4"/>
     </filter>
-    <filter id="mGlowDeep" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="5.5"/>
-    </filter>
-    <filter id="mGlowMid" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="3.2"/>
-    </filter>
-    <filter id="mGlowSharp" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="1.8"/>
-    </filter>
-    <linearGradient id="lineGrad1" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#ff8a1f" stop-opacity="0.7"/>
-      <stop offset="100%" stop-color="#ffb347" stop-opacity="0.15"/>
-    </linearGradient>
-    <linearGradient id="lineGrad2" x1="1" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ff8a1f" stop-opacity="0.7"/>
-      <stop offset="100%" stop-color="#ffb347" stop-opacity="0.15"/>
-    </linearGradient>
-    <linearGradient id="lineVert" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ff8a1f" stop-opacity="0.6"/>
-      <stop offset="50%" stop-color="#ff8a1f" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#ff8a1f" stop-opacity="0.6"/>
-    </linearGradient>
   </defs>
 
-  <rect width="64" height="64" rx="12" fill="url(#bgGrad)"/>
+  <!-- Transparent background — composites onto any surface -->
 
-  <path d="M 14,53 L 14,11 L 32,32 L 50,11 L 50,53" fill="none" stroke="#ff8a1f" stroke-opacity="0.05" stroke-width="19" stroke-linejoin="round" stroke-linecap="round" filter="url(#mGlowDeep)"/>
-  <path d="M 14,53 L 14,11 L 32,32 L 50,11 L 50,53" fill="none" stroke="#ff8a1f" stroke-opacity="0.09" stroke-width="13" stroke-linejoin="round" stroke-linecap="round" filter="url(#mGlowMid)"/>
-  <path d="M 14,53 L 14,11 L 32,32 L 50,11 L 50,53" fill="none" stroke="#ff8a1f" stroke-opacity="0.13" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" filter="url(#mGlowSharp)"/>
+  <!-- Ambient ground shadow beneath entire mark -->
+  <g filter="url(#ambientShadow)" opacity="0.4">
+    <polygon points="14,79 64,79 70,64 20,64" fill="#000000"/>
+    <polygon points="22,58 72,58 78,43 28,43" fill="#000000"/>
+    <polygon points="30,37 80,37 86,22 36,22" fill="#000000"/>
+  </g>
 
-  <circle cx="11" cy="11" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="21.5" cy="11" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="32" cy="11" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="42.5" cy="11" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="53" cy="11" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="11" cy="21.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="21.5" cy="21.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="32" cy="21.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="42.5" cy="21.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="53" cy="21.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="11" cy="32" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="21.5" cy="32" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="32" cy="32" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="42.5" cy="32" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="53" cy="32" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="11" cy="42.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="21.5" cy="42.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="32" cy="42.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="42.5" cy="42.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="53" cy="42.5" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="11" cy="53" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="21.5" cy="53" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="32" cy="53" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="42.5" cy="53" r="2.2" fill="url(#dimNode)"/>
-  <circle cx="53" cy="53" r="2.2" fill="url(#dimNode)"/>
+  <!-- Bottom bar — DATA (rendered first, sits behind) -->
+  <g>
+    <!-- Base fill with gradient -->
+    <polygon points="14,79 64,79 70,64 20,64" fill="url(#barBottom)"/>
+    <!-- Surface sheen overlay -->
+    <polygon points="14,79 64,79 70,64 20,64" fill="url(#sheenBottom)"/>
+    <!-- Thin separator / highlight line along top edge -->
+    <line x1="20" y1="64" x2="70" y2="64" stroke="#ffe8c0" stroke-width="0.3" opacity="0.45"/>
+  </g>
 
-  <path d="M 11,53 L 11,11 L 21.5,21.5 L 32,32 L 42.5,21.5 L 53,11 L 53,53" fill="none" stroke="#ff8a1f" opacity="0.3" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Middle bar — ALGORITHM (with drop shadow onto bottom bar) -->
+  <g filter="url(#dropShadow)">
+    <!-- Base fill with gradient -->
+    <polygon points="22,58 72,58 78,43 28,43" fill="url(#barMiddle)"/>
+    <!-- Surface sheen overlay -->
+    <polygon points="22,58 72,58 78,43 28,43" fill="url(#sheenMiddle)"/>
+    <!-- Thin separator / highlight line along top edge -->
+    <line x1="28" y1="43" x2="78" y2="43" stroke="#ffe8c0" stroke-width="0.3" opacity="0.45"/>
+  </g>
 
-  <circle cx="11" cy="11" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="11" cy="21.5" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="11" cy="32" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="11" cy="42.5" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="11" cy="53" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="21.5" cy="21.5" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="32" cy="32" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="42.5" cy="21.5" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="53" cy="11" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="53" cy="21.5" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="53" cy="32" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="53" cy="42.5" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-  <circle cx="53" cy="53" r="5" fill="#ff8a1f" opacity="0.15" filter="url(#bloom)"/>
-
-  <circle cx="11" cy="11" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="11" cy="21.5" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="11" cy="32" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="11" cy="42.5" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="11" cy="53" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="21.5" cy="21.5" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="32" cy="32" r="2.2" fill="url(#nodeAccent)" filter="url(#glow)"/>
-  <circle cx="42.5" cy="21.5" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="53" cy="11" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="53" cy="21.5" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="53" cy="32" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="53" cy="42.5" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-  <circle cx="53" cy="53" r="2.2" fill="url(#nodeGlow)" filter="url(#glow)"/>
-
-  <circle cx="11" cy="11" r="0.9" fill="#ffd080" opacity="0.95"/>
-  <circle cx="11" cy="53" r="0.9" fill="#ffd080" opacity="0.95"/>
-  <circle cx="32" cy="32" r="1.0" fill="#ffe8c0" opacity="1"/>
-  <circle cx="53" cy="11" r="0.9" fill="#ffd080" opacity="0.95"/>
-  <circle cx="53" cy="53" r="0.9" fill="#ffd080" opacity="0.95"/>
-  <circle cx="21.5" cy="21.5" r="0.7" fill="#ffd080" opacity="0.85"/>
-  <circle cx="42.5" cy="21.5" r="0.7" fill="#ffd080" opacity="0.85"/>
+  <!-- Top bar — ADAPTATION (with drop shadow onto middle bar) -->
+  <g filter="url(#dropShadow)">
+    <!-- Base fill with gradient -->
+    <polygon points="30,37 80,37 86,22 36,22" fill="url(#barTop)"/>
+    <!-- Surface sheen overlay -->
+    <polygon points="30,37 80,37 86,22 36,22" fill="url(#sheenTop)"/>
+    <!-- Thin separator / highlight line along top edge -->
+    <line x1="36" y1="22" x2="86" y2="22" stroke="#ffe8c0" stroke-width="0.3" opacity="0.45"/>
+  </g>
 </svg>

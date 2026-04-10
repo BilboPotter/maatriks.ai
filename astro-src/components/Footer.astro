@@ -6,7 +6,11 @@ import { siteConfig } from '../lib/site.mjs';
   <div class="container">
     <div class="footer-inner">
       <div>
-        <div class="footer-brand">{siteConfig.appName}<span style="color:var(--amber)">.</span></div>
+        <div class="footer-brand">
+          <a href="/" class="footer-brand-link" aria-label={`${siteConfig.appName} home`}>
+            <img class="footer-brand-lockup" src="/assets/brand-lockup-full.svg" alt="" width="168" height="33" />
+          </a>
+        </div>
         <a href={`mailto:${siteConfig.supportEmail}`} class="footer-email">{siteConfig.supportEmail}</a>
         <p class="footer-copy">&copy; 2026 {siteConfig.companyName}. All rights reserved.</p>
       </div>
