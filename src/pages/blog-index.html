@@ -4,35 +4,21 @@
           <div class="blog-hero-copy">
             <div class="section-label">Journal</div>
             <h1>Training, software, and what should change after the session.</h1>
-            <p class="blog-hero-lead">Notes from building maatriks.ai: adaptive programming, product decisions, and why better training systems should respond to what actually happened.</p>
-          </div>
-
-          <aside class="blog-hero-aside">
-            <p class="blog-feature-label">Archive</p>
-            <p class="blog-hero-stat">{{blogPostCount}}</p>
-            <p class="blog-hero-note">Short essays on training logic, app design, and how to build systems that stay useful when real life gets in the way.</p>
-            <div class="blog-topic-row">
-              {{blogTopics}}
+            <p class="blog-hero-lead">Notes from building maatriks.ai on adaptive programming, product decisions, and training systems that should respond to what actually happened.</p>
+            <div class="blog-hero-meta">
+              <span class="blog-hero-count">{{blogPostCount}}</span>
+              <div class="blog-topic-row">
+                {{blogTopics}}
+              </div>
+              <a href="/blog/feed.xml" class="blog-section-link blog-hero-link">RSS feed</a>
             </div>
-          </aside>
-        </div>
-
-        {{featuredPost}}
-      </div>
-    </section>
-
-    <section class="blog-feed-section section-block">
-      <div class="container">
-        <div class="blog-section-head">
-          <div>
-            <p class="blog-feature-label">Latest writing</p>
-            <h2>Essays and product notes</h2>
           </div>
-          <a href="/blog/feed.xml" class="blog-section-link">RSS feed</a>
         </div>
 
-        <div class="blog-list">
-          {{blogFeed}}
+        <div class="blog-feature-wrap">
+          {{featuredPost}}
         </div>
       </div>
     </section>
+
+    {{blogArchive}}

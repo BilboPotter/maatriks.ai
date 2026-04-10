@@ -308,6 +308,28 @@ function renderBlogFeed(posts) {
   )).join('\n');
 }
 
+function renderBlogArchive(posts) {
+  if (!posts.length) {
+    return '';
+  }
+
+  return `<section class="blog-feed-section section-block">
+    <div class="container">
+      <div class="blog-section-head">
+        <div>
+          <p class="blog-feature-label">Latest writing</p>
+          <h2>Essays and product notes</h2>
+        </div>
+        <a href="/blog/feed.xml" class="blog-section-link">RSS feed</a>
+      </div>
+
+      <div class="blog-list">
+        ${renderBlogFeed(posts)}
+      </div>
+    </div>
+  </section>`;
+}
+
 function renderRelatedPosts(currentPost, posts) {
   const related = posts.filter(post => post.slug !== currentPost.slug).slice(0, 3);
 
@@ -576,7 +598,7 @@ function build() {
     consentScript: CONSENT_SCRIPT_HTML,
     blogTopics: renderTopicPills(posts),
     featuredPost: renderBlogFeature(featuredPost),
-    blogFeed: renderBlogFeed(archivePosts),
+    blogArchive: renderBlogArchive(archivePosts),
     blogPostCount: blogPostCountLabel,
     content: blogIndexComposed,
   };
