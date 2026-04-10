@@ -589,14 +589,7 @@ input:focus-visible {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr);
   gap: 72px;
   align-items: center;
-}
-
-.hero-content {
-  position: relative;
   z-index: 2;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .journey-inner {
@@ -696,7 +689,6 @@ input:focus-visible {
   justify-content: center;
 }
 
-.hero-preview-mobile-wrap,
 .hero-preview-mobile,
 .story-preview {
   display: none;
@@ -3351,33 +3343,27 @@ input:focus-visible {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    min-height: calc(100svh - 146px);
-    gap: 0;
+    gap: 24px;
   }
 
   .hero-copy {
     display: flex;
-    flex: 1 0 auto;
     gap: 16px;
     max-width: none;
-    padding-bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   }
 
   .hero-phone {
+    align-self: stretch;
+    width: 100%;
+    margin-top: 2px;
+  }
+
+  .hero-phone .device {
     display: none;
   }
 
   .hero-phone::before {
     display: none;
-  }
-
-  .hero-actions {
-    margin-top: auto;
-  }
-
-  .hero-preview-mobile-wrap {
-    display: block;
-    margin-top: 18px;
   }
 
   .hero-preview-mobile {
@@ -3676,10 +3662,6 @@ input:focus-visible {
 }
 
 @media (max-width: 360px) {
-  .hero-copy {
-    padding-bottom: calc(116px + env(safe-area-inset-bottom, 0px));
-  }
-
   .nav-brand-lockup {
     display: none;
   }
