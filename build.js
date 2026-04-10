@@ -182,6 +182,7 @@ function loadBlogPosts() {
 
   const posts = [];
   for (const file of fs.readdirSync(BLOG_SRC)) {
+    if (file.startsWith('_')) continue;
     if (!file.endsWith('.html')) continue;
     const post = parseBlogPost(path.join(BLOG_SRC, file));
     if (post) posts.push(post);
@@ -189,7 +190,165 @@ function loadBlogPosts() {
 
   // Sort newest first
   posts.sort((a, b) => b.date.localeCompare(a.date));
-  return posts;
+  return posts.map((post, index) => {
+    const readingMinutes = estimateReadingTime(post.content);
+
+    return {
+      ...post,
+      category: post.category || 'Training',
+      readingMinutes,
+      readingTimeLabel: `${readingMinutes} min read`,
+      dateShort: formatBlogDate(post.date, {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+      dateLong: formatBlogDate(post.date, {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+      }),
+      isFeatured: index === 0,
+    };
+  });
+}
+
+function escapeHTML(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function stripHTML(html) {
+  return html
+    .replace(/<!--[\s\S]*?-->/g, ' ')
+    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function estimateReadingTime(html) {
+  const plainText = stripHTML(html);
+  if (!plainText) return 3;
+
+  const wordCount = plainText.split(/\s+/).filter(Boolean).length;
+  return Math.max(3, Math.ceil(wordCount / 220));
+}
+
+function formatBlogDate(dateString, options) {
+  try {
+    const date = new Date(`${dateString}T00:00:00Z`);
+    return new Intl.DateTimeFormat('en-US', options).format(date);
+  } catch {
+    return dateString;
+  }
+}
+
+function renderTopicPills(posts) {
+  const categories = [...new Set(posts.map(post => post.category))];
+  return categories.map(category => (
+    `<span class="blog-topic-pill">${escapeHTML(category)}</span>`
+  )).join('\n');
+}
+
+function renderBlogFeature(post) {
+  if (!post) {
+    return '';
+  }
+
+  return `<section class="blog-feature-section">
+    <article class="blog-feature-card">
+      <a class="blog-feature-link" href="/blog/${escapeHTML(post.slug)}">
+        <div class="blog-card-meta">
+          <span class="blog-kicker">${escapeHTML(post.category)}</span>
+          <span>${escapeHTML(post.dateShort)}</span>
+          <span>${escapeHTML(post.readingTimeLabel)}</span>
+        </div>
+        <div class="blog-feature-body">
+          <p class="blog-feature-label">Featured article</p>
+          <h2>${escapeHTML(post.title)}</h2>
+          <p>${escapeHTML(post.description)}</p>
+        </div>
+        <span class="blog-read-link">Read article</span>
+      </a>
+    </article>
+  </section>`;
+}
+
+function renderBlogFeed(posts) {
+  if (!posts.length) {
+    return `<article class="blog-list-card blog-list-card--empty">
+      <p class="blog-feature-label">More writing soon</p>
+      <h3>New essays are on the way.</h3>
+      <p>The journal is still young, but new posts on training, programming, and product design are on the way.</p>
+    </article>`;
+  }
+
+  return posts.map(post => (
+    `<article class="blog-list-card">
+      <a class="blog-list-link" href="/blog/${escapeHTML(post.slug)}">
+        <div class="blog-card-meta">
+          <span class="blog-kicker">${escapeHTML(post.category)}</span>
+          <span>${escapeHTML(post.dateShort)}</span>
+          <span>${escapeHTML(post.readingTimeLabel)}</span>
+        </div>
+        <div class="blog-list-copy">
+          <h3>${escapeHTML(post.title)}</h3>
+          <p>${escapeHTML(post.description)}</p>
+        </div>
+        <span class="blog-read-link">Open</span>
+      </a>
+    </article>`
+  )).join('\n');
+}
+
+function renderRelatedPosts(currentPost, posts) {
+  const related = posts.filter(post => post.slug !== currentPost.slug).slice(0, 3);
+
+  if (!related.length) {
+    return `<section class="blog-related-section blog-related-section--solo">
+      <div class="container">
+        <div class="blog-related-empty">
+          <p class="blog-feature-label">Journal</p>
+          <h2>More writing is coming.</h2>
+          <p>More notes on training, adaptation, and building the app will land here soon.</p>
+          <a href="/blog" class="btn btn-ghost">Back to all posts</a>
+        </div>
+      </div>
+    </section>`;
+  }
+
+  return `<section class="blog-related-section">
+    <div class="container">
+      <div class="blog-section-head">
+        <div>
+          <p class="blog-feature-label">Continue reading</p>
+          <h2>More from the journal</h2>
+        </div>
+        <a href="/blog" class="blog-section-link">All posts</a>
+      </div>
+      <div class="blog-related-grid">
+        ${related.map(post => `
+          <article class="blog-related-card">
+            <a href="/blog/${escapeHTML(post.slug)}" class="blog-related-link">
+              <div class="blog-card-meta">
+                <span class="blog-kicker">${escapeHTML(post.category)}</span>
+                <span>${escapeHTML(post.dateShort)}</span>
+              </div>
+              <h3>${escapeHTML(post.title)}</h3>
+              <p>${escapeHTML(post.description)}</p>
+            </a>
+          </article>
+        `).join('\n')}
+      </div>
+    </div>
+  </section>`;
 }
 
 function generateRSS(posts) {
@@ -388,78 +547,86 @@ function build() {
   }
 
   // Blog
-  const blogRoute = { layout: 'default', pageClass: 'content-page' };
+  const blogIndexRoute = { layout: 'default', pageClass: 'content-page blog-page' };
+  const blogPostRoute = { layout: 'default', pageClass: 'content-page blog-page blog-post-page' };
   const posts = loadBlogPosts();
-  if (posts.length > 0) {
-    const blogIndexTemplate = resolvePartials(fs.readFileSync(path.join(SRC, 'pages', 'blog-index.html'), 'utf8'));
-    const blogPostTemplate = resolvePartials(fs.readFileSync(path.join(SRC, 'pages', 'blog-post.html'), 'utf8'));
+  const blogIndexTemplate = resolvePartials(fs.readFileSync(path.join(SRC, 'pages', 'blog-index.html'), 'utf8'));
+  const blogPostTemplate = resolvePartials(fs.readFileSync(path.join(SRC, 'pages', 'blog-post.html'), 'utf8'));
+  const featuredPost = posts[0] || null;
+  const archivePosts = featuredPost ? posts.slice(1) : [];
+  const blogPostCountLabel = posts.length === 0
+    ? 'Archive opening soon'
+    : posts.length === 1
+      ? '1 article live'
+      : `${posts.length} articles live`;
+  const blogDir = path.join(DIST, 'blog');
 
-    // Build blog index
-    const blogListHtml = posts.map(post =>
-      `<article class="card" style="margin-bottom:16px;">
-        <h2 style="margin-top:0;"><a href="/blog/${post.slug}">${post.title}</a></h2>
-        <p class="page-meta" style="margin-bottom:8px;">${post.date}</p>
-        <p>${post.description}</p>
-      </article>`
-    ).join('\n');
+  // Build blog index
+  const blogIndexComposed = composePage(blogIndexRoute, blogIndexTemplate, navPartial, footerPartial, jsMap);
+  const blogIndexVars = {
+    ...CONFIG,
+    pageTitle: `Blog — ${CONFIG.companyName}`,
+    pageDescription: `Writing from ${CONFIG.companyName} on training, programming, product design, and building the app.`,
+    canonicalUrl: `${CONFIG.siteUrl}/blog`,
+    robotsMeta: '',
+    criticalCss: criticalCss,
+    referrerPolicy: DEFAULT_REFERRER_POLICY,
+    securityMeta: '',
+    consentBanner: COOKIE_BANNER_HTML,
+    consentScript: CONSENT_SCRIPT_HTML,
+    blogTopics: renderTopicPills(posts),
+    featuredPost: renderBlogFeature(featuredPost),
+    blogFeed: renderBlogFeed(archivePosts),
+    blogPostCount: blogPostCountLabel,
+    content: blogIndexComposed,
+  };
 
-    const blogIndexComposed = composePage(blogRoute, blogIndexTemplate, navPartial, footerPartial, jsMap);
-    const blogIndexVars = {
+  let blogIndexHtml = interpolate(layout, blogIndexVars);
+  blogIndexHtml = interpolate(blogIndexHtml, blogIndexVars);
+  blogIndexHtml = replaceAssetPaths(blogIndexHtml, cssFilename, jsMap);
+
+  fs.mkdirSync(blogDir, { recursive: true });
+  fs.writeFileSync(path.join(blogDir, 'index.html'), blogIndexHtml, 'utf8');
+  console.log('  built: blog/index.html');
+
+  // Build individual posts
+  for (const post of posts) {
+    const postComposed = composePage(blogPostRoute, blogPostTemplate, navPartial, footerPartial, jsMap);
+    const postVars = {
       ...CONFIG,
-      pageTitle: `Blog — ${CONFIG.companyName}`,
-      pageDescription: `Writing from ${CONFIG.companyName} on training, programming, and building the app.`,
-      canonicalUrl: `${CONFIG.siteUrl}/blog`,
+      pageTitle: `${post.title} — ${CONFIG.companyName}`,
+      pageDescription: post.description,
+      canonicalUrl: `${CONFIG.siteUrl}/blog/${post.slug}`,
       robotsMeta: '',
+      criticalCss: criticalCss,
       referrerPolicy: DEFAULT_REFERRER_POLICY,
       securityMeta: '',
       consentBanner: COOKIE_BANNER_HTML,
       consentScript: CONSENT_SCRIPT_HTML,
-      blogList: blogListHtml,
-      content: blogIndexComposed,
+      postTitle: escapeHTML(post.title),
+      postCategory: escapeHTML(post.category),
+      postDateRaw: escapeHTML(post.date),
+      postDateLong: escapeHTML(post.dateLong),
+      postReadingTime: escapeHTML(post.readingTimeLabel),
+      postDescription: escapeHTML(post.description),
+      postContent: post.content,
+      postFooter: renderRelatedPosts(post, posts),
+      content: postComposed,
     };
 
-    let blogIndexHtml = interpolate(layout, blogIndexVars);
-    blogIndexHtml = interpolate(blogIndexHtml, blogIndexVars);
-    blogIndexHtml = replaceAssetPaths(blogIndexHtml, cssFilename, jsMap);
+    let postHtml = interpolate(layout, postVars);
+    postHtml = interpolate(postHtml, postVars);
+    postHtml = replaceAssetPaths(postHtml, cssFilename, jsMap);
 
-    const blogDir = path.join(DIST, 'blog');
-    fs.mkdirSync(blogDir, { recursive: true });
-    fs.writeFileSync(path.join(blogDir, 'index.html'), blogIndexHtml, 'utf8');
-    console.log('  built: blog/index.html');
-
-    // Build individual posts
-    for (const post of posts) {
-      const postComposed = composePage(blogRoute, blogPostTemplate, navPartial, footerPartial, jsMap);
-      const postVars = {
-        ...CONFIG,
-        pageTitle: `${post.title} — ${CONFIG.companyName}`,
-        pageDescription: post.description,
-        canonicalUrl: `${CONFIG.siteUrl}/blog/${post.slug}`,
-        robotsMeta: '',
-        referrerPolicy: DEFAULT_REFERRER_POLICY,
-        securityMeta: '',
-        consentBanner: COOKIE_BANNER_HTML,
-        consentScript: CONSENT_SCRIPT_HTML,
-        postTitle: post.title,
-        postDate: post.date,
-        postContent: post.content,
-        content: postComposed,
-      };
-
-      let postHtml = interpolate(layout, postVars);
-      postHtml = interpolate(postHtml, postVars);
-      postHtml = replaceAssetPaths(postHtml, cssFilename, jsMap);
-
-      const postDir = path.join(blogDir, post.slug);
-      fs.mkdirSync(postDir, { recursive: true });
-      fs.writeFileSync(path.join(postDir, 'index.html'), postHtml, 'utf8');
-      console.log(`  built: blog/${post.slug}/index.html`);
-    }
-
-    // RSS feed
-    fs.writeFileSync(path.join(blogDir, 'feed.xml'), generateRSS(posts), 'utf8');
-    console.log('  built: blog/feed.xml');
+    const postDir = path.join(blogDir, post.slug);
+    fs.mkdirSync(postDir, { recursive: true });
+    fs.writeFileSync(path.join(postDir, 'index.html'), postHtml, 'utf8');
+    console.log(`  built: blog/${post.slug}/index.html`);
   }
+
+  // RSS feed
+  fs.writeFileSync(path.join(blogDir, 'feed.xml'), generateRSS(posts), 'utf8');
+  console.log('  built: blog/feed.xml');
 
   // CNAME for GitHub Pages custom domain
   fs.writeFileSync(path.join(DIST, 'CNAME'), `${getSiteHost(CONFIG.siteUrl)}\n`, 'utf8');
@@ -492,11 +659,9 @@ function build() {
     .filter(r => !r.noindex)
     .map(r => `  <url><loc>${CONFIG.siteUrl}${r.canonical}</loc></url>`);
 
-  if (posts.length > 0) {
-    sitemapUrls.push(`  <url><loc>${CONFIG.siteUrl}/blog</loc></url>`);
-    for (const post of posts) {
-      sitemapUrls.push(`  <url><loc>${CONFIG.siteUrl}/blog/${post.slug}</loc></url>`);
-    }
+  sitemapUrls.push(`  <url><loc>${CONFIG.siteUrl}/blog</loc></url>`);
+  for (const post of posts) {
+    sitemapUrls.push(`  <url><loc>${CONFIG.siteUrl}/blog/${post.slug}</loc></url>`);
   }
 
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>

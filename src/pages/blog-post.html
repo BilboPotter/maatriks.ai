@@ -1,12 +1,45 @@
-    <div class="container">
-      <div class="section-label">Blog</div>
-      <h1>{{postTitle}}</h1>
-      <p class="page-meta">{{postDate}}</p>
+    <section class="blog-article-hero section-block">
+      <div class="container">
+        <a href="/blog" class="blog-back-link">&larr; All posts</a>
 
-      <div class="content-body">
-        {{postContent}}
+        <div class="blog-card-meta blog-post-meta">
+          <span class="blog-kicker">{{postCategory}}</span>
+          <time datetime="{{postDateRaw}}">{{postDateLong}}</time>
+          <span>{{postReadingTime}}</span>
+        </div>
+
+        <header class="blog-article-head">
+          <p class="blog-feature-label">Journal entry</p>
+          <h1>{{postTitle}}</h1>
+          <p class="blog-article-dek">{{postDescription}}</p>
+        </header>
       </div>
+    </section>
 
-      <div class="section-divider"></div>
-      <p><a href="/blog">&larr; All posts</a></p>
-    </div>
+    <section class="blog-article-content section-block">
+      <div class="container">
+        <div class="blog-article-layout">
+          <aside class="blog-article-side" aria-label="Article metadata">
+            <div class="blog-side-block">
+              <p class="blog-feature-label">Published</p>
+              <p>{{postDateLong}}</p>
+            </div>
+            <div class="blog-side-block">
+              <p class="blog-feature-label">Category</p>
+              <p>{{postCategory}}</p>
+            </div>
+            <div class="blog-side-block">
+              <p class="blog-feature-label">Reading time</p>
+              <p>{{postReadingTime}}</p>
+            </div>
+            <a href="/blog/feed.xml" class="blog-section-link">Follow via RSS</a>
+          </aside>
+
+          <article class="content-body blog-article-body">
+            {{postContent}}
+          </article>
+        </div>
+      </div>
+    </section>
+
+    {{postFooter}}

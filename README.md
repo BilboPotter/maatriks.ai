@@ -5,6 +5,7 @@ Static public website for the mobile app and launch support surface.
 This repo owns:
 
 - homepage
+- blog index and blog posts
 - privacy policy
 - support page
 - account deletion page
@@ -42,6 +43,29 @@ node build.js
 Output goes to:
 
 - `dist/`
+
+## Blog Authoring
+
+Blog posts live in:
+
+- `src/blog/`
+
+Start a new post by copying:
+
+- `src/blog/_template.html`
+
+Each post uses a small metadata block plus raw HTML content. Required fields are:
+
+- `title`
+- `slug`
+- `date`
+- `description`
+
+Optional fields:
+
+- `category`
+
+The newest post is featured automatically on `/blog`, and the rest of the archive is generated from the same folder.
 
 ## Local Preview
 
