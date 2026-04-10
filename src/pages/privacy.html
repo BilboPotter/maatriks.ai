@@ -6,7 +6,7 @@
       <div class="content-body">
 
         <h2>Introduction</h2>
-        <p><strong>{{companyName}}</strong> ("we", "us", "our") operates <strong>{{appName}}</strong>, an AI-powered gym coaching mobile application. This privacy policy explains what information we collect, how we use it, and what rights you have over it.</p>
+        <p><strong>{{companyName}}</strong> ("we", "us", "our") operates <strong>{{appName}}</strong>, a mobile training application that provides workout logging, adaptive programming, and AI-generated feedback. This privacy policy explains what information we collect, how we use it, and what rights you have over it.</p>
         <p>We believe your data belongs to you. We collect only what is necessary to provide and improve the service, and we do not sell your personal information to anyone.</p>
         <p>If you have questions about this policy, contact us at:</p>
         <a href="mailto:{{supportEmail}}" class="email-link">
@@ -22,10 +22,10 @@
         <ul>
           <li><strong>Email address</strong> — used for authentication, account recovery, and service communication</li>
           <li><strong>Display name</strong> — optional, used for personalization within the app</li>
-          <li><strong>Authentication provider identifier</strong> — if you sign in with Google or Apple, we receive a provider-specific ID and your email address. We do not access your contacts, calendar, photos, or other data from these providers.</li>
+          <li><strong>Authentication provider identifier</strong> — if you sign in with email, Google, or Apple, we receive the identifiers and basic account details needed to authenticate you. We do not access your contacts, calendar, photos, files, or other unrelated account data from those providers.</li>
         </ul>
-        <p><strong>Sign in with Apple:</strong> If you choose to use Sign in with Apple, you may opt to hide your email address. In that case, Apple provides a private relay email address that forwards to your real address. We use this relay address for account identification and communication only. We respect Apple's Hide My Email feature and do not attempt to circumvent it.</p>
-        <p><strong>Sign in with Google:</strong> We use Google Sign-In solely for authentication. We request only your basic profile information (email address and name). We do not request access to your Google Drive, Gmail, Calendar, Contacts, or any other Google services.</p>
+        <p><strong>Sign in with Apple:</strong> If you use Sign in with Apple, you may choose Apple's Hide My Email option. In that case, Apple provides a relay email address that we use for account identification, authentication, and account-related communication only.</p>
+        <p><strong>Sign in with Google:</strong> If you use Google Sign-In, we request only the basic profile information needed for authentication, such as your email address and name. We do not request access to your Google Drive, Gmail, Calendar, Contacts, or other Google services.</p>
 
         <h3>Workout and training data</h3>
         <p>When you use {{appName}}, we store:</p>
@@ -54,6 +54,9 @@
         </ul>
         <p>This data is used for diagnostics and service improvement. We do not use it to build advertising profiles.</p>
 
+        <h3>Website analytics and cookies</h3>
+        <p>On the public website, we use a cookie banner to ask for consent before loading optional analytics and tag-management tooling. Those analytics are used only to understand aggregate website usage and improve the public site. They are not used for cross-site advertising profiles, and they are not loaded on the auth callback or password-update handoff pages.</p>
+
         <!-- ──────────────────────────────────────── -->
         <h2>How we use your information</h2>
         <p>We use your information to:</p>
@@ -61,30 +64,31 @@
           <li><strong>Provide the service</strong> — authenticate your identity, store your workouts, deliver AI-generated feedback, and prepare upcoming training sessions</li>
           <li><strong>Personalize your experience</strong> — tailor training recommendations based on your history and goals</li>
           <li><strong>Communicate with you</strong> — respond to support requests, send critical account notifications</li>
-          <li><strong>Improve the app</strong> — diagnose bugs, understand usage patterns, improve features</li>
+          <li><strong>Improve the app and website</strong> — diagnose bugs, understand usage patterns, and improve features and public-site usability</li>
         </ul>
         <p>We do <strong>not</strong> use your information to show you ads, build advertising profiles, or sell to data brokers.</p>
 
         <!-- ──────────────────────────────────────── -->
         <h2>AI workout feedback and your data</h2>
-        <p>{{appName}} uses a configured third-party AI provider to generate workout feedback and next-session planning. When that processing happens:</p>
+        <p>At launch, {{appName}} uses OpenAI to generate workout feedback and next-session planning. When that processing happens:</p>
         <ul>
-          <li>Relevant context, such as recent workouts, preferences, and goals, may be sent to the provider to generate output</li>
-          <li>The provider processes that data solely to generate the requested response for the app</li>
+          <li>Relevant context, such as recent workouts, preferences, goals, and workout history, may be sent to OpenAI to generate the requested output</li>
+          <li>OpenAI processes that data so {{appName}} can return the workout feedback or programming response you requested</li>
           <li>The generated output may be stored in our database to support workout history and session continuity</li>
         </ul>
-        <p>We do not use your workout data or generated feedback for advertising, marketing, or any use-based data mining purposes.</p>
+        <p>We do not use your workout data or generated feedback for advertising, marketing, or any use-based data mining purposes. If we materially change the AI provider used for this feature, we will update this policy.</p>
 
         <!-- ──────────────────────────────────────── -->
         <h2>Third-party service providers</h2>
         <p>We use a limited number of third-party services to operate {{appName}}. Each handles your data only as needed to deliver their specific service:</p>
         <ul>
           <li><strong>Supabase</strong> — database hosting and authentication infrastructure. Your account data and workout logs are stored on Supabase's infrastructure. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a></li>
-          <li><strong>Configured AI provider</strong> — AI inference for workout feedback and programming. Provider choice may change over time as the product evolves.</li>
-          <li><strong>Apple</strong> — authentication when Sign in with Apple is used. <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a></li>
-          <li><strong>Google</strong> — authentication when Google Sign-In is used. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+          <li><strong>OpenAI</strong> — AI inference for structured workout feedback and next-session planning when you request AI-generated output.</li>
+          <li><strong>Apple</strong> — authentication when Sign in with Apple is enabled and used. <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a></li>
+          <li><strong>Google</strong> — authentication when Google Sign-In is enabled and used. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+          <li><strong>Google Tag Manager / Google</strong> — consent-based analytics and tag management on the public website. These analytics tools are not loaded on the auth handoff pages.</li>
         </ul>
-        <p>We do not use advertising networks, remarketing services, or third-party tracking pixels.</p>
+        <p>We do not use advertising networks, remarketing services, or third-party ad pixels. Any optional website analytics are limited to consent-based measurement and are not used for cross-site advertising profiles.</p>
 
         <!-- ──────────────────────────────────────── -->
         <h2>Data storage and security</h2>
@@ -102,7 +106,7 @@
         <p>We retain your data for as long as your account is active and as needed to provide you with the service.</p>
         <ul>
           <li><strong>Active accounts</strong> — all data is retained to provide the service</li>
-          <li><strong>Deleted accounts</strong> — personal data is deleted from active systems upon account deletion. Some anonymized, non-identifiable data may be retained for aggregate analytics</li>
+          <li><strong>Deleted accounts</strong> — personal data is deleted from active systems upon account deletion. Some de-identified, aggregate information may be retained for service improvement and reporting</li>
           <li><strong>Backups</strong> — deleted data may persist in encrypted backups for a limited period (up to 30 days) before being permanently removed</li>
         </ul>
 
@@ -154,10 +158,10 @@
         <p>This section provides additional information required by Apple's App Store and Google Play's Data Safety policies.</p>
 
         <h3>Data not collected</h3>
-        <p>We do not collect: precise location, contacts, photos or videos, browsing history, search history, financial information (payment details are handled by Apple/Google), or sensitive personal information beyond what is described in this policy.</p>
+        <p>We do not collect: precise location, contacts, photos or videos, browsing history, search history, payment card details, or sensitive personal information beyond what is described in this policy.</p>
 
         <h3>Data not shared with third parties for tracking</h3>
-        <p>We do not share your data with third parties for the purpose of tracking you across apps and websites. We do not use advertising identifiers (IDFA/GAID) or participate in ad networks.</p>
+        <p>We do not share your app data with third parties for the purpose of tracking you across apps and websites for advertising. We do not use advertising identifiers (IDFA/GAID) or participate in ad networks. The public website may use limited consent-based analytics, but not for cross-context behavioral advertising.</p>
 
         <h3>Data linked to your identity</h3>
         <p>The following data is linked to your identity: email address, display name, workout logs, training preferences, and generated workout feedback. This data is used to provide and personalize the service.</p>

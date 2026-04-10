@@ -54,9 +54,9 @@ function getSiteHost(siteUrl) {
 // mainStyle: inline style on <main> tag
 const ROUTES = [
   { page: 'index.html', out: 'index.html', canonical: '/', layout: 'default', pageClass: '', mainStyle: 'style="padding:0;"', title: `${CONFIG.appName} — ${CONFIG.appTagline}`, description: CONFIG.appDescription },
-  { page: 'privacy.html', out: 'privacy/index.html', canonical: '/privacy', layout: 'default', pageClass: 'content-page', title: `Privacy Policy — ${CONFIG.companyName}`, description: `Privacy policy for ${CONFIG.appName} by ${CONFIG.companyName}.` },
-  { page: 'support.html', out: 'support/index.html', canonical: '/support', layout: 'default', pageClass: 'content-page', title: `Support — ${CONFIG.companyName}`, description: `Get help with ${CONFIG.appName}. Contact ${CONFIG.supportEmail}.` },
-  { page: 'delete-account.html', out: 'delete-account/index.html', canonical: '/delete-account', layout: 'default', pageClass: 'content-page', noindex: true, title: `Delete Account — ${CONFIG.companyName}`, description: `How to delete your ${CONFIG.appName} account and what happens to your data.` },
+  { page: 'privacy.html', out: 'privacy/index.html', canonical: '/privacy', layout: 'default', pageClass: 'content-page', title: `Privacy Policy — ${CONFIG.appName}`, description: `Privacy policy for ${CONFIG.appName}, operated by ${CONFIG.companyName}.` },
+  { page: 'support.html', out: 'support/index.html', canonical: '/support', layout: 'default', pageClass: 'content-page', title: `Support — ${CONFIG.appName}`, description: `Get help with ${CONFIG.appName}. Contact ${CONFIG.supportEmail}.` },
+  { page: 'delete-account.html', out: 'delete-account/index.html', canonical: '/delete-account', layout: 'default', pageClass: 'content-page', noindex: true, title: `Delete Account — ${CONFIG.appName}`, description: `How to delete your ${CONFIG.appName} account and what happens to your data.` },
   { page: 'forgot-password.html', out: 'forgot-password/index.html', canonical: '/forgot-password', layout: 'default', pageClass: 'content-page', noindex: true, title: `Reset Password — ${CONFIG.appName}`, description: `How to reset your ${CONFIG.appName} password.` },
   { page: 'auth-callback.html', out: 'auth/callback/index.html', canonical: '/auth/callback', layout: 'auth', noindex: true, sensitive: true, title: `Redirecting — ${CONFIG.appName}`, description: `Authentication redirect for ${CONFIG.appName}.` },
   { page: 'update-password.html', out: 'update-password/index.html', canonical: '/update-password', layout: 'auth', noindex: true, sensitive: true, title: `Update Password — ${CONFIG.appName}`, description: `Password recovery redirect for ${CONFIG.appName}.` },
@@ -390,7 +390,7 @@ function generateRSS(posts) {
   <channel>
     <title>${CONFIG.appName} Blog</title>
     <link>${CONFIG.siteUrl}/blog</link>
-    <description>Writing from ${CONFIG.companyName}</description>
+    <description>Writing from ${CONFIG.appName}</description>
     <language>en</language>
     <atom:link href="${CONFIG.siteUrl}/blog/feed.xml" rel="self" type="application/rss+xml"/>
 ${items}
@@ -587,8 +587,8 @@ function build() {
   const blogIndexComposed = composePage(blogIndexRoute, blogIndexTemplate, navPartial, footerPartial, jsMap);
   const blogIndexVars = {
     ...CONFIG,
-    pageTitle: `Blog — ${CONFIG.companyName}`,
-    pageDescription: `Writing from ${CONFIG.companyName} on training, programming, product design, and building the app.`,
+    pageTitle: `Blog — ${CONFIG.appName}`,
+    pageDescription: `Writing from ${CONFIG.appName} on training, programming, product design, and building the app.`,
     canonicalUrl: `${CONFIG.siteUrl}/blog`,
     robotsMeta: '',
     criticalCss: criticalCss,
@@ -616,7 +616,7 @@ function build() {
     const postComposed = composePage(blogPostRoute, blogPostTemplate, navPartial, footerPartial, jsMap);
     const postVars = {
       ...CONFIG,
-      pageTitle: `${post.title} — ${CONFIG.companyName}`,
+      pageTitle: `${post.title} — ${CONFIG.appName}`,
       pageDescription: post.description,
       canonicalUrl: `${CONFIG.siteUrl}/blog/${post.slug}`,
       robotsMeta: '',
@@ -660,7 +660,7 @@ function build() {
   const notFoundComposed = composePage(notFoundRoute, notFoundRaw, navPartial, footerPartial, jsMap);
   const notFoundVars = {
     ...CONFIG,
-    pageTitle: `Page Not Found — ${CONFIG.companyName}`,
+    pageTitle: `Page Not Found — ${CONFIG.appName}`,
     pageDescription: `The page you are looking for does not exist.`,
     canonicalUrl: CONFIG.siteUrl,
     robotsMeta: '<meta name="robots" content="noindex">\n  ',

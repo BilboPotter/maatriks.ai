@@ -4,7 +4,7 @@
       <p class="page-meta">We're here to help</p>
 
       <div class="content-body">
-        <p class="lead">If you need help with {{appName}}, reach out to us by email. We aim to respond within 48 hours on business days.</p>
+        <p class="lead">If you need help with {{appName}}, reach out to us by email. We aim to respond within 2 business days. For account access, password-reset, or deletion requests, contact us from the email address tied to your account whenever possible.</p>
 
         <a href="mailto:{{supportEmail}}" class="email-link">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="0"/><polyline points="22,4 12,13 2,4"/></svg>
@@ -16,19 +16,19 @@
         <div class="quick-links" style="margin-top:24px;margin-bottom:32px;">
           <div class="card">
             <h3>Login issues</h3>
-            <p>Problems signing in with email, Google, or Apple? Can't access your account? We can help you recover access.</p>
+            <p>Problems signing in with email, Google, or Apple? Trouble returning to the app after a sign-in link? We can help you recover access.</p>
           </div>
           <div class="card">
             <h3>Password reset</h3>
-            <p>If the in-app password reset isn't working, or you're not receiving the reset email, start with our <a href="{{forgotPasswordUrl}}">password reset help page</a> or contact us directly.</p>
+            <p>If the in-app password reset is not working, the reset email does not arrive, or the handoff page does not reopen the app, start with our <a href="{{forgotPasswordUrl}}">password reset help page</a> or contact us directly.</p>
           </div>
           <div class="card">
             <h3>Account deletion</h3>
-            <p>Need help deleting your account? See our <a href="{{deleteAccountUrl}}">deletion page</a> for instructions, or email us directly.</p>
+            <p>Need help deleting your account? See our <a href="{{deleteAccountUrl}}">deletion page</a> for instructions, or email us directly if you cannot access the app.</p>
           </div>
           <div class="card">
             <h3>General app help</h3>
-            <p>Questions about features, workout feedback, or how the app handles your training plan? We're happy to help.</p>
+            <p>Questions about workout feedback, training plans, privacy, or how {{appName}} uses your data? We can help.</p>
           </div>
         </div>
 
@@ -38,6 +38,7 @@
           <li>The email address associated with your account</li>
           <li>A description of the issue</li>
           <li>Your device type (iPhone, Android) and app version if relevant</li>
+          <li>Whether the issue happened during sign-in, password reset, or account deletion</li>
           <li>Screenshots if applicable</li>
         </ul>
 
@@ -45,6 +46,7 @@
 
         <h2>Related pages</h2>
         <ul>
+          <li><a href="{{forgotPasswordUrl}}">Reset Password</a> — how password recovery works</li>
           <li><a href="{{privacyUrl}}">Privacy Policy</a> — how we handle your data</li>
           <li><a href="{{deleteAccountUrl}}">Delete Account</a> — how to remove your account and data</li>
         </ul>

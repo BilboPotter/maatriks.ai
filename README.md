@@ -23,7 +23,7 @@ Edit runtime-facing values in:
 
 Important values:
 
-- `companyName`
+- `companyName` — legal operator name shown on policy/compliance surfaces
 - `appName`
 - `supportEmail`
 - `siteUrl`

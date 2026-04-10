@@ -4,7 +4,7 @@
     <div class="auth-card" id="auth-card">
       <div class="auth-spinner" id="spinner"></div>
       <h1>Signing you in</h1>
-      <p>Redirecting you back to {{appName}}...</p>
+      <p>Redirecting you back to {{appName}} on this device...</p>
       <div class="auth-status" id="status">Opening app</div>
       <div style="margin-top:20px;">
         <a href="#" id="open-app" class="btn">Continue In App</a>
@@ -13,8 +13,9 @@
       <div class="auth-fallback" id="fallback">
         <h3>App didn't open?</h3>
         <ol>
-          <li>Make sure <strong>{{appName}}</strong> is installed on your device</li>
-          <li>Try opening the app manually — your sign-in may have completed</li>
+          <li>Make sure you are opening this link on the same device where <strong>{{appName}}</strong> is installed</li>
+          <li>Tap <strong>Continue In App</strong> again</li>
+          <li>If you are already signed in, open the app manually and continue</li>
           <li>If the problem persists, <a href="{{supportUrl}}">contact support</a></li>
         </ol>
         <div style="margin-top:24px;">
