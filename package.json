@@ -11,6 +11,7 @@
     "astro:preview": "astro preview"
   },
   "devDependencies": {
-    "astro": "^5.0.0"
+    "astro": "^5.0.0",
+    "esbuild": "^0.28.0"
   }
 }

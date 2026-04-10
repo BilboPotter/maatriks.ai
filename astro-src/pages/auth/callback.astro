@@ -1,14 +1,9 @@
 ---
 import AuthLayout from '../../layouts/AuthLayout.astro';
 import { siteConfig } from '../../lib/site.mjs';
-import { loadLegacyPage } from '../../lib/legacy.mjs';
 import { getPublicAssetManifest } from '../../lib/public-assets.mjs';
 
 const assets = getPublicAssetManifest();
-const content = loadLegacyPage('auth-callback.html').replace(
-  '/scripts/auth-callback.js',
-  assets.scripts['auth-callback.js'].href
-);
 ---
 
 <AuthLayout
@@ -16,5 +11,33 @@ const content = loadLegacyPage('auth-callback.html').replace(
   pageDescription={`Authentication redirect for ${siteConfig.appName}.`}
   canonicalUrl={`${siteConfig.siteUrl}/auth/callback`}
 >
-  <Fragment set:html={content} />
+  <div class="page">
+    <div class="auth-page">
+      <div class="lines-bg"></div>
+      <div class="auth-card" id="auth-card">
+        <div class="auth-spinner" id="spinner"></div>
+        <h1>Signing you in</h1>
+        <p>Redirecting you back to {siteConfig.appName} on this device...</p>
+        <div class="auth-status" id="status">Opening app</div>
+        <div style="margin-top:20px;">
+          <a href="#" id="open-app" class="btn">Continue In App</a>
+        </div>
+
+        <div class="auth-fallback" id="fallback">
+          <h3>App didn't open?</h3>
+          <ol>
+            <li>Make sure you are opening this link on the same device where <strong>{siteConfig.appName}</strong> is installed</li>
+            <li>Tap <strong>Continue In App</strong> again</li>
+            <li>If you are already signed in, open the app manually and continue</li>
+            <li>If the problem persists, <a href={siteConfig.supportUrl}>contact support</a></li>
+          </ol>
+          <div style="margin-top:24px;">
+            <a href={siteConfig.iosAppStoreUrl} class="btn btn-outline" style="margin-right:8px;">App Store</a>
+            <a href={siteConfig.googlePlayUrl} class="btn btn-outline">Google Play</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src={assets.scripts['auth-callback.js'].href}></script>
+  </div>
 </AuthLayout>

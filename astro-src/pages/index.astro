@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LegacyPartial from '../components/LegacyPartial.astro';
 import { siteConfig } from '../lib/site.mjs';
-import { loadLegacyPage } from '../lib/legacy.mjs';
 
-const content = loadLegacyPage('index.html');
+const leftArrowHtml = '&larr;';
+const rightArrowHtml = '&rarr;';
 ---
 
 <BaseLayout
@@ -12,5 +13,282 @@ const content = loadLegacyPage('index.html');
   canonicalUrl={`${siteConfig.siteUrl}/`}
   mainStyle="padding:0;"
 >
-  <Fragment set:html={content} />
+  <div class="story-shell" id="story-shell">
+    <svg class="snake-line" id="snake-line" aria-hidden="true" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path class="snake-path-bg" id="snake-path-bg"></path>
+      <path class="snake-path-lit" id="snake-path-lit"></path>
+    </svg>
+
+    <section class="hero story-section story-section--hero" id="hero">
+      <picture class="hero-bg">
+        <source
+          media="(max-width: 768px)"
+          srcset="/assets/hero-gym-mobile-960.webp 960w, /assets/hero-gym-mobile-1440.webp 1440w"
+          sizes="100vw" />
+        <source
+          srcset="/assets/hero-gym-desktop-1800.webp 1800w, /assets/hero-gym-desktop-2400.webp 2400w"
+          sizes="100vw" />
+        <img
+          src="/assets/hero-gym-desktop-1800.webp"
+          alt=""
+          width="1800"
+          height="1005"
+          fetchpriority="high"
+          decoding="async" />
+      </picture>
+
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <div class="section-label">Adaptive Workout Programming</div>
+          <h1>Training that <span class="accent">adapts</span> after every session.</h1>
+          <p class="lead">
+            {siteConfig.appName} builds the workout, captures what you actually did, gives structured AI feedback,
+            and shows whether the plan is working.
+          </p>
+
+          <div class="hero-actions">
+            <LegacyPartial name="store-badges" />
+          </div>
+
+          <div class="hero-points">
+            <span>Personalized onboarding</span>
+            <span>Real workout logging</span>
+            <span>Post-session coaching</span>
+          </div>
+        </div>
+
+        <div class="hero-phone story-phone" data-snake-anchor>
+          <div class="device">
+            <div class="device-inner">
+              <LegacyPartial name="phone-workout" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey-section journey-section-clean phone-left" id="step-onboard">
+      <div class="container journey-inner">
+        <div class="journey-header reveal">
+          <div class="step-number">1</div>
+          <h2>Onboard</h2>
+        </div>
+
+        <div class="story-phone reveal reveal-left" data-snake-anchor>
+          <div class="device">
+            <div class="device-inner">
+              <LegacyPartial name="phone-onboarding" />
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-body reveal">
+          <p>
+            Tell maatriks how often you train, how long sessions should be, and what kind of plan you want.
+            The app uses that context to build your first week instead of dropping you into a generic template.
+          </p>
+          <div class="card journey-card">
+            <h3>Program shape before the first session</h3>
+            <p>Session length and training constraints set the cap for every workout the model programs after this step.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey-section journey-section-photo phone-right" id="step-log">
+      <picture class="split-photo">
+        <source media="(min-width: 769px)" srcset="/assets/bg-log-workout.webp" />
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="893" loading="lazy" decoding="async" />
+      </picture>
+
+      <div class="container journey-inner">
+        <div class="journey-header reveal">
+          <div class="step-number">2</div>
+          <h2>Log Workout</h2>
+        </div>
+
+        <div class="story-phone reveal reveal-right" data-snake-anchor>
+          <div class="device">
+            <div class="device-inner">
+              <LegacyPartial name="phone-workout-leg" />
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-body reveal">
+          <p>
+            Log sets, reps, and load as you train. The workout screen is built around what actually happened,
+            so future sessions can react to performance instead of pretending the plan was followed perfectly.
+          </p>
+          <div class="card journey-card">
+            <h3>Capture the real session</h3>
+            <p>The timeline keeps completed, active, and upcoming sets distinct, which makes the next recommendation defensible.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey-section journey-section-clean journey-section-accent phone-left" id="step-feedback">
+      <div class="container journey-inner">
+        <div class="journey-header reveal">
+          <div class="step-number">3</div>
+          <h2>Get Feedback</h2>
+        </div>
+
+        <div class="story-phone reveal reveal-left" data-snake-anchor>
+          <div class="device">
+            <div class="device-inner">
+              <LegacyPartial name="phone-feedback" />
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-body reveal">
+          <p>
+            After the workout, maatriks summarizes the session and turns the raw log into structured coaching.
+            You get context on volume, streaks, and what the app will adapt next time.
+          </p>
+          <div class="card journey-card">
+            <h3>Useful output, not generic praise</h3>
+            <p>The feedback ties performance back to recent training load so adjustments are grounded in the session data.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="journey-section journey-section-photo phone-right" id="step-results">
+      <picture class="split-photo">
+        <source media="(min-width: 769px)" srcset="/assets/bg-results.webp" />
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="894" loading="lazy" decoding="async" />
+      </picture>
+
+      <div class="container journey-inner">
+        <div class="journey-header reveal">
+          <div class="step-number">4</div>
+          <h2>Look at Results</h2>
+        </div>
+
+        <div class="story-phone reveal reveal-right" data-snake-anchor>
+          <div class="device">
+            <div class="device-inner">
+              <LegacyPartial name="phone-dashboard" />
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-body reveal">
+          <p>
+            Progress stays visible across streaks, workout history, PRs, and monthly volume. You can tell whether
+            the plan is working without digging through old notes or spreadsheets.
+          </p>
+          <div class="card journey-card">
+            <h3>Progress at a glance</h3>
+            <p>Calendar state, volume comparisons, and recent workouts sit in one view so the training loop closes cleanly.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="stats-section section-block" id="stats">
+    <div class="container">
+      <div class="section-head reveal">
+        <div class="section-label">Stats</div>
+        <h2>Built around the full training loop</h2>
+        <p>Placeholder metrics for now, but the section structure is ready for real numbers once they are available.</p>
+      </div>
+
+      <div class="stats-grid">
+        <article class="stat-card reveal">
+          <div class="stat-value" data-count-end="10000" data-count-suffix="+">0</div>
+          <div class="stat-title">Workouts Logged</div>
+        </article>
+        <article class="stat-card reveal">
+          <div class="stat-value" data-count-end="4.8" data-count-decimals="1">0</div>
+          <div class="stat-title">App Store Rating</div>
+        </article>
+        <article class="stat-card reveal">
+          <div class="stat-value" data-count-end="2500" data-count-suffix="+">0</div>
+          <div class="stat-title">Active Users</div>
+        </article>
+        <article class="stat-card reveal">
+          <div class="stat-value" data-count-end="50000" data-count-suffix="+">0</div>
+          <div class="stat-title">Sets Tracked</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="reviews-section section-block" id="reviews">
+    <picture class="split-photo split-photo-left">
+      <source media="(min-width: 769px)" srcset="/assets/bg-reviews.webp" />
+      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="893" loading="lazy" decoding="async" />
+    </picture>
+
+    <div class="container reviews-layout">
+      <div class="reviews-copy reveal">
+        <div class="section-label">Reviews</div>
+        <h2>Early feedback from lifters using the loop</h2>
+        <p>These are placeholders until real testimonials are approved, but the carousel and interaction model are in place.</p>
+      </div>
+
+      <div class="reviews-carousel reveal" data-carousel>
+        <div class="reviews-track" data-carousel-track tabindex="0" aria-label="User reviews">
+          <article class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p>"Finally an app that reacts to what I actually finished instead of shaming me for missing one day."</p>
+            <div class="review-author">Marcus, powerbuilding focus</div>
+          </article>
+          <article class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p>"The post-session notes are what keep me using it. I get a clear reason for the next progression."</p>
+            <div class="review-author">Sofia, 4-day split</div>
+          </article>
+          <article class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p>"The workout logger is fast enough mid-session, and the dashboard makes trends obvious without extra charts."</p>
+            <div class="review-author">Daniel, intermediate lifter</div>
+          </article>
+          <article class="review-card">
+            <div class="review-stars">★★★★★</div>
+            <p>"It feels like a coach reviewing the training log instead of a template app with a chatbot bolted on."</p>
+            <div class="review-author">Elli, hypertrophy block</div>
+          </article>
+        </div>
+
+        <div class="reviews-controls">
+          <button type="button" class="carousel-button" data-carousel-prev aria-label="Previous review"><Fragment set:html={leftArrowHtml} /></button>
+          <div class="carousel-dots" data-carousel-dots></div>
+          <button type="button" class="carousel-button" data-carousel-next aria-label="Next review"><Fragment set:html={rightArrowHtml} /></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="newsletter-section section-block" id="newsletter">
+    <div class="container newsletter-inner reveal">
+      <div class="section-label">Newsletter</div>
+      <h2>Stay in the loop</h2>
+      <p>Training tips, feature updates, and early product drops. For now, signup routes through email until the backend is wired.</p>
+
+      <form class="newsletter-form" data-newsletter-form>
+        <label class="sr-only" for="newsletter-email">Email address</label>
+        <input id="newsletter-email" name="email" type="email" placeholder="you@domain.com" autocomplete="email" required />
+        <button type="submit" class="btn btn-primary">Join Newsletter</button>
+      </form>
+      <p class="newsletter-note" data-newsletter-note></p>
+    </div>
+  </section>
+
+  <section class="download-section section-block" id="download">
+    <div class="container download-inner reveal">
+      <div class="section-label">Download</div>
+      <h2>Ready to train smarter?</h2>
+      <p>Start with the app, then let the programming and review loop compound over time.</p>
+
+      <div class="download-actions">
+        <LegacyPartial name="store-badges" />
+      </div>
+    </div>
+  </section>
 </BaseLayout>

@@ -1,10 +1,17 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { siteConfig } from '../../lib/site.mjs';
-import { loadBlogPosts, renderBlogIndexContent } from '../../lib/blog.mjs';
+import { loadBlogPosts } from '../../lib/blog.mjs';
 
 const posts = loadBlogPosts();
-const content = renderBlogIndexContent(posts);
+const featuredPost = posts[0] || null;
+const archivePosts = featuredPost ? posts.slice(1) : [];
+const blogPostCount = posts.length === 0
+  ? 'Archive opening soon'
+  : posts.length === 1
+    ? '1 article live'
+    : `${posts.length} articles live`;
+const categories = [...new Set(posts.map((post) => post.category))];
 ---
 
 <BaseLayout
@@ -13,5 +20,77 @@ const content = renderBlogIndexContent(posts);
   canonicalUrl={`${siteConfig.siteUrl}/blog`}
   pageClass="content-page blog-page"
 >
-  <Fragment set:html={content} />
+  <section class="blog-hero-section section-block">
+    <div class="container">
+      <div class="blog-hero-shell">
+        <div class="blog-hero-copy">
+          <div class="section-label">Journal</div>
+          <h1>Training software should change after the session.</h1>
+          <p class="blog-hero-lead">Notes from building maatriks.ai on adaptive programming, product decisions, and systems that respond to what actually happened.</p>
+          <div class="blog-hero-meta">
+            <span class="blog-hero-count">{blogPostCount}</span>
+            <div class="blog-topic-row">
+              {categories.map((category) => (
+                <span class="blog-topic-pill">{category}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-feature-wrap">
+        {featuredPost && (
+          <section class="blog-feature-section">
+            <article class="blog-feature-card">
+              <a class="blog-feature-link" href={`/blog/${featuredPost.slug}`}>
+                <div class="blog-card-meta">
+                  <span class="blog-kicker">{featuredPost.category}</span>
+                  <span>{featuredPost.dateShort}</span>
+                  <span>{featuredPost.readingTimeLabel}</span>
+                </div>
+                <div class="blog-feature-body">
+                  <p class="blog-feature-label">Featured article</p>
+                  <h2>{featuredPost.title}</h2>
+                  <p>{featuredPost.description}</p>
+                </div>
+                <span class="blog-read-link">Read article</span>
+              </a>
+            </article>
+          </section>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {archivePosts.length > 0 && (
+    <section class="blog-feed-section section-block">
+      <div class="container">
+        <div class="blog-section-head">
+          <div>
+            <p class="blog-feature-label">Latest writing</p>
+            <h2>Essays and product notes</h2>
+          </div>
+        </div>
+
+        <div class="blog-list">
+          {archivePosts.map((post) => (
+            <article class="blog-list-card">
+              <a class="blog-list-link" href={`/blog/${post.slug}`}>
+                <div class="blog-card-meta">
+                  <span class="blog-kicker">{post.category}</span>
+                  <span>{post.dateShort}</span>
+                  <span>{post.readingTimeLabel}</span>
+                </div>
+                <div class="blog-list-copy">
+                  <h3>{post.title}</h3>
+                  <p>{post.description}</p>
+                </div>
+                <span class="blog-read-link">Open</span>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>

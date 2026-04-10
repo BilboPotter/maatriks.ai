@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { siteConfig } from './site.mjs';
 
 const ROOT = process.cwd();
@@ -7,34 +8,24 @@ const SRC = path.join(ROOT, 'src');
 const PAGES = path.join(SRC, 'pages');
 const PARTIALS = path.join(SRC, 'partials');
 const SCRIPTS = path.join(SRC, 'scripts');
+const require = createRequire(import.meta.url);
+const sharedTemplates = require('../../lib/shared/templates.js');
+const { assertNoUnresolvedPlaceholders, interpolate, loadTemplatedFile } = sharedTemplates;
 
-function interpolate(content, vars = siteConfig) {
-  return content.replace(/\{\{(\w+)\}\}/g, (match, key) => {
-    return vars[key] !== undefined ? vars[key] : match;
+export function loadLegacyPartial(partialName, vars = siteConfig) {
+  const filePath = path.join(PARTIALS, `${partialName}.html`);
+  return loadTemplatedFile(filePath, {
+    vars,
+    partialsDir: PARTIALS,
+    missingPartialMode: 'throw',
+    strict: true,
   });
-}
-
-function resolvePartials(content) {
-  return content.replace(/\{\{>\s*([\w-]+)\s*\}\}/g, (match, name) => {
-    const partialPath = path.join(PARTIALS, `${name}.html`);
-    if (!fs.existsSync(partialPath)) {
-      return match;
-    }
-
-    return resolvePartials(fs.readFileSync(partialPath, 'utf8'));
-  });
-}
-
-export function loadLegacyPage(pageName, vars = siteConfig) {
-  const filePath = path.join(PAGES, pageName);
-  const raw = fs.readFileSync(filePath, 'utf8');
-  return interpolate(resolvePartials(raw), vars);
 }
 
 export function loadLegacyScript(scriptName, vars = siteConfig) {
   const filePath = path.join(SCRIPTS, scriptName);
   const raw = fs.readFileSync(filePath, 'utf8');
-  return interpolate(raw, vars);
+  return assertNoUnresolvedPlaceholders(interpolate(raw, vars), filePath);
 }
 
 export const cookieBannerHtml = `<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">

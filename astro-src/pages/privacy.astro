@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import EmailLink from '../components/EmailLink.astro';
 import { siteConfig } from '../lib/site.mjs';
-import { loadLegacyPage } from '../lib/legacy.mjs';
-
-const content = loadLegacyPage('privacy.html');
 ---
 
 <BaseLayout
@@ -12,5 +10,190 @@ const content = loadLegacyPage('privacy.html');
   canonicalUrl={`${siteConfig.siteUrl}/privacy`}
   pageClass="content-page"
 >
-  <Fragment set:html={content} />
+  <div class="container">
+    <div class="section-label">Legal</div>
+    <h1>Privacy Policy</h1>
+    <p class="page-meta">Effective date: {siteConfig.lastUpdated}</p>
+
+    <div class="content-body">
+
+      <h2>Introduction</h2>
+      <p><strong>{siteConfig.companyName}</strong> ("we", "us", "our") operates <strong>{siteConfig.appName}</strong>, a mobile training application that provides workout logging, adaptive programming, and AI-generated feedback. This privacy policy explains what information we collect, how we use it, and what rights you have over it.</p>
+      <p>We believe your data belongs to you. We collect only what is necessary to provide and improve the service, and we do not sell your personal information to anyone.</p>
+      <p>If you have questions about this policy, contact us at:</p>
+      <EmailLink email={siteConfig.supportEmail} />
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Information we collect</h2>
+
+      <h3>Account information</h3>
+      <p>When you create an account, we collect:</p>
+      <ul>
+        <li><strong>Email address</strong> — used for authentication, account recovery, and service communication</li>
+        <li><strong>Display name</strong> — optional, used for personalization within the app</li>
+        <li><strong>Authentication provider identifier</strong> — if you sign in with email, Google, or Apple, we receive the identifiers and basic account details needed to authenticate you. We do not access your contacts, calendar, photos, files, or other unrelated account data from those providers.</li>
+      </ul>
+      <p><strong>Sign in with Apple:</strong> If you use Sign in with Apple, you may choose Apple's Hide My Email option. In that case, Apple provides a relay email address that we use for account identification, authentication, and account-related communication only.</p>
+      <p><strong>Sign in with Google:</strong> If you use Google Sign-In, we request only the basic profile information needed for authentication, such as your email address and name. We do not request access to your Google Drive, Gmail, Calendar, Contacts, or other Google services.</p>
+
+      <h3>Workout and training data</h3>
+      <p>When you use {siteConfig.appName}, we store:</p>
+      <ul>
+        <li>Workout logs (exercises, sets, reps, weight, duration)</li>
+        <li>Training preferences and goals</li>
+        <li>Program history and progression data</li>
+        <li>Body measurements you choose to enter (weight, height, etc.)</li>
+      </ul>
+      <p>This data is yours. It exists to power your training experience and will not be used for advertising, marketing, or data mining purposes.</p>
+
+      <h3>AI workout feedback and programming data</h3>
+      <p>{siteConfig.appName} uses AI to generate structured workout feedback and to prepare future workout programming. For that functionality, we may store:</p>
+      <ul>
+        <li>Context sent to the AI model, such as relevant workout history, preferences, and goals</li>
+        <li>AI-generated workout feedback and next-session planning output</li>
+      </ul>
+      <p>See the <strong>"AI workout feedback and your data"</strong> section below for details on how this data is processed.</p>
+
+      <h3>Technical and usage data</h3>
+      <p>To keep the app running and fix issues, we may collect:</p>
+      <ul>
+        <li>Device type, operating system, and app version</li>
+        <li>Crash reports and error logs</li>
+        <li>General usage patterns (screens visited, features used)</li>
+      </ul>
+      <p>This data is used for diagnostics and service improvement. We do not use it to build advertising profiles.</p>
+
+      <h3>Website analytics and cookies</h3>
+      <p>On the public website, we use a cookie banner to ask for consent before loading optional analytics and tag-management tooling. Those analytics are used only to understand aggregate website usage and improve the public site. They are not used for cross-site advertising profiles, and they are not loaded on the auth callback or password-update handoff pages.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>How we use your information</h2>
+      <p>We use your information to:</p>
+      <ul>
+        <li><strong>Provide the service</strong> — authenticate your identity, store your workouts, deliver AI-generated feedback, and prepare upcoming training sessions</li>
+        <li><strong>Personalize your experience</strong> — tailor training recommendations based on your history and goals</li>
+        <li><strong>Communicate with you</strong> — respond to support requests, send critical account notifications</li>
+        <li><strong>Improve the app and website</strong> — diagnose bugs, understand usage patterns, and improve features and public-site usability</li>
+      </ul>
+      <p>We do <strong>not</strong> use your information to show you ads, build advertising profiles, or sell to data brokers.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>AI workout feedback and your data</h2>
+      <p>At launch, {siteConfig.appName} uses OpenAI to generate workout feedback and next-session planning. When that processing happens:</p>
+      <ul>
+        <li>Relevant context, such as recent workouts, preferences, goals, and workout history, may be sent to OpenAI to generate the requested output</li>
+        <li>OpenAI processes that data so {siteConfig.appName} can return the workout feedback or programming response you requested</li>
+        <li>The generated output may be stored in our database to support workout history and session continuity</li>
+      </ul>
+      <p>We do not use your workout data or generated feedback for advertising, marketing, or any use-based data mining purposes. If we materially change the AI provider used for this feature, we will update this policy.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Third-party service providers</h2>
+      <p>We use a limited number of third-party services to operate {siteConfig.appName}. Each handles your data only as needed to deliver their specific service:</p>
+      <ul>
+        <li><strong>Supabase</strong> — database hosting and authentication infrastructure. Your account data and workout logs are stored on Supabase's infrastructure. <a href="https://supabase.com/privacy" target="_blank" rel="noopener">Supabase Privacy Policy</a></li>
+        <li><strong>OpenAI</strong> — AI inference for structured workout feedback and next-session planning when you request AI-generated output.</li>
+        <li><strong>Apple</strong> — authentication when Sign in with Apple is enabled and used. <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a></li>
+        <li><strong>Google</strong> — authentication when Google Sign-In is enabled and used. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+        <li><strong>Google Tag Manager / Google</strong> — consent-based analytics and tag management on the public website. These analytics tools are not loaded on the auth handoff pages.</li>
+      </ul>
+      <p>We do not use advertising networks, remarketing services, or third-party ad pixels. Any optional website analytics are limited to consent-based measurement and are not used for cross-site advertising profiles.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Data storage and security</h2>
+      <p>Your data is stored on Supabase's cloud infrastructure. We use industry-standard security measures including:</p>
+      <ul>
+        <li>Encrypted data transmission (TLS/HTTPS)</li>
+        <li>Encrypted data at rest</li>
+        <li>Row-level security policies on the database</li>
+        <li>Secure authentication with token-based sessions</li>
+      </ul>
+      <p>While we take reasonable measures to protect your data, no method of electronic transmission or storage is 100% secure. If you become aware of a security issue, please contact us immediately at <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Data retention</h2>
+      <p>We retain your data for as long as your account is active and as needed to provide you with the service.</p>
+      <ul>
+        <li><strong>Active accounts</strong> — all data is retained to provide the service</li>
+        <li><strong>Deleted accounts</strong> — personal data is deleted from active systems upon account deletion. Some de-identified, aggregate information may be retained for service improvement and reporting</li>
+        <li><strong>Backups</strong> — deleted data may persist in encrypted backups for a limited period (up to 30 days) before being permanently removed</li>
+      </ul>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Account deletion</h2>
+      <p>You can delete your account at any time from within the {siteConfig.appName} app. When you delete your account:</p>
+      <ul>
+        <li>Your profile, workout history, AI-generated feedback data, and preferences are permanently deleted</li>
+        <li>Deletion is irreversible. We cannot recover your data after deletion</li>
+      </ul>
+      <p>For step-by-step instructions, see our <a href={siteConfig.deleteAccountUrl}>account deletion page</a>. If you are unable to delete your account through the app, contact us at <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a> and we will process it manually.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Your rights</h2>
+      <p>Depending on your location, you may have some or all of the following rights regarding your personal data:</p>
+
+      <h3>For all users</h3>
+      <ul>
+        <li><strong>Access</strong> — request a copy of the personal data we hold about you</li>
+        <li><strong>Deletion</strong> — request deletion of your personal data (available in-app or by contacting us)</li>
+        <li><strong>Correction</strong> — request correction of inaccurate personal data</li>
+        <li><strong>Data export</strong> — request an export of your data in a portable format</li>
+      </ul>
+
+      <h3>European Economic Area, UK, and Switzerland (GDPR)</h3>
+      <p>If you are located in the EEA, UK, or Switzerland, you have additional rights under the General Data Protection Regulation:</p>
+      <ul>
+        <li><strong>Legal basis</strong> — we process your data based on: (a) contractual necessity (providing the service you signed up for), (b) your consent (where specifically requested), and (c) legitimate interests (improving the service, ensuring security)</li>
+        <li><strong>Right to restriction</strong> — request that we limit how we use your data</li>
+        <li><strong>Right to portability</strong> — receive your data in a structured, machine-readable format</li>
+        <li><strong>Right to object</strong> — object to processing based on legitimate interests</li>
+        <li><strong>Right to withdraw consent</strong> — where processing is based on consent, you may withdraw it at any time</li>
+        <li><strong>Right to lodge a complaint</strong> — you may file a complaint with your local data protection authority</li>
+      </ul>
+
+      <h3>California residents (CCPA/CPRA)</h3>
+      <p>If you are a California resident, under the California Consumer Privacy Act and California Privacy Rights Act you have the right to:</p>
+      <ul>
+        <li><strong>Know</strong> — request disclosure of the categories and specific pieces of personal information we have collected about you in the past 12 months</li>
+        <li><strong>Delete</strong> — request deletion of your personal information</li>
+        <li><strong>Non-discrimination</strong> — we will not discriminate against you for exercising your privacy rights</li>
+        <li><strong>Opt-out of sale</strong> — we do not sell personal information. There is nothing to opt out of</li>
+      </ul>
+
+      <p>To exercise any of these rights, contact us at <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a>. We will respond within 30 days (or within the timeframe required by applicable law).</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>App Store and Google Play disclosures</h2>
+      <p>This section provides additional information required by Apple's App Store and Google Play's Data Safety policies.</p>
+
+      <h3>Data not collected</h3>
+      <p>We do not collect: precise location, contacts, photos or videos, browsing history, search history, payment card details, or sensitive personal information beyond what is described in this policy.</p>
+
+      <h3>Data not shared with third parties for tracking</h3>
+      <p>We do not share your app data with third parties for the purpose of tracking you across apps and websites for advertising. We do not use advertising identifiers (IDFA/GAID) or participate in ad networks. The public website may use limited consent-based analytics, but not for cross-context behavioral advertising.</p>
+
+      <h3>Data linked to your identity</h3>
+      <p>The following data is linked to your identity: email address, display name, workout logs, training preferences, and generated workout feedback. This data is used to provide and personalize the service.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>International data transfers</h2>
+      <p>Our service providers may process your data in countries other than your own. When your data is transferred internationally, it is protected by the security measures described in this policy and by the contractual obligations of our service providers.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Children's privacy</h2>
+      <p>{siteConfig.appName} is not intended for children under the age of 16 (or under 13 in the United States). We do not knowingly collect personal data from children. If you believe a child has provided us with personal information, please contact us at <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a> and we will delete it.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Changes to this policy</h2>
+      <p>We may update this privacy policy as the app evolves. When we make significant changes, we will notify you through the app or by email. The effective date at the top of this page reflects the most recent revision.</p>
+      <p>Continued use of {siteConfig.appName} after changes take effect constitutes acceptance of the updated policy.</p>
+
+      <!-- ──────────────────────────────────────── -->
+      <h2>Contact</h2>
+      <p>For questions, concerns, or requests related to this privacy policy or your personal data:</p>
+      <EmailLink email={siteConfig.supportEmail} />
+      <p style="margin-top:16px;"><strong>{siteConfig.companyName}</strong><br />Email: <a href={`mailto:${siteConfig.supportEmail}`}>{siteConfig.supportEmail}</a></p>
+
+    </div>
+  </div>
 </BaseLayout>

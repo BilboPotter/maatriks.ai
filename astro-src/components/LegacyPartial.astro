@@ -1,0 +1,16 @@
+---
+import { siteConfig } from '../lib/site.mjs';
+import { loadLegacyPartial } from '../lib/legacy.mjs';
+
+const {
+  name,
+  vars = {},
+} = Astro.props;
+
+const html = loadLegacyPartial(name, {
+  ...siteConfig,
+  ...vars,
+});
+---
+
+<Fragment set:html={html} />

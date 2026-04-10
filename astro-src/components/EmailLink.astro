@@ -1,0 +1,25 @@
+---
+const {
+  email,
+  className = 'email-link',
+} = Astro.props;
+
+const escapedEmail = String(email)
+  .replace(/&/g, '&amp;')
+  .replace(/"/g, '&quot;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;');
+
+const escapedClassName = String(className)
+  .replace(/&/g, '&amp;')
+  .replace(/"/g, '&quot;')
+  .replace(/</g, '&lt;')
+  .replace(/>/g, '&gt;');
+
+const html = `<a href="mailto:${escapedEmail}" class="${escapedClassName}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="0"/><polyline points="22,4 12,13 2,4"/></svg>
+          ${escapedEmail}
+        </a>`;
+---
+
+<Fragment set:html={html} />
