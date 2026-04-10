@@ -4,6 +4,7 @@
   "scripts": {
     "build": "node build.js",
     "verify": "node verify-build.js",
+    "social:build": "node scripts/build-social-assets.mjs",
     "astro:prepare": "node scripts/prepare-astro-public.mjs",
     "astro:dev": "npm run astro:prepare && astro dev",
     "astro:build": "npm run astro:prepare && astro build && node scripts/postprocess-astro-dist.mjs",
@@ -11,6 +12,7 @@
     "astro:preview": "astro preview"
   },
   "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
     "astro": "^5.0.0",
     "esbuild": "^0.28.0"
   }

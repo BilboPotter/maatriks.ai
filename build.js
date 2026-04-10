@@ -33,6 +33,10 @@ const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), '
 const ASSETS = path.join(SRC, 'assets');
 const PARTIALS = path.join(SRC, 'partials');
 const DEFAULT_REFERRER_POLICY = 'strict-origin-when-cross-origin';
+const DEFAULT_SOCIAL_IMAGE = '/assets/social-default.png';
+const DEFAULT_SOCIAL_IMAGE_ALT = `${CONFIG.appName} social preview`;
+const BLOG_SOCIAL_IMAGE = '/assets/social-blog.png';
+const BLOG_SOCIAL_IMAGE_ALT = `${CONFIG.appName} journal social preview`;
 const AUTH_SECURITY_META = [
   '<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; base-uri \'none\'; connect-src \'self\'; font-src \'self\'; frame-src \'none\'; img-src \'self\' data:; object-src \'none\'; script-src \'self\'; style-src \'self\' \'unsafe-inline\'; form-action \'self\';">',
   '<meta http-equiv="Cache-Control" content="no-store, max-age=0">',
@@ -48,6 +52,14 @@ const COOKIE_BANNER_HTML = `<div class="cookie-banner" id="cookie-banner" role="
   </div>
 </div>`;
 const CONSENT_SCRIPT_HTML = '<script src="/scripts/consent.js"></script>';
+
+function toAbsoluteSiteUrl(assetPath) {
+  if (/^https?:\/\//.test(assetPath)) {
+    return assetPath;
+  }
+
+  return `${CONFIG.siteUrl}${assetPath.startsWith('/') ? assetPath : `/${assetPath}`}`;
+}
 
 // Route definitions: source page → output path
 // layout: 'default' = nav + main + footer + main.js; 'auth' = raw content (no wrapper)
@@ -156,6 +168,8 @@ function build() {
       pageTitle: route.title,
       pageDescription: route.description,
       canonicalUrl: canonicalUrl,
+      socialImageUrl: toAbsoluteSiteUrl(DEFAULT_SOCIAL_IMAGE),
+      socialImageAlt: DEFAULT_SOCIAL_IMAGE_ALT,
       robotsMeta: robotsMeta,
       criticalCss: criticalCss,
       referrerPolicy: route.sensitive ? 'no-referrer' : DEFAULT_REFERRER_POLICY,
@@ -259,6 +273,8 @@ function build() {
     pageTitle: `Blog — ${CONFIG.appName}`,
     pageDescription: `Writing from ${CONFIG.appName} on training, programming, product design, and building the app.`,
     canonicalUrl: `${CONFIG.siteUrl}/blog`,
+    socialImageUrl: toAbsoluteSiteUrl(BLOG_SOCIAL_IMAGE),
+    socialImageAlt: BLOG_SOCIAL_IMAGE_ALT,
     robotsMeta: '',
     criticalCss: criticalCss,
     referrerPolicy: DEFAULT_REFERRER_POLICY,
@@ -286,6 +302,8 @@ function build() {
       pageTitle: `${post.title} — ${CONFIG.appName}`,
       pageDescription: post.description,
       canonicalUrl: `${CONFIG.siteUrl}/blog/${post.slug}`,
+      socialImageUrl: toAbsoluteSiteUrl(BLOG_SOCIAL_IMAGE),
+      socialImageAlt: BLOG_SOCIAL_IMAGE_ALT,
       robotsMeta: '',
       criticalCss: criticalCss,
       referrerPolicy: DEFAULT_REFERRER_POLICY,
@@ -327,6 +345,8 @@ function build() {
     pageTitle: `Page Not Found — ${CONFIG.appName}`,
     pageDescription: `The page you are looking for does not exist.`,
     canonicalUrl: CONFIG.siteUrl,
+    socialImageUrl: toAbsoluteSiteUrl(DEFAULT_SOCIAL_IMAGE),
+    socialImageAlt: DEFAULT_SOCIAL_IMAGE_ALT,
     robotsMeta: '<meta name="robots" content="noindex">\n  ',
     criticalCss: criticalCss,
     referrerPolicy: DEFAULT_REFERRER_POLICY,

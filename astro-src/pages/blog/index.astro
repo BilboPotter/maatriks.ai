@@ -18,6 +18,8 @@ const categories = [...new Set(posts.map((post) => post.category))];
   pageTitle={`Blog — ${siteConfig.appName}`}
   pageDescription={`Writing from ${siteConfig.appName} on training, programming, product design, and building the app.`}
   canonicalUrl={`${siteConfig.siteUrl}/blog`}
+  socialImage="/assets/social-blog.png"
+  socialImageAlt={`${siteConfig.appName} journal social preview`}
   pageClass="content-page blog-page"
 >
   <section class="blog-hero-section section-block">
