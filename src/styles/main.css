@@ -2278,6 +2278,15 @@ input:focus-visible {
     gap: 20px;
   }
 
+  .phone-left .journey-inner,
+  .phone-right .journey-inner {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "phone"
+      "body";
+  }
+
   .journey-header,
   .journey-body {
     max-width: 680px;
@@ -2285,6 +2294,11 @@ input:focus-visible {
 
   .journey-inner .story-phone {
     justify-content: center;
+  }
+
+  .journey-inner .story-phone.reveal-left,
+  .journey-inner .story-phone.reveal-right {
+    transform: translateY(28px);
   }
 
   .journey-section-photo .split-photo,
