@@ -39,10 +39,10 @@ const ROUTES = [
   { page: 'index.html', out: 'index.html', canonical: '/', layout: 'default', pageClass: '', mainStyle: 'style="padding:0;"', title: `${CONFIG.appName} — ${CONFIG.appTagline}`, description: CONFIG.appDescription },
   { page: 'privacy.html', out: 'privacy/index.html', canonical: '/privacy', layout: 'default', pageClass: 'content-page', title: `Privacy Policy — ${CONFIG.companyName}`, description: `Privacy policy for ${CONFIG.appName} by ${CONFIG.companyName}.` },
   { page: 'support.html', out: 'support/index.html', canonical: '/support', layout: 'default', pageClass: 'content-page', title: `Support — ${CONFIG.companyName}`, description: `Get help with ${CONFIG.appName}. Contact ${CONFIG.supportEmail}.` },
-  { page: 'delete-account.html', out: 'delete-account/index.html', canonical: '/delete-account', layout: 'default', pageClass: 'content-page', title: `Delete Account — ${CONFIG.companyName}`, description: `How to delete your ${CONFIG.appName} account and what happens to your data.` },
-  { page: 'forgot-password.html', out: 'forgot-password/index.html', canonical: '/forgot-password', layout: 'default', pageClass: 'content-page', title: `Reset Password — ${CONFIG.appName}`, description: `How to reset your ${CONFIG.appName} password.` },
-  { page: 'auth-callback.html', out: 'auth/callback/index.html', canonical: '/auth/callback', layout: 'auth', title: `Redirecting — ${CONFIG.appName}`, description: `Authentication redirect for ${CONFIG.appName}.` },
-  { page: 'update-password.html', out: 'update-password/index.html', canonical: '/update-password', layout: 'auth', title: `Update Password — ${CONFIG.appName}`, description: `Password recovery redirect for ${CONFIG.appName}.` },
+  { page: 'delete-account.html', out: 'delete-account/index.html', canonical: '/delete-account', layout: 'default', pageClass: 'content-page', noindex: true, title: `Delete Account — ${CONFIG.companyName}`, description: `How to delete your ${CONFIG.appName} account and what happens to your data.` },
+  { page: 'forgot-password.html', out: 'forgot-password/index.html', canonical: '/forgot-password', layout: 'default', pageClass: 'content-page', noindex: true, title: `Reset Password — ${CONFIG.appName}`, description: `How to reset your ${CONFIG.appName} password.` },
+  { page: 'auth-callback.html', out: 'auth/callback/index.html', canonical: '/auth/callback', layout: 'auth', noindex: true, title: `Redirecting — ${CONFIG.appName}`, description: `Authentication redirect for ${CONFIG.appName}.` },
+  { page: 'update-password.html', out: 'update-password/index.html', canonical: '/update-password', layout: 'auth', noindex: true, title: `Update Password — ${CONFIG.appName}`, description: `Password recovery redirect for ${CONFIG.appName}.` },
 ];
 
 function minifyCSS(css) {
@@ -280,11 +280,13 @@ function build() {
     const composedContent = composePage(route, rawContent, navPartial, footerPartial, jsMap);
 
     const canonicalUrl = CONFIG.siteUrl + route.canonical;
+    const robotsMeta = route.noindex ? '<meta name="robots" content="noindex, nofollow">\n  ' : '';
     const vars = {
       ...CONFIG,
       pageTitle: route.title,
       pageDescription: route.description,
       canonicalUrl: canonicalUrl,
+      robotsMeta: robotsMeta,
       content: composedContent,
     };
 
@@ -340,6 +342,7 @@ function build() {
       pageTitle: `Blog — ${CONFIG.companyName}`,
       pageDescription: `Writing from ${CONFIG.companyName} on training, programming, and building the app.`,
       canonicalUrl: `${CONFIG.siteUrl}/blog`,
+      robotsMeta: '',
       blogList: blogListHtml,
       content: blogIndexComposed,
     };
@@ -361,6 +364,7 @@ function build() {
         pageTitle: `${post.title} — ${CONFIG.companyName}`,
         pageDescription: post.description,
         canonicalUrl: `${CONFIG.siteUrl}/blog/${post.slug}`,
+        robotsMeta: '',
         postTitle: post.title,
         postDate: post.date,
         postContent: post.content,
@@ -395,6 +399,7 @@ function build() {
     pageTitle: `Page Not Found — ${CONFIG.companyName}`,
     pageDescription: `The page you are looking for does not exist.`,
     canonicalUrl: CONFIG.siteUrl,
+    robotsMeta: '<meta name="robots" content="noindex">\n  ',
     content: notFoundComposed,
   };
   let notFoundHtml = interpolate(layout, notFoundVars);
@@ -402,6 +407,33 @@ function build() {
   notFoundHtml = replaceAssetPaths(notFoundHtml, cssFilename, jsMap);
   fs.writeFileSync(path.join(DIST, '404.html'), notFoundHtml, 'utf8');
   console.log('  built: 404.html');
+
+  // Sitemap — public pages only
+  const sitemapUrls = ROUTES
+    .filter(r => !r.noindex)
+    .map(r => `  <url><loc>${CONFIG.siteUrl}${r.canonical}</loc></url>`);
+
+  if (posts.length > 0) {
+    sitemapUrls.push(`  <url><loc>${CONFIG.siteUrl}/blog</loc></url>`);
+    for (const post of posts) {
+      sitemapUrls.push(`  <url><loc>${CONFIG.siteUrl}/blog/${post.slug}</loc></url>`);
+    }
+  }
+
+  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls.join('\n')}
+</urlset>`;
+  fs.writeFileSync(path.join(DIST, 'sitemap.xml'), sitemapXml, 'utf8');
+  console.log('  built: sitemap.xml');
+
+  // robots.txt
+  const robotsTxt = `User-agent: *
+Allow: /
+
+Sitemap: ${CONFIG.siteUrl}/sitemap.xml`;
+  fs.writeFileSync(path.join(DIST, 'robots.txt'), robotsTxt, 'utf8');
+  console.log('  built: robots.txt');
 
   // .nojekyll to disable Jekyll processing
   fs.writeFileSync(path.join(DIST, '.nojekyll'), '', 'utf8');
