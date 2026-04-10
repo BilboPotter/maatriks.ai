@@ -15,6 +15,7 @@
 
   var card = document.getElementById('auth-card');
   var spinner = document.getElementById('spinner');
+  var openAppButton = document.getElementById('open-app');
   var status = document.getElementById('status');
   var fallback = document.getElementById('fallback');
 
@@ -67,6 +68,10 @@
   // Attempt the handoff
   var params = getAuthParams();
   var deepLink = buildDeepLink(params);
+
+  if (openAppButton) {
+    openAppButton.setAttribute('href', deepLink);
+  }
 
   status.textContent = 'Opening app...';
 

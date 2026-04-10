@@ -3,7 +3,7 @@
   "appName": "maatriks.ai",
   "appTagline": "Adaptive workout programming",
   "appDescription": "A mobile training app that builds workouts, captures what you actually did, generates structured feedback, and prepares your next session.",
-  "supportEmail": "support@maatriks.ai",
+  "supportEmail": "info@maatriks.ai",
   "siteUrl": "https://maatriks.ai",
   "privacyUrl": "/privacy",
   "supportUrl": "/support",
@@ -11,7 +11,7 @@
   "forgotPasswordUrl": "/forgot-password",
   "iosAppStoreUrl": "#",
   "googlePlayUrl": "#",
-  "authCallbackDeepLink": "kinetic://auth/callback",
-  "passwordResetDeepLink": "kinetic://update-password",
-  "lastUpdated": "2026-04-07"
+  "authCallbackDeepLink": "maatriks://auth/callback",
+  "passwordResetDeepLink": "maatriks://update-password",
+  "lastUpdated": "2026-04-10"
 }
