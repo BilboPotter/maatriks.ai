@@ -23,6 +23,22 @@ const BLOG_SRC = path.join(SRC, 'blog');
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const ASSETS = path.join(SRC, 'assets');
 const CRITICAL_CSS = path.join(SRC, 'styles', 'critical.css');
+const DEFAULT_REFERRER_POLICY = 'strict-origin-when-cross-origin';
+const AUTH_SECURITY_META = [
+  '<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; base-uri \'none\'; connect-src \'self\'; font-src \'self\'; frame-src \'none\'; img-src \'self\' data:; object-src \'none\'; script-src \'self\'; style-src \'self\' \'unsafe-inline\'; form-action \'self\';">',
+  '<meta http-equiv="Cache-Control" content="no-store, max-age=0">',
+  '<meta http-equiv="Pragma" content="no-cache">'
+].join('\n  ');
+const COOKIE_BANNER_HTML = `<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <div class="cookie-banner-inner">
+    <p>This site uses cookies for analytics.</p>
+    <div class="cookie-banner-actions">
+      <button type="button" class="btn btn-primary cookie-accept" id="cookie-accept">Accept</button>
+      <button type="button" class="btn btn-ghost cookie-decline" id="cookie-decline">Decline</button>
+    </div>
+  </div>
+</div>`;
+const CONSENT_SCRIPT_HTML = '<script src="/scripts/consent.js"></script>';
 
 function getSiteHost(siteUrl) {
   try {
@@ -42,8 +58,8 @@ const ROUTES = [
   { page: 'support.html', out: 'support/index.html', canonical: '/support', layout: 'default', pageClass: 'content-page', title: `Support — ${CONFIG.companyName}`, description: `Get help with ${CONFIG.appName}. Contact ${CONFIG.supportEmail}.` },
   { page: 'delete-account.html', out: 'delete-account/index.html', canonical: '/delete-account', layout: 'default', pageClass: 'content-page', noindex: true, title: `Delete Account — ${CONFIG.companyName}`, description: `How to delete your ${CONFIG.appName} account and what happens to your data.` },
   { page: 'forgot-password.html', out: 'forgot-password/index.html', canonical: '/forgot-password', layout: 'default', pageClass: 'content-page', noindex: true, title: `Reset Password — ${CONFIG.appName}`, description: `How to reset your ${CONFIG.appName} password.` },
-  { page: 'auth-callback.html', out: 'auth/callback/index.html', canonical: '/auth/callback', layout: 'auth', noindex: true, title: `Redirecting — ${CONFIG.appName}`, description: `Authentication redirect for ${CONFIG.appName}.` },
-  { page: 'update-password.html', out: 'update-password/index.html', canonical: '/update-password', layout: 'auth', noindex: true, title: `Update Password — ${CONFIG.appName}`, description: `Password recovery redirect for ${CONFIG.appName}.` },
+  { page: 'auth-callback.html', out: 'auth/callback/index.html', canonical: '/auth/callback', layout: 'auth', noindex: true, sensitive: true, title: `Redirecting — ${CONFIG.appName}`, description: `Authentication redirect for ${CONFIG.appName}.` },
+  { page: 'update-password.html', out: 'update-password/index.html', canonical: '/update-password', layout: 'auth', noindex: true, sensitive: true, title: `Update Password — ${CONFIG.appName}`, description: `Password recovery redirect for ${CONFIG.appName}.` },
 ];
 
 function minifyCSS(css) {
@@ -292,6 +308,10 @@ function build() {
       canonicalUrl: canonicalUrl,
       robotsMeta: robotsMeta,
       criticalCss: criticalCss,
+      referrerPolicy: route.sensitive ? 'no-referrer' : DEFAULT_REFERRER_POLICY,
+      securityMeta: route.sensitive ? AUTH_SECURITY_META : '',
+      consentBanner: route.sensitive ? '' : COOKIE_BANNER_HTML,
+      consentScript: route.sensitive ? '' : CONSENT_SCRIPT_HTML,
       content: composedContent,
     };
 
@@ -390,6 +410,10 @@ function build() {
       pageDescription: `Writing from ${CONFIG.companyName} on training, programming, and building the app.`,
       canonicalUrl: `${CONFIG.siteUrl}/blog`,
       robotsMeta: '',
+      referrerPolicy: DEFAULT_REFERRER_POLICY,
+      securityMeta: '',
+      consentBanner: COOKIE_BANNER_HTML,
+      consentScript: CONSENT_SCRIPT_HTML,
       blogList: blogListHtml,
       content: blogIndexComposed,
     };
@@ -412,6 +436,10 @@ function build() {
         pageDescription: post.description,
         canonicalUrl: `${CONFIG.siteUrl}/blog/${post.slug}`,
         robotsMeta: '',
+        referrerPolicy: DEFAULT_REFERRER_POLICY,
+        securityMeta: '',
+        consentBanner: COOKIE_BANNER_HTML,
+        consentScript: CONSENT_SCRIPT_HTML,
         postTitle: post.title,
         postDate: post.date,
         postContent: post.content,
@@ -447,6 +475,10 @@ function build() {
     pageDescription: `The page you are looking for does not exist.`,
     canonicalUrl: CONFIG.siteUrl,
     robotsMeta: '<meta name="robots" content="noindex">\n  ',
+    referrerPolicy: DEFAULT_REFERRER_POLICY,
+    securityMeta: '',
+    consentBanner: COOKIE_BANNER_HTML,
+    consentScript: CONSENT_SCRIPT_HTML,
     content: notFoundComposed,
   };
   let notFoundHtml = interpolate(layout, notFoundVars);

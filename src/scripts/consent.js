@@ -10,6 +10,7 @@
 (function () {
   var COOKIE_NAME = 'cookie_consent';
   var GTM_ID = 'GTM-MQZPT547';
+  var gtmLoaded = false;
 
   function getCookie(name) {
     var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
@@ -19,10 +20,17 @@
   function setCookie(name, value, days) {
     var d = new Date();
     d.setTime(d.getTime() + days * 86400000);
-    document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+    var secureFlag = window.location.protocol === 'https:' ? ';Secure' : '';
+    document.cookie = name + '=' + value + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax' + secureFlag;
   }
 
   function loadGTM() {
+    if (gtmLoaded) {
+      return;
+    }
+
+    gtmLoaded = true;
+
     // Head script
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });

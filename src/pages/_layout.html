@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{pageTitle}}</title>
   <meta name="description" content="{{pageDescription}}">
+  <meta name="referrer" content="{{referrerPolicy}}">
   {{robotsMeta}}<link rel="canonical" href="{{canonicalUrl}}">
+  {{securityMeta}}
   <meta property="og:title" content="{{pageTitle}}">
   <meta property="og:description" content="{{pageDescription}}">
   <meta property="og:type" content="website">
@@ -16,21 +18,13 @@
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/assets/fonts/jetbrains-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
   <style>{{criticalCss}}</style>
-  <link rel="preload" href="/styles/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="/styles/main.css"></noscript>
+  <link rel="preload" href="/styles/main.css" as="style">
+  <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 {{content}}
-<div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie consent">
-  <div class="cookie-banner-inner">
-    <p>This site uses cookies for analytics.</p>
-    <div class="cookie-banner-actions">
-      <button type="button" class="btn btn-primary cookie-accept" id="cookie-accept">Accept</button>
-      <button type="button" class="btn btn-ghost cookie-decline" id="cookie-decline">Decline</button>
-    </div>
-  </div>
-</div>
-<script src="/scripts/consent.js"></script>
+{{consentBanner}}
+{{consentScript}}
 </body>
 </html>

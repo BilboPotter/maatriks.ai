@@ -35,6 +35,10 @@ function verifyAuthPage({ htmlPath, scriptNamePrefix, expectedDeepLink, expected
 
   const { html, scriptFileName } = resolveScriptFileFromPage(htmlPath, scriptNamePrefix);
   assert(html.includes(expectedActionId), `Missing ${expectedActionId} in ${htmlPath}`);
+  assert(html.includes('content="no-referrer"'), `Expected no-referrer policy in ${htmlPath}`);
+  assert(html.includes('Content-Security-Policy'), `Expected CSP meta in ${htmlPath}`);
+  assert(!html.includes('id="cookie-banner"'), `Auth page should not include cookie banner: ${htmlPath}`);
+  assert(!html.includes('/scripts/consent'), `Auth page should not include consent script: ${htmlPath}`);
 
   const scriptPath = path.join(DIST, 'scripts', scriptFileName);
   assert(fs.existsSync(scriptPath), `Missing built auth script: ${scriptPath}`);
@@ -43,6 +47,14 @@ function verifyAuthPage({ htmlPath, scriptNamePrefix, expectedDeepLink, expected
   assert(
     scriptBody.includes(expectedDeepLink),
     `Expected ${scriptFileName} to contain ${expectedDeepLink}`
+  );
+  assert(
+    scriptBody.includes('history.replaceState'),
+    `Expected ${scriptFileName} to clear sensitive URL state`
+  );
+  assert(
+    scriptBody.includes('token_hash'),
+    `Expected ${scriptFileName} to whitelist token_hash for Supabase flows`
   );
 }
 

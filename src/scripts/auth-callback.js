@@ -12,12 +12,28 @@
 (function () {
   var DEEP_LINK = '{{authCallbackDeepLink}}';
   var TIMEOUT_MS = 3000;
+  var ALLOWED_PARAMS = {
+    access_token: true,
+    code: true,
+    error: true,
+    error_code: true,
+    error_description: true,
+    expires_at: true,
+    expires_in: true,
+    provider_refresh_token: true,
+    provider_token: true,
+    refresh_token: true,
+    token_hash: true,
+    token_type: true,
+    type: true
+  };
 
   var card = document.getElementById('auth-card');
   var spinner = document.getElementById('spinner');
   var openAppButton = document.getElementById('open-app');
   var status = document.getElementById('status');
   var fallback = document.getElementById('fallback');
+  var didResolve = false;
 
   // Parse auth params from hash fragment (Supabase default) or query string
   function getAuthParams() {
@@ -27,14 +43,22 @@
     if (!raw) return null;
 
     var params = {};
-    raw.split('&').forEach(function (pair) {
-      var idx = pair.indexOf('=');
-      if (idx !== -1) {
-        params[decodeURIComponent(pair.slice(0, idx))] = decodeURIComponent(pair.slice(idx + 1));
+    var parsed = new URLSearchParams(raw);
+    parsed.forEach(function (value, key) {
+      if (ALLOWED_PARAMS[key]) {
+        params[key] = value;
       }
     });
 
     return Object.keys(params).length > 0 ? params : null;
+  }
+
+  function clearSensitiveUrl() {
+    if (!window.history || !window.history.replaceState) {
+      return;
+    }
+
+    window.history.replaceState(null, document.title, window.location.pathname);
   }
 
   // Build the deep link URL with auth params
@@ -52,17 +76,43 @@
     return DEEP_LINK + separator + queryParts.join('&');
   }
 
+  function setStatus(message) {
+    if (status) {
+      status.textContent = message;
+    }
+  }
+
   function showFallback() {
-    spinner.style.display = 'none';
-    status.textContent = 'Could not open app automatically';
-    card.classList.add('auth-error');
-    fallback.classList.add('visible');
+    if (didResolve) {
+      return;
+    }
+
+    didResolve = true;
+    if (spinner) {
+      spinner.style.display = 'none';
+    }
+    setStatus('Could not open app automatically');
+    if (card) {
+      card.classList.add('auth-error');
+    }
+    if (fallback) {
+      fallback.classList.add('visible');
+    }
   }
 
   function showSuccess() {
-    spinner.style.display = 'none';
-    status.textContent = 'Redirecting to app';
-    card.classList.add('auth-success');
+    if (didResolve) {
+      return;
+    }
+
+    didResolve = true;
+    if (spinner) {
+      spinner.style.display = 'none';
+    }
+    setStatus('Redirecting to app');
+    if (card) {
+      card.classList.add('auth-success');
+    }
   }
 
   // Attempt the handoff
@@ -73,11 +123,12 @@
     openAppButton.setAttribute('href', deepLink);
   }
 
-  status.textContent = 'Opening app...';
+  setStatus('Opening app...');
+  clearSensitiveUrl();
 
   // Try to open the app
   var start = Date.now();
-  window.location.href = deepLink;
+  window.location.replace(deepLink);
 
   // If we're still here after timeout, show fallback
   setTimeout(function () {
