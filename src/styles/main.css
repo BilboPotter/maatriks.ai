@@ -2372,53 +2372,46 @@ input:focus-visible {
   }
 
   .hero {
-    padding: 104px 0 40px;
+    padding: 104px 0 56px;
   }
 
   .hero-inner {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
+    align-items: stretch;
+    gap: 32px;
   }
 
   .hero-copy {
-    display: contents;
-  }
-
-  .hero-copy > .section-label {
-    order: 1;
-  }
-
-  .hero-copy > h1 {
-    order: 2;
-  }
-
-  .hero-copy > .lead {
-    order: 3;
-  }
-
-  .hero-copy > .hero-actions {
-    order: 4;
+    display: flex;
+    max-width: 32rem;
   }
 
   .hero-phone {
-    order: 5;
     align-self: center;
     width: 100%;
+    margin-top: 8px;
+  }
+
+  .hero-phone .device {
+    width: min(280px, 78vw);
+  }
+
+  .hero-phone::before {
+    display: none;
   }
 
   .hero-copy > .hero-points {
-    order: 6;
+    display: none;
   }
 
   .hero-bg::after {
-    background: linear-gradient(180deg, rgba(8, 8, 12, 0.92) 0%, rgba(8, 8, 12, 0.72) 42%, rgba(8, 8, 12, 0.28) 100%);
+    background: linear-gradient(180deg, rgba(8, 8, 12, 0.97) 0%, rgba(8, 8, 12, 0.9) 34%, rgba(8, 8, 12, 0.74) 68%, rgba(8, 8, 12, 0.5) 100%);
   }
 
   #hero .hero-bg img {
-    object-position: 50% 44%;
-    transform: scale(1.12);
+    object-position: 56% 44%;
+    transform: scale(1.08);
   }
 
   .hero-copy,
@@ -2429,15 +2422,21 @@ input:focus-visible {
     gap: 18px;
   }
 
-  .hero-actions,
+  .hero-actions {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
   .download-actions {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
 
-  .download-badge img {
-    height: 48px;
+  .hero-actions .download-badge img {
+    height: 42px;
   }
 
   .hero-points {
