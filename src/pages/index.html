@@ -5,9 +5,22 @@
       </svg>
 
       <section class="hero story-section story-section--hero" id="hero">
-        <div class="hero-bg">
-          <img src="/assets/hero-gym.webp" alt="" width="1800" height="1005" fetchpriority="high" decoding="async">
-        </div>
+        <picture class="hero-bg">
+          <source
+            media="(max-width: 768px)"
+            srcset="/assets/hero-gym-mobile-960.webp 960w, /assets/hero-gym-mobile-1440.webp 1440w"
+            sizes="100vw">
+          <source
+            srcset="/assets/hero-gym-desktop-1800.webp 1800w, /assets/hero-gym-desktop-2400.webp 2400w"
+            sizes="100vw">
+          <img
+            src="/assets/hero-gym-desktop-1800.webp"
+            alt=""
+            width="1800"
+            height="1005"
+            fetchpriority="high"
+            decoding="async">
+        </picture>
 
         <div class="container hero-inner">
           <div class="hero-copy">

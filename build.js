@@ -22,6 +22,7 @@ const DIST = path.join(ROOT, 'dist');
 const BLOG_SRC = path.join(SRC, 'blog');
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const ASSETS = path.join(SRC, 'assets');
+const CRITICAL_CSS = path.join(SRC, 'styles', 'critical.css');
 
 function getSiteHost(siteUrl) {
   try {
@@ -226,9 +227,9 @@ ${footerPartial}
 }
 
 function replaceAssetPaths(html, cssFilename, jsMap) {
-  html = html.replace('/styles/main.css', `/styles/${cssFilename}`);
+  html = html.split('/styles/main.css').join(`/styles/${cssFilename}`);
   for (const [orig, hashed] of Object.entries(jsMap)) {
-    html = html.replace(`/scripts/${orig}`, `/scripts/${hashed}`);
+    html = html.split(`/scripts/${orig}`).join(`/scripts/${hashed}`);
   }
   return html;
 }
@@ -248,6 +249,9 @@ function build() {
   const cssMinified = minifyCSS(cssRaw);
   const cssHash = contentHash(cssMinified);
   const cssFilename = `main.${cssHash}.css`;
+  const criticalCss = fs.existsSync(CRITICAL_CSS)
+    ? minifyCSS(fs.readFileSync(CRITICAL_CSS, 'utf8'))
+    : '';
   const stylesDir = path.join(DIST, 'styles');
   fs.mkdirSync(stylesDir, { recursive: true });
   fs.writeFileSync(path.join(stylesDir, cssFilename), cssMinified, 'utf8');
@@ -287,6 +291,7 @@ function build() {
       pageDescription: route.description,
       canonicalUrl: canonicalUrl,
       robotsMeta: robotsMeta,
+      criticalCss: criticalCss,
       content: composedContent,
     };
 
