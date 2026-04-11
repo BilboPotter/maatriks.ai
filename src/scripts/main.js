@@ -10,20 +10,6 @@
     return Math.min(Math.max(value, min), max);
   }
 
-  function formatCount(value, decimals, suffix) {
-    var formatted;
-    if (decimals > 0) {
-      formatted = value.toLocaleString("en-US", {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals
-      });
-    } else {
-      formatted = Math.round(value).toLocaleString("en-US");
-    }
-
-    return formatted + (suffix || "");
-  }
-
   function setupRevealObserver() {
     var reveals = document.querySelectorAll(".reveal");
     if (!reveals.length) {
@@ -51,62 +37,6 @@
 
     reveals.forEach(function (element) {
       revealObserver.observe(element);
-    });
-  }
-
-  function setupCounters() {
-    var counters = document.querySelectorAll("[data-count-end]");
-    if (!counters.length) {
-      return;
-    }
-
-    function animateCounter(element) {
-      var end = parseFloat(element.getAttribute("data-count-end"));
-      var decimals = parseInt(element.getAttribute("data-count-decimals") || "0", 10);
-      var suffix = element.getAttribute("data-count-suffix") || "";
-      var startTime = 0;
-      var duration = 1400;
-
-      function tick(timestamp) {
-        if (!startTime) {
-          startTime = timestamp;
-        }
-
-        var progress = clamp((timestamp - startTime) / duration, 0, 1);
-        var eased = 1 - Math.pow(1 - progress, 3);
-        element.textContent = formatCount(end * eased, decimals, suffix);
-
-        if (progress < 1) {
-          window.requestAnimationFrame(tick);
-        }
-      }
-
-      if (reducedMotion) {
-        element.textContent = formatCount(end, decimals, suffix);
-        return;
-      }
-
-      window.requestAnimationFrame(tick);
-    }
-
-    if (!("IntersectionObserver" in window)) {
-      counters.forEach(animateCounter);
-      return;
-    }
-
-    var counterObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          counterObserver.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.35
-    });
-
-    counters.forEach(function (counter) {
-      counterObserver.observe(counter);
     });
   }
 
@@ -389,7 +319,6 @@
   }
 
   setupRevealObserver();
-  setupCounters();
   setupNavigation();
   setupNewsletterFallback();
   setupCarousel();

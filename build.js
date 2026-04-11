@@ -51,8 +51,6 @@ const COOKIE_BANNER_HTML = `<div class="cookie-banner" id="cookie-banner" role="
     </div>
   </div>
 </div>`;
-const CONSENT_SCRIPT_HTML = '<script src="/scripts/consent.js"></script>';
-
 function toAbsoluteSiteUrl(assetPath) {
   if (/^https?:\/\//.test(assetPath)) {
     return assetPath;
@@ -177,7 +175,7 @@ function copyDirSync(src, dest, relativeRoot) {
   }
 }
 
-function composePage(route, pageContent, navPartial, footerPartial, jsMap) {
+function composePage(route, pageContent, navPartial, footerPartial) {
   if (route.layout === 'auth') {
     // Auth pages provide their own full structure (no nav/footer/main wrapper)
     return pageContent;
@@ -185,7 +183,6 @@ function composePage(route, pageContent, navPartial, footerPartial, jsMap) {
 
   const pageClass = route.pageClass ? `page ${route.pageClass}` : 'page';
   const mainStyle = route.mainStyle ? ` ${route.mainStyle}` : '';
-  const mainJsName = jsMap['main.js'] || 'main.js';
 
   return `<div class="${pageClass}">
 ${navPartial}
@@ -194,8 +191,11 @@ ${pageContent}
   </main>
 
 ${footerPartial}
-</div>
-<script src="/scripts/${mainJsName}"></script>`;
+</div>`;
+}
+
+function inlineScriptTag(content) {
+  return `<script>${String(content || '').replace(/<\/script/gi, '<\\/script')}</script>`;
 }
 
 function replaceAssetPaths(html, cssFilename, jsMap) {
@@ -239,7 +239,7 @@ function build() {
   for (const route of ROUTES) {
     let rawContent = fs.readFileSync(path.join(SRC, 'pages', route.page), 'utf8');
     rawContent = resolvePartials(rawContent, { partialsDir: PARTIALS, missingPartialMode: 'throw' });
-    const composedContent = composePage(route, rawContent, navPartial, footerPartial, jsMap);
+    const composedContent = composePage(route, rawContent, navPartial, footerPartial);
 
     const canonicalUrl = CONFIG.siteUrl + route.canonical;
     const robotsMeta = route.noindex
@@ -263,8 +263,9 @@ function build() {
       criticalCss: criticalCss,
       referrerPolicy: route.sensitive ? 'no-referrer' : DEFAULT_REFERRER_POLICY,
       securityMeta: route.sensitive ? AUTH_SECURITY_META : '',
+      mainScript: route.sensitive ? '' : inlineScriptTag(assetManifest.scripts['main.js'].content),
       consentBanner: route.sensitive ? '' : COOKIE_BANNER_HTML,
-      consentScript: route.sensitive ? '' : CONSENT_SCRIPT_HTML,
+      consentScript: route.sensitive ? '' : inlineScriptTag(assetManifest.scripts['consent.js'].content),
       content: composedContent,
     };
 
@@ -356,7 +357,7 @@ function build() {
   const blogDir = path.join(DIST, 'blog');
 
   // Build blog index
-  const blogIndexComposed = composePage(blogIndexRoute, blogIndexTemplate, navPartial, footerPartial, jsMap);
+  const blogIndexComposed = composePage(blogIndexRoute, blogIndexTemplate, navPartial, footerPartial);
   const blogIndexVars = {
     ...CONFIG,
     pageTitle: `Blog — ${CONFIG.appName}`,
@@ -372,8 +373,9 @@ function build() {
     criticalCss: criticalCss,
     referrerPolicy: DEFAULT_REFERRER_POLICY,
     securityMeta: '',
+    mainScript: inlineScriptTag(assetManifest.scripts['main.js'].content),
     consentBanner: COOKIE_BANNER_HTML,
-    consentScript: CONSENT_SCRIPT_HTML,
+    consentScript: inlineScriptTag(assetManifest.scripts['consent.js'].content),
     ...getBlogIndexViewModel(posts),
     content: blogIndexComposed,
   };
@@ -389,7 +391,7 @@ function build() {
 
   // Build individual posts
   for (const post of posts) {
-    const postComposed = composePage(blogPostRoute, blogPostTemplate, navPartial, footerPartial, jsMap);
+    const postComposed = composePage(blogPostRoute, blogPostTemplate, navPartial, footerPartial);
     const postVars = {
       ...CONFIG,
       pageTitle: `${post.title} — ${CONFIG.appName}`,
@@ -405,8 +407,9 @@ function build() {
       criticalCss: criticalCss,
       referrerPolicy: DEFAULT_REFERRER_POLICY,
       securityMeta: '',
+      mainScript: inlineScriptTag(assetManifest.scripts['main.js'].content),
       consentBanner: COOKIE_BANNER_HTML,
-      consentScript: CONSENT_SCRIPT_HTML,
+      consentScript: inlineScriptTag(assetManifest.scripts['consent.js'].content),
       ...getBlogPostViewModel(post, posts),
       content: postComposed,
     };
@@ -436,7 +439,7 @@ function build() {
     partialsDir: PARTIALS,
     missingPartialMode: 'throw',
   });
-  const notFoundComposed = composePage(notFoundRoute, notFoundRaw, navPartial, footerPartial, jsMap);
+  const notFoundComposed = composePage(notFoundRoute, notFoundRaw, navPartial, footerPartial);
   const notFoundVars = {
     ...CONFIG,
     pageTitle: `Page Not Found — ${CONFIG.appName}`,
@@ -452,8 +455,9 @@ function build() {
     criticalCss: criticalCss,
     referrerPolicy: DEFAULT_REFERRER_POLICY,
     securityMeta: '',
+    mainScript: inlineScriptTag(assetManifest.scripts['main.js'].content),
     consentBanner: COOKIE_BANNER_HTML,
-    consentScript: CONSENT_SCRIPT_HTML,
+    consentScript: inlineScriptTag(assetManifest.scripts['consent.js'].content),
     content: notFoundComposed,
   };
   let notFoundHtml = interpolate(layout, notFoundVars);

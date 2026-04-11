@@ -2,7 +2,7 @@
   font-family: "DM Sans";
   font-style: normal;
   font-weight: 400 900;
-  font-display: block;
+  font-display: swap;
   src: url("/assets/fonts/dm-sans-latin.woff2") format("woff2");
   unicode-range:
     U+0000-00FF,
@@ -30,7 +30,7 @@
   font-family: "JetBrains Mono";
   font-style: normal;
   font-weight: 400 700;
-  font-display: block;
+  font-display: swap;
   src: url("/assets/fonts/jetbrains-mono-latin.woff2") format("woff2");
   unicode-range:
     U+0000-00FF,
