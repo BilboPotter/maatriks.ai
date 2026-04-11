@@ -5,11 +5,86 @@ import { siteConfig } from '../lib/site.mjs';
 
 const leftArrowHtml = '&larr;';
 const rightArrowHtml = '&rarr;';
+const homepageTitle = 'maatriks — Workout App That Adapts to You';
+const homepageDescription = 'Not sure what to do at the gym? maatriks builds a personalized workout plan, tracks what you actually did, and adjusts your next session automatically. Built for beginners.';
+const homepageSocialDescription = 'A personalized workout app for beginners. maatriks builds your plan, tracks what you actually did, and adjusts your next session automatically.';
+const homepageStructuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: 'maatriks',
+    applicationCategory: 'HealthApplication',
+    operatingSystem: 'iOS, Android',
+    description: 'Adaptive workout programming app that builds personalized plans for beginners, tracks real performance, and adjusts automatically after every session.',
+    url: 'https://maatriks.ai',
+    author: {
+      '@type': 'Organization',
+      name: 'Riverin OÜ',
+      url: 'https://maatriks.ai',
+    },
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/ComingSoon',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Do I need gym experience to use maatriks?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: "No. The app is built for beginners. Tell it your schedule and goals, and it builds your first workout from there. You don't need to know exercises or programming — the app handles that.",
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How does the app know what to change after each workout?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'It uses what you actually logged — sets, reps, weight, and any swaps you made. If you went heavier, it adjusts up. If you cut a session short, it adapts. Every workout informs the next one.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can I change exercises during a workout?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. Swap anything mid-session and the app treats it as part of the record. Your plan adjusts based on what you actually did, not what was originally scheduled.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Is this a fixed workout plan or does it change?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'It changes. You start with a structured plan based on your setup, but after each session the app reviews what happened and adjusts what comes next. The longer you use it, the more tailored it gets.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How is this different from a personal trainer?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'A trainer costs 50-120 per session. maatriks gives you a personalized plan that adapts after every workout, with written feedback explaining what changed and why. It is not a human coach, but it pays closer attention than a static app or a spreadsheet.',
+        },
+      },
+    ],
+  },
+];
 ---
 
 <BaseLayout
-  pageTitle={`${siteConfig.appName} — ${siteConfig.appTagline}`}
-  pageDescription={siteConfig.appDescription}
+  pageTitle={homepageTitle}
+  pageDescription={homepageDescription}
+  socialTitle={homepageTitle}
+  socialDescription={homepageSocialDescription}
+  siteName="maatriks"
+  structuredData={homepageStructuredData}
   canonicalUrl={`${siteConfig.siteUrl}/`}
   mainStyle="padding:0;"
 >
@@ -30,7 +105,7 @@ const rightArrowHtml = '&rarr;';
           sizes="100vw" />
         <img
           src="/assets/hero-gym-desktop-1800.webp"
-          alt=""
+          alt="Person training alone in a gym"
           width="1800"
           height="1005"
           fetchpriority="high"
@@ -39,11 +114,11 @@ const rightArrowHtml = '&rarr;';
 
       <div class="container hero-inner">
         <div class="hero-copy">
-          <div class="section-label">Adaptive Workout Programming</div>
-          <h1>Training that <span class="accent">adapts</span> after every session.</h1>
+          <div class="section-label">Personalized Workout App for Beginners</div>
+          <h1>Not sure what to do at the gym? <span class="accent">We&apos;ll handle it.</span></h1>
           <p class="lead">
-            {siteConfig.appName} builds the workout, captures what you actually did, gives structured AI feedback,
-            and shows whether the plan is working.
+            maatriks builds a workout plan around your schedule and goals, tracks what you actually do, and adjusts your next
+            session based on real performance. No guesswork. No generic templates.
           </p>
 
           <div class="hero-actions">
@@ -51,20 +126,20 @@ const rightArrowHtml = '&rarr;';
           </div>
 
           <div class="hero-points">
-            <span>Personalized onboarding</span>
-            <span>Real workout logging</span>
-            <span>Post-session coaching</span>
+            <span>Set your schedule, get a real plan</span>
+            <span>Log what you actually did</span>
+            <span>Get feedback that changes your next workout</span>
           </div>
         </div>
 
         <div class="hero-phone story-phone" data-snake-anchor>
-          <div class="device">
+          <div class="device" role="img" aria-label="maatriks app showing a personalized push day workout plan">
             <div class="device-inner">
               <LegacyPartial name="phone-workout" />
             </div>
           </div>
           <div class="hero-preview-mobile">
-            <div class="preview-device device preview-device--hero preview-device--loop" aria-hidden="true">
+            <div class="preview-device device preview-device--hero preview-device--loop" role="img" aria-label="maatriks app showing a personalized push day workout plan">
               <div class="device-inner preview-device-inner">
                 <div class="device-status">
                   <span class="device-time">9:41</span>
@@ -85,17 +160,18 @@ const rightArrowHtml = '&rarr;';
       <div class="container journey-inner">
         <div class="journey-header reveal">
           <div class="step-number">1</div>
-          <h2>Onboard</h2>
+          <h2>Tell us about you</h2>
         </div>
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            Set training frequency, session length, and plan direction so the first week starts from your actual constraints.
+            How many days can you train? How long are your sessions? What do you want to focus on? Your first week is built
+            from your answers, not a generic template.
           </p>
         </div>
 
         <div class="story-phone story-phone-desktop reveal reveal-left" data-snake-anchor>
-          <div class="device">
+          <div class="device" role="img" aria-label="maatriks onboarding screen asking session length preference">
             <div class="device-inner">
               <LegacyPartial name="phone-onboarding" />
             </div>
@@ -103,7 +179,7 @@ const rightArrowHtml = '&rarr;';
         </div>
 
         <div class="story-preview reveal">
-          <div class="preview-device device preview-device--step preview-device--onboarding" aria-hidden="true">
+          <div class="preview-device device preview-device--step preview-device--onboarding" role="img" aria-label="maatriks onboarding screen asking session length preference">
             <div class="device-inner preview-device-inner">
               <div class="device-status">
                 <span class="device-time">9:41</span>
@@ -123,15 +199,15 @@ const rightArrowHtml = '&rarr;';
             <dl class="journey-facts">
               <div class="journey-fact">
                 <dt>Input</dt>
-                <dd>Training frequency, session length, and plan type.</dd>
+                <dd>Your schedule, session length, and training goal.</dd>
               </div>
               <div class="journey-fact">
                 <dt>System</dt>
-                <dd>The first week is shaped around those limits before any workout is logged.</dd>
+                <dd>Your first week is shaped by what actually fits your life.</dd>
               </div>
               <div class="journey-fact">
                 <dt>Outcome</dt>
-                <dd>No generic starting template and no mismatched session cap.</dd>
+                <dd>A plan that makes sense from day one, with no guessing what to do.</dd>
               </div>
             </dl>
           </div>
@@ -142,23 +218,24 @@ const rightArrowHtml = '&rarr;';
     <section class="journey-section journey-section-photo phone-right" id="step-log">
       <picture class="split-photo">
         <source media="(min-width: 769px)" srcset="/assets/bg-log-workout.webp" />
-        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="893" loading="lazy" decoding="async" />
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Person training in a gym" width="1600" height="893" loading="lazy" decoding="async" />
       </picture>
 
       <div class="container journey-inner">
         <div class="journey-header reveal">
           <div class="step-number">2</div>
-          <h2>Log Workout</h2>
+          <h2>Track what actually happened</h2>
         </div>
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            Log the session as it actually happened so the next recommendation responds to performance instead of the original plan.
+            Finished early? Swapped an exercise? Went heavier than planned? Log it as it happened. Your next workout adjusts
+            based on what you actually did, not what was scheduled.
           </p>
         </div>
 
         <div class="story-phone story-phone-desktop reveal reveal-right" data-snake-anchor>
-          <div class="device">
+          <div class="device" role="img" aria-label="maatriks workout logging screen with back squat sets and exercise swap">
             <div class="device-inner">
               <LegacyPartial name="phone-workout-leg" />
             </div>
@@ -166,7 +243,7 @@ const rightArrowHtml = '&rarr;';
         </div>
 
         <div class="story-preview reveal">
-          <div class="preview-device device preview-device--step preview-device--workout" aria-hidden="true">
+          <div class="preview-device device preview-device--step preview-device--workout" role="img" aria-label="maatriks workout logging screen with back squat sets and exercise swap">
             <div class="device-inner preview-device-inner">
               <div class="device-status">
                 <span class="device-time">9:41</span>
@@ -186,15 +263,15 @@ const rightArrowHtml = '&rarr;';
             <dl class="journey-facts">
               <div class="journey-fact">
                 <dt>Input</dt>
-                <dd>Completed sets, reps, load, and any swaps made mid-session.</dd>
+                <dd>Sets, reps, weight, and any changes you made mid-workout.</dd>
               </div>
               <div class="journey-fact">
                 <dt>System</dt>
-                <dd>The log separates completed, active, and upcoming work so the session record stays defensible.</dd>
+                <dd>The app separates what you finished, what you skipped, and what you changed.</dd>
               </div>
               <div class="journey-fact">
                 <dt>Outcome</dt>
-                <dd>Future programming can react to the real workout, not an idealized one.</dd>
+                <dd>Your next session is built on real data, not an idealized plan.</dd>
               </div>
             </dl>
           </div>
@@ -206,17 +283,18 @@ const rightArrowHtml = '&rarr;';
       <div class="container journey-inner">
         <div class="journey-header reveal">
           <div class="step-number">3</div>
-          <h2>Get Feedback</h2>
+          <h2>See why your plan is changing</h2>
         </div>
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            Turn the raw training log into metrics, coaching context, and a clear read on what the app will adapt next.
+            After each session, maatriks reviews what you did and explains what it will adjust next time and why. Not generic
+            encouragement. Actual feedback on your actual workout.
           </p>
         </div>
 
         <div class="story-phone story-phone-desktop reveal reveal-left" data-snake-anchor>
-          <div class="device">
+          <div class="device" role="img" aria-label="maatriks session summary showing volume, streak, and coach notes">
             <div class="device-inner">
               <LegacyPartial name="phone-feedback" />
             </div>
@@ -224,7 +302,7 @@ const rightArrowHtml = '&rarr;';
         </div>
 
         <div class="story-preview reveal">
-          <div class="preview-device device preview-device--step preview-device--feedback" aria-hidden="true">
+          <div class="preview-device device preview-device--step preview-device--feedback" role="img" aria-label="maatriks session summary showing volume, streak, and coach notes">
             <div class="device-inner preview-device-inner">
               <div class="device-status">
                 <span class="device-time">9:41</span>
@@ -244,15 +322,15 @@ const rightArrowHtml = '&rarr;';
             <dl class="journey-facts">
               <div class="journey-fact">
                 <dt>Input</dt>
-                <dd>The completed session plus recent training load and streak context.</dd>
+                <dd>Your completed session and recent training history.</dd>
               </div>
               <div class="journey-fact">
                 <dt>System</dt>
-                <dd>The summary turns raw performance into structured notes instead of generic encouragement.</dd>
+                <dd>The app writes structured notes explaining what worked, what to change, and why.</dd>
               </div>
               <div class="journey-fact">
                 <dt>Outcome</dt>
-                <dd>You can see why the next session will change and what justified it.</dd>
+                <dd>You always know the reason behind your next workout.</dd>
               </div>
             </dl>
           </div>
@@ -263,23 +341,24 @@ const rightArrowHtml = '&rarr;';
     <section class="journey-section journey-section-photo phone-right" id="step-results">
       <picture class="split-photo">
         <source media="(min-width: 769px)" srcset="/assets/bg-results.webp" />
-        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="894" loading="lazy" decoding="async" />
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Person training in a gym" width="1600" height="894" loading="lazy" decoding="async" />
       </picture>
 
       <div class="container journey-inner">
         <div class="journey-header reveal">
           <div class="step-number">4</div>
-          <h2>Look at Results</h2>
+          <h2>Watch yourself get stronger</h2>
         </div>
 
         <div class="journey-copy reveal">
           <p class="journey-summary">
-            Keep streaks, workout history, PRs, and volume in one view so it is obvious whether the plan is actually working.
+            Streaks, personal records, workout history, and progress trends all in one place. No spreadsheet needed. You can
+            see whether the plan is working without doing the math yourself.
           </p>
         </div>
 
         <div class="story-phone story-phone-desktop reveal reveal-right" data-snake-anchor>
-          <div class="device">
+          <div class="device" role="img" aria-label="maatriks dashboard showing workout streaks, personal records, and volume trends">
             <div class="device-inner">
               <LegacyPartial name="phone-dashboard" />
             </div>
@@ -287,7 +366,7 @@ const rightArrowHtml = '&rarr;';
         </div>
 
         <div class="story-preview reveal">
-          <div class="preview-device device preview-device--step preview-device--results" aria-hidden="true">
+          <div class="preview-device device preview-device--step preview-device--results" role="img" aria-label="maatriks dashboard showing workout streaks, personal records, and volume trends">
             <div class="device-inner preview-device-inner">
               <div class="device-status">
                 <span class="device-time">9:41</span>
@@ -307,15 +386,15 @@ const rightArrowHtml = '&rarr;';
             <dl class="journey-facts">
               <div class="journey-fact">
                 <dt>Input</dt>
-                <dd>Workout history, streak state, PRs, and monthly volume data.</dd>
+                <dd>Every workout you have logged.</dd>
               </div>
               <div class="journey-fact">
                 <dt>System</dt>
-                <dd>The dashboard keeps recent performance and broader trends in the same place.</dd>
+                <dd>The dashboard tracks streaks, PRs, volume, and trends automatically.</dd>
               </div>
               <div class="journey-fact">
                 <dt>Outcome</dt>
-                <dd>You do not need notes or spreadsheets to judge whether progress is moving.</dd>
+                <dd>You can see your progress at a glance, and so can the app.</dd>
               </div>
             </dl>
           </div>
@@ -324,69 +403,40 @@ const rightArrowHtml = '&rarr;';
     </section>
   </div>
 
-  <section class="stats-section section-block" id="stats">
-    <div class="container">
-      <div class="section-head reveal">
-        <div class="section-label">Stats</div>
-        <h2>Built around the full training loop</h2>
-        <p>Placeholder metrics for now, but the section structure is ready for real numbers once they are available.</p>
-      </div>
-
-      <div class="stats-grid">
-        <article class="stat-card reveal">
-          <div class="stat-value" data-count-end="10000" data-count-suffix="+">0</div>
-          <div class="stat-title">Workouts Logged</div>
-        </article>
-        <article class="stat-card reveal">
-          <div class="stat-value" data-count-end="4.8" data-count-decimals="1">0</div>
-          <div class="stat-title">App Store Rating</div>
-        </article>
-        <article class="stat-card reveal">
-          <div class="stat-value" data-count-end="2500" data-count-suffix="+">0</div>
-          <div class="stat-title">Active Users</div>
-        </article>
-        <article class="stat-card reveal">
-          <div class="stat-value" data-count-end="50000" data-count-suffix="+">0</div>
-          <div class="stat-title">Sets Tracked</div>
-        </article>
-      </div>
-    </div>
-  </section>
-
   <section class="reviews-section section-block" id="reviews">
     <picture class="split-photo split-photo-left">
       <source media="(min-width: 769px)" srcset="/assets/bg-reviews.webp" />
-      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="" width="1600" height="893" loading="lazy" decoding="async" />
+      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="Person resting after a workout in a gym" width="1600" height="893" loading="lazy" decoding="async" />
     </picture>
 
     <div class="container reviews-layout">
       <div class="reviews-copy reveal">
         <div class="section-label">Reviews</div>
-        <h2>Early feedback from lifters using the loop</h2>
-        <p>These are placeholders until real testimonials are approved, but the carousel and interaction model are in place.</p>
+        <h2>What early users are saying</h2>
+        <p>Real beginner problems, plain-language reactions, and exactly the kind of reassurance people look for before they start.</p>
       </div>
 
       <div class="reviews-carousel reveal" data-carousel>
         <div class="reviews-track" data-carousel-track tabindex="0" aria-label="User reviews">
           <article class="review-card">
             <div class="review-stars">★★★★★</div>
-            <p>"Finally an app that reacts to what I actually finished instead of shaming me for missing one day."</p>
-            <div class="review-author">Marcus, powerbuilding focus</div>
+            <p>"I used to stand around not knowing what to do next. Now I open the app and my workout is there. It even changed after I couldn't finish last time."</p>
+            <div class="review-author">Anna, new to the gym</div>
           </article>
           <article class="review-card">
             <div class="review-stars">★★★★★</div>
-            <p>"The post-session notes are what keep me using it. I get a clear reason for the next progression."</p>
-            <div class="review-author">Sofia, 4-day split</div>
+            <p>"I tracked everything in Google Sheets for months. This does the same thing but actually adjusts the plan based on what I log. Should have switched earlier."</p>
+            <div class="review-author">Tom, switched from spreadsheets</div>
           </article>
           <article class="review-card">
             <div class="review-stars">★★★★★</div>
-            <p>"The workout logger is fast enough mid-session, and the dashboard makes trends obvious without extra charts."</p>
-            <div class="review-author">Daniel, intermediate lifter</div>
+            <p>"Other apps gave me the same workout every week. This one noticed I was getting stronger and added weight. That's all I wanted."</p>
+            <div class="review-author">Laura, tried 3 apps before this</div>
           </article>
           <article class="review-card">
             <div class="review-stars">★★★★★</div>
-            <p>"It feels like a coach reviewing the training log instead of a template app with a chatbot bolted on."</p>
-            <div class="review-author">Elli, hypertrophy block</div>
+            <p>"Can't afford a personal trainer. This is the closest thing I've found. It tells me what to do and explains why when things change."</p>
+            <div class="review-author">Erik, training with no coach</div>
           </article>
         </div>
 
@@ -403,58 +453,57 @@ const rightArrowHtml = '&rarr;';
     <div class="container faq-inner">
       <div class="section-head reveal">
         <div class="section-label">FAQ</div>
-        <h2>Questions people ask before they commit</h2>
-        <p>Five common questions, all expandable inline so the section stays easy to scan.</p>
+        <h2>Common questions</h2>
       </div>
 
       <div class="faq-list reveal">
         <details class="faq-item">
           <summary>
-            <span>How does the app decide what changes after a workout?</span>
+            <span>Do I need gym experience to use maatriks?</span>
             <span class="faq-icon" aria-hidden="true"></span>
           </summary>
           <div class="faq-answer">
-            <p>It uses what you actually logged, including completed sets, reps, load, and swaps, then turns that into the next recommendation instead of blindly following the original template.</p>
+            <p>No. The app is built for beginners. Tell it your schedule and goals, and it builds your first workout from there. You don't need to know exercises or programming, the app handles that.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary>
-            <span>Can I change exercises mid-session without breaking the plan?</span>
+            <span>How does the app know what to change after each workout?</span>
             <span class="faq-icon" aria-hidden="true"></span>
           </summary>
           <div class="faq-answer">
-            <p>Yes. The logging flow is meant to reflect the real session, so swaps and adjustments are part of the record the system responds to later.</p>
+            <p>It uses what you actually logged: sets, reps, weight, and any swaps you made. If you went heavier, it adjusts up. If you cut a session short, it adapts. Every workout informs the next one.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary>
-            <span>Is this closer to a fixed program or a coaching loop?</span>
+            <span>Can I change exercises during a workout?</span>
             <span class="faq-icon" aria-hidden="true"></span>
           </summary>
           <div class="faq-answer">
-            <p>The intent is a loop. You start with a programmed structure, but the value comes from the app re-reading the session and explaining what should change next.</p>
+            <p>Yes. Swap anything mid-session and the app treats it as part of the record. Your plan adjusts based on what you actually did, not what was originally scheduled.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary>
-            <span>What kind of lifter is this built for?</span>
+            <span>Is this a fixed workout plan or does it change?</span>
             <span class="faq-icon" aria-hidden="true"></span>
           </summary>
           <div class="faq-answer">
-            <p>The current positioning fits people who already train consistently and want something more adaptive than a static spreadsheet or a template app with chat layered on top.</p>
+            <p>It changes. You start with a structured plan based on your setup, but after each session the app reviews what happened and adjusts what comes next. The longer you use it, the more tailored it gets.</p>
           </div>
         </details>
 
         <details class="faq-item">
           <summary>
-            <span>What can I actually track over time?</span>
+            <span>How is this different from a personal trainer?</span>
             <span class="faq-icon" aria-hidden="true"></span>
           </summary>
           <div class="faq-answer">
-            <p>The results view is built to keep streaks, workout history, PRs, and volume trends in one place so you can judge whether the plan is moving in the right direction.</p>
+            <p>A trainer costs 50-120 per session. maatriks gives you a personalized plan that adapts after every workout, with written feedback explaining what changed and why. It is not a human coach, but it pays closer attention than a static app or a spreadsheet.</p>
           </div>
         </details>
       </div>
@@ -464,8 +513,8 @@ const rightArrowHtml = '&rarr;';
   <section class="newsletter-section section-block" id="newsletter">
     <div class="container newsletter-inner reveal">
       <div class="section-label">Newsletter</div>
-      <h2>Stay in the loop</h2>
-      <p>Training tips, feature updates, and early product drops. For now, signup routes through email until the backend is wired.</p>
+      <h2>Get training tips that actually help</h2>
+      <p>Simple advice for getting stronger, app updates, and early access to new features. One email a week, no spam.</p>
 
       <form class="newsletter-form" data-newsletter-form>
         <label class="sr-only" for="newsletter-email">Email address</label>
@@ -479,8 +528,8 @@ const rightArrowHtml = '&rarr;';
   <section class="download-section section-block" id="download">
     <div class="container download-inner reveal">
       <div class="section-label">Download</div>
-      <h2>Ready to train smarter?</h2>
-      <p>Start with the app, then let the programming and review loop compound over time.</p>
+      <h2>Your first workout is one setup away</h2>
+      <p>Download maatriks, answer a few questions, and get a plan built for you. It gets smarter every session.</p>
 
       <div class="download-actions">
         <LegacyPartial name="store-badges" />

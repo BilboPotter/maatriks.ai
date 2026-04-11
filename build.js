@@ -66,7 +66,87 @@ function toAbsoluteSiteUrl(assetPath) {
 // pageClass: extra class on .page wrapper (e.g. 'content-page')
 // mainStyle: inline style on <main> tag
 const ROUTES = [
-  { page: 'index.html', out: 'index.html', canonical: '/', layout: 'default', pageClass: '', mainStyle: 'style="padding:0;"', title: `${CONFIG.appName} — ${CONFIG.appTagline}`, description: CONFIG.appDescription },
+  {
+    page: 'index.html',
+    out: 'index.html',
+    canonical: '/',
+    layout: 'default',
+    pageClass: '',
+    mainStyle: 'style="padding:0;"',
+    title: 'maatriks — Workout App That Adapts to You',
+    description: 'Not sure what to do at the gym? maatriks builds a personalized workout plan, tracks what you actually did, and adjusts your next session automatically. Built for beginners.',
+    socialTitle: 'maatriks — Workout App That Adapts to You',
+    socialDescription: 'A personalized workout app for beginners. maatriks builds your plan, tracks what you actually did, and adjusts your next session automatically.',
+    siteName: 'maatriks',
+    structuredData: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'SoftwareApplication',
+        name: 'maatriks',
+        applicationCategory: 'HealthApplication',
+        operatingSystem: 'iOS, Android',
+        description: 'Adaptive workout programming app that builds personalized plans for beginners, tracks real performance, and adjusts automatically after every session.',
+        url: 'https://maatriks.ai',
+        author: {
+          '@type': 'Organization',
+          name: 'Riverin OÜ',
+          url: 'https://maatriks.ai',
+        },
+        offers: {
+          '@type': 'Offer',
+          price: '0',
+          priceCurrency: 'USD',
+          availability: 'https://schema.org/ComingSoon',
+        },
+      },
+      {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'Do I need gym experience to use maatriks?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: "No. The app is built for beginners. Tell it your schedule and goals, and it builds your first workout from there. You don't need to know exercises or programming — the app handles that.",
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'How does the app know what to change after each workout?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'It uses what you actually logged — sets, reps, weight, and any swaps you made. If you went heavier, it adjusts up. If you cut a session short, it adapts. Every workout informs the next one.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Can I change exercises during a workout?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes. Swap anything mid-session and the app treats it as part of the record. Your plan adjusts based on what you actually did, not what was originally scheduled.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Is this a fixed workout plan or does it change?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'It changes. You start with a structured plan based on your setup, but after each session the app reviews what happened and adjusts what comes next. The longer you use it, the more tailored it gets.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'How is this different from a personal trainer?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'A trainer costs 50-120 per session. maatriks gives you a personalized plan that adapts after every workout, with written feedback explaining what changed and why. It is not a human coach, but it pays closer attention than a static app or a spreadsheet.',
+            },
+          },
+        ],
+      },
+    ],
+  },
   { page: 'privacy.html', out: 'privacy/index.html', canonical: '/privacy', layout: 'default', pageClass: 'content-page', title: `Privacy Policy — ${CONFIG.appName}`, description: `Privacy policy for ${CONFIG.appName}, operated by ${CONFIG.companyName}.` },
   { page: 'support.html', out: 'support/index.html', canonical: '/support', layout: 'default', pageClass: 'content-page', title: `Support — ${CONFIG.appName}`, description: `Get help with ${CONFIG.appName}. Contact ${CONFIG.supportEmail}.` },
   { page: 'delete-account.html', out: 'delete-account/index.html', canonical: '/delete-account', layout: 'default', pageClass: 'content-page', noindex: true, title: `Delete Account — ${CONFIG.appName}`, description: `How to delete your ${CONFIG.appName} account and what happens to your data.` },
@@ -162,15 +242,24 @@ function build() {
     const composedContent = composePage(route, rawContent, navPartial, footerPartial, jsMap);
 
     const canonicalUrl = CONFIG.siteUrl + route.canonical;
-    const robotsMeta = route.noindex ? '<meta name="robots" content="noindex, nofollow">\n  ' : '';
+    const robotsMeta = route.noindex
+      ? '<meta name="robots" content="noindex, nofollow">'
+      : '<meta name="robots" content="index, follow">';
+    const structuredDataHtml = (route.structuredData || [])
+      .map((entry) => `<script type="application/ld+json">${JSON.stringify(entry)}</script>`)
+      .join('\n  ');
     const vars = {
       ...CONFIG,
       pageTitle: route.title,
       pageDescription: route.description,
+      socialTitle: route.socialTitle || route.title,
+      socialDescription: route.socialDescription || route.description,
+      siteName: route.siteName || CONFIG.appName,
       canonicalUrl: canonicalUrl,
       socialImageUrl: toAbsoluteSiteUrl(DEFAULT_SOCIAL_IMAGE),
       socialImageAlt: DEFAULT_SOCIAL_IMAGE_ALT,
       robotsMeta: robotsMeta,
+      structuredDataHtml: structuredDataHtml,
       criticalCss: criticalCss,
       referrerPolicy: route.sensitive ? 'no-referrer' : DEFAULT_REFERRER_POLICY,
       securityMeta: route.sensitive ? AUTH_SECURITY_META : '',
@@ -272,10 +361,14 @@ function build() {
     ...CONFIG,
     pageTitle: `Blog — ${CONFIG.appName}`,
     pageDescription: `Writing from ${CONFIG.appName} on training, programming, product design, and building the app.`,
+    socialTitle: `Blog — ${CONFIG.appName}`,
+    socialDescription: `Writing from ${CONFIG.appName} on training, programming, product design, and building the app.`,
+    siteName: CONFIG.appName,
     canonicalUrl: `${CONFIG.siteUrl}/blog`,
     socialImageUrl: toAbsoluteSiteUrl(BLOG_SOCIAL_IMAGE),
     socialImageAlt: BLOG_SOCIAL_IMAGE_ALT,
-    robotsMeta: '',
+    robotsMeta: '<meta name="robots" content="index, follow">',
+    structuredDataHtml: '',
     criticalCss: criticalCss,
     referrerPolicy: DEFAULT_REFERRER_POLICY,
     securityMeta: '',
@@ -301,10 +394,14 @@ function build() {
       ...CONFIG,
       pageTitle: `${post.title} — ${CONFIG.appName}`,
       pageDescription: post.description,
+      socialTitle: `${post.title} — ${CONFIG.appName}`,
+      socialDescription: post.description,
+      siteName: CONFIG.appName,
       canonicalUrl: `${CONFIG.siteUrl}/blog/${post.slug}`,
       socialImageUrl: toAbsoluteSiteUrl(BLOG_SOCIAL_IMAGE),
       socialImageAlt: BLOG_SOCIAL_IMAGE_ALT,
-      robotsMeta: '',
+      robotsMeta: '<meta name="robots" content="index, follow">',
+      structuredDataHtml: '',
       criticalCss: criticalCss,
       referrerPolicy: DEFAULT_REFERRER_POLICY,
       securityMeta: '',
@@ -344,10 +441,14 @@ function build() {
     ...CONFIG,
     pageTitle: `Page Not Found — ${CONFIG.appName}`,
     pageDescription: `The page you are looking for does not exist.`,
+    socialTitle: `Page Not Found — ${CONFIG.appName}`,
+    socialDescription: `The page you are looking for does not exist.`,
+    siteName: CONFIG.appName,
     canonicalUrl: CONFIG.siteUrl,
     socialImageUrl: toAbsoluteSiteUrl(DEFAULT_SOCIAL_IMAGE),
     socialImageAlt: DEFAULT_SOCIAL_IMAGE_ALT,
-    robotsMeta: '<meta name="robots" content="noindex">\n  ',
+    robotsMeta: '<meta name="robots" content="noindex, nofollow">',
+    structuredDataHtml: '',
     criticalCss: criticalCss,
     referrerPolicy: DEFAULT_REFERRER_POLICY,
     securityMeta: '',

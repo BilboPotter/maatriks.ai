@@ -51,6 +51,29 @@ function compareDirectory(relativeDir) {
   });
 }
 
+function compareBlogPosts() {
+  const legacyBlogDir = path.join(LEGACY_DIST, 'blog');
+  const astroBlogDir = path.join(ASTRO_DIST, 'blog');
+
+  const legacyEntries = fs.readdirSync(legacyBlogDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+
+  const astroEntries = fs.readdirSync(astroBlogDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort();
+
+  if (legacyEntries.join('\n') !== astroEntries.join('\n')) {
+    throw new Error('Blog post directory mismatch between legacy and Astro outputs');
+  }
+
+  legacyEntries.forEach((slug) => {
+    compareFile(path.join('blog', slug, 'index.html'), 'html');
+  });
+}
+
 const htmlFiles = [
   'index.html',
   '404.html',
@@ -67,10 +90,10 @@ const htmlFiles = [
   'update-password/index.html',
   'update-password.html',
   'blog/index.html',
-  'blog/why-adaptive-training-matters/index.html',
 ];
 
 htmlFiles.forEach((file) => compareFile(file, 'html'));
+compareBlogPosts();
 
 [
   'blog/feed.xml',
