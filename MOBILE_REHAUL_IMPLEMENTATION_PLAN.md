@@ -1,58 +1,165 @@
-# Mobile Rehaul Implementation Plan
+# Homepage Mobile Scannability Implementation Plan
 
 Current production baseline is already pushed to GitHub at commit `bbd8311` (`Fix footer link layout`).
 
-This plan is for a mobile-only overhaul of the homepage story flow. Desktop should remain visually unchanged.
+This plan replaces the previous mobile-only rehaul scope.
 
-## Constraints
+The active scope is now:
+- structured and scannable text blocks for each existing story step
+- mobile text-first step layout
+- hero/mobile boundary cleanup
+- cookie banner reduction on phone
 
-- Do not change desktop layout or desktop phone mockups.
-- Do not change site routes, auth flows, legal pages, or blog behavior.
-- Keep Astro output and legacy build output in parity.
-- Restrict visual changes to mobile and small-tablet breakpoints.
-- Preserve the overall brand feel: dark canvas, amber accent, technical/product tone.
+Desktop and mobile story compression are intentionally out of scope.
 
-## Current Mobile Problems
+## Scope
 
-Observed locally on iPhone-sized viewport against `astro-dist`:
+In scope:
+- homepage step text hierarchy and copy structure
+- homepage mobile journey layout order
+- homepage mobile first-view behavior
+- homepage cookie-banner presentation on phone
 
-1. The phone frames are too narrow on mobile.
-   - The outer device shrinks hard at the mobile breakpoint in [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css#L2895), but the internal UI paddings and font sizes stay relatively large in [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css#L1099).
+Out of scope:
+- store badge destination behavior
+- legal pages
+- auth flows
+- blog structure
+- new trust, pricing, FAQ, team, or social-proof sections
+- copywriting polish beyond structural placeholders
+- merging journey sections into a single desktop system section
+- reducing the number of journey sections
+- compressing the story on desktop
+- compressing the story on mobile
 
-2. The mobile sections lead with a giant phone before the explanation.
-   - The current mobile stack is effectively `header -> phone -> body`, so the phone dominates the first screen and the explanation is pushed below the fold.
-   - Source structure: [astro-src/pages/index.astro](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/astro-src/pages/index.astro) and [src/pages/index.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/pages/index.html).
+## Current Problems
 
-3. The app screens are too dense for the available mobile marketing space.
-   - The current partials are full, literal app screens instead of focused marketing visuals:
-   - [src/partials/phone-onboarding.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/partials/phone-onboarding.html)
-   - [src/partials/phone-workout.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/partials/phone-workout.html)
-   - [src/partials/phone-workout-leg.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/partials/phone-workout-leg.html)
-   - [src/partials/phone-feedback.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/partials/phone-feedback.html)
-   - [src/partials/phone-dashboard.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/partials/phone-dashboard.html)
+Observed locally in the existing homepage implementation:
 
-4. The hero still feels crowded on first visit.
-   - Even after previous cleanup, the phone preview plus store badges plus background plus cookie banner still compete in the first screen on mobile.
+1. Desktop spends too much vertical space on too little new information.
+   - This is acknowledged, but not addressed in this plan.
+   - No desktop story compression work should be implemented under this scope.
 
-5. The cookie banner materially worsens the mobile first-view experience.
-   - It takes too much vertical space and covers already cramped sections.
-   - Styles: [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css#L2687)
+2. The story steps are readable, but not especially scannable.
+   - Each step currently uses `number -> title -> paragraph -> support card`, which forces too much sentence reading before the user can extract the point.
+   - Source structure: [src/pages/index.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/pages/index.html:58).
+
+3. Mobile first view is still too obstructed.
+   - The hero is text-led, but the cookie banner still competes with the CTA and preview area.
+   - Mobile cookie styles live in [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css:3745).
+
+4. Desktop and mobile are solving the same content problem with too much repetition.
+   - This is acknowledged, but the current four-step structure should remain intact in this plan.
+
+5. The current plan assumes desktop must remain visually unchanged.
+   - That constraint is no longer valid and should not guide implementation.
+
+## Product Direction
+
+The homepage should behave like this:
+
+1. Hero stays cinematic and high-impact.
+2. The existing four-step journey remains four separate steps.
+3. The text inside each step becomes visibly structured and easy to skim.
+4. Mobile keeps the same overall flow, but each step becomes more text-first and less obstructed.
+5. Cookie consent still works, but it should no longer sit on top of the most important mobile content.
+
+## Target Content Pattern For Each Step
+
+Before final copy arrives, every step should use the same structural pattern:
+
+- step number and short label
+- one strong headline
+- one short supporting sentence
+- one compact structured detail group
+
+Recommended structured detail group:
+- `Input`
+- `What happens`
+- `Outcome`
+
+Alternative if the content fits better:
+- 3 short bullets with one line each
+
+Example shape:
+
+- `1. Onboarding`
+- `Start from your constraints`
+- `The app uses your schedule and goal to shape the first week.`
+- `Input: frequency, session length, focus`
+- `What happens: the system builds your initial structure`
+- `Outcome: no generic starting template`
+
+The key rule is:
+- do not rely on long paragraphs to communicate the step
+- do not rely on the support card to carry the important meaning
 
 ## Implementation Strategy
 
 The safest path is:
 
-1. Keep desktop full-device mockups exactly as they are.
-2. Give mobile its own story composition.
-3. Use mobile-specific product visuals instead of shrinking the desktop visuals harder.
-4. Keep the code modular by isolating mobile-only product previews and mobile-only layout rules.
+1. Keep the hero and the existing four-step journey structure.
+2. Redesign the step text blocks so they explain themselves quickly.
+3. Make the mobile step layout text-first without changing the number of steps.
+4. Improve the hero/mobile boundary so the first viewport is more controlled.
+5. Reduce mobile obstruction from the cookie banner without changing consent logic.
 
 ## Deliverables
 
-### Phase 1: Rebuild Mobile Section Architecture
+### Phase 1: Add Structured, Scannable Step Copy Blocks
 
 Goal:
-- Every mobile section should read as `step -> title -> short explanation -> product visual -> support card`.
+- make the text blocks easier to skim before final copy is written
+
+Files:
+- [astro-src/pages/index.astro](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/astro-src/pages/index.astro)
+- [src/pages/index.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/pages/index.html)
+- [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css)
+
+Tasks:
+- replace the current `title + paragraph + support card` step rhythm with a structured pattern
+- introduce a reusable step-text layout such as:
+  - `.step-kicker`
+  - `.step-title`
+  - `.step-summary`
+  - `.step-meta-list`
+  - `.step-meta-row`
+- ensure each step block can be understood from headings and labels alone
+- keep placeholder copy short and mechanical rather than polished
+- treat the current support-card content as structured metadata, not as a second paragraph
+- do not merge or remove any of the four step sections
+- keep the desktop step order and overall section count intact
+
+Verification:
+- each step should still make sense when scanned in 5 to 8 seconds
+- the section should work even if the reader does not read every sentence
+
+### Phase 2: Redesign The Mobile Journey For Text-First Reading
+
+Goal:
+- keep mobile stacked, but reduce repetition and make the explanation visible faster
+
+Files:
+- [astro-src/pages/index.astro](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/astro-src/pages/index.astro)
+- [src/pages/index.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/pages/index.html)
+- [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css)
+
+Tasks:
+- keep mobile order as `step -> title -> explanation -> structured details -> visual`
+- preserve the mobile preview system that already exists, but make it subordinate to the text block
+- tighten vertical spacing between step intro text and preview card
+- reduce duplicated support-card treatment on mobile if the structured detail block already communicates the point
+- make sure mobile step blocks do not feel like mini-pages
+- do not compress multiple steps into a single mobile system section
+
+Verification:
+- on phone widths, the user should see the point of the section before the preview dominates the viewport
+- mobile sections should feel like a continuous explanation, not four isolated scenes
+
+### Phase 3: Rework The Hero-Mobile Boundary
+
+Goal:
+- keep the hero strong while ensuring the first mobile viewport is usable
 
 Files:
 - [astro-src/pages/index.astro](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/astro-src/pages/index.astro)
@@ -61,149 +168,86 @@ Files:
 - [src/styles/critical.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/critical.css)
 
 Tasks:
-- Keep desktop DOM structure unchanged where possible.
-- On mobile, change journey section grid areas from `header / phone / body` to `header / body / phone`.
-- Ensure the first explanatory paragraph is visible above the phone on small screens.
-- Reduce per-section top and bottom padding so the transition between sections feels tighter.
+- keep the existing hero message and general visual direction
+- make sure the hero CTA area is complete and readable before lower content competes with it
+- review whether the mobile hero preview should remain directly visible or sit slightly lower
+- if needed, reduce hero preview height or increase separation between CTA and preview
 
 Verification:
-- `#step-onboard`, `#step-log`, `#step-feedback`, and `#step-results` must all show title plus explanation before the phone dominates the viewport.
+- the mobile hero should read clearly as `headline -> lead -> badges`, with preview secondary
+- first-view attention should not feel split between CTA, preview, and consent banner
 
-### Phase 2: Introduce Mobile-Specific Product Visuals
-
-Goal:
-- Stop using full tall desktop mockups as the primary mobile visual language.
-
-Files to add:
-- `src/partials/phone-onboarding-mobile.html`
-- `src/partials/phone-workout-mobile.html`
-- `src/partials/phone-feedback-mobile.html`
-- `src/partials/phone-results-mobile.html`
-
-Files to update:
-- [astro-src/pages/index.astro](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/astro-src/pages/index.astro)
-- [src/pages/index.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/pages/index.html)
-- [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css)
-
-Tasks:
-- Add a dedicated mobile visual variant for each story step.
-- These should be shorter product windows or cropped screen cards, not full 390x844 framed phones.
-- Desktop keeps the existing `.device` mockups.
-- Mobile uses a new visual wrapper such as `.story-visual-mobile`.
-
-Content rules for each mobile visual:
-- Onboard: question title + one selected option
-- Log workout: one exercise header + 2-3 set rows
-- Feedback: key metrics + first coach note
-- Results: streak + compact calendar or monthly volume block
-
-Verification:
-- Mobile product visuals must fit comfortably in one viewport without tiny or crowded text.
-
-### Phase 3: Add a Dedicated Mobile Product-Preview System
+### Phase 4: Make Mobile Consent Less Destructive
 
 Goal:
-- Make the mobile visuals easy to maintain without touching the desktop phone system.
+- keep consent behavior intact while reducing first-view interference
 
 Files:
 - [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css)
-- Optional new partial helper styles section near existing device styles
+- [src/styles/critical.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/critical.css) if banner presentation is above-the-fold critical
+- [src/scripts/consent.js](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/scripts/consent.js) only if small behavior changes are required
 
 Tasks:
-- Add a separate style namespace for mobile previews, for example:
-  - `.preview-shell`
-  - `.preview-card`
-  - `.preview-metric-row`
-  - `.preview-choice`
-  - `.preview-list-row`
-- Do not overload `.device`, `.screen-scroll`, and the existing app-screen classes for mobile marketing previews.
-- Keep the mobile preview system independent so new steps can be added later without reworking the desktop mockups.
+- keep the current accept/decline logic unchanged unless there is a compelling reason to alter it
+- reduce visual weight of the banner on phone
+- shrink vertical footprint further than the current implementation if necessary
+- consider one of these layouts:
+  - compact inset card with shorter copy
+  - bottom sheet with smaller controls
+  - reduced-height bar with stacked action row only if it still reads clearly
+- ensure it does not sit directly on top of the hero CTA and first preview content
 
 Verification:
-- The CSS for mobile previews should be isolated and readable.
-- Desktop `.device` rules should not be affected.
+- the first mobile view should remain usable before dismissing consent
+- the banner should no longer be one of the dominant visual objects on the screen
 
-### Phase 4: Rework the Hero for Mobile
+## Proposed Homepage Structure After Implementation
 
-Goal:
-- The first mobile viewport should be text-led and controlled.
+Desktop:
 
-Files:
-- [astro-src/pages/index.astro](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/astro-src/pages/index.astro)
-- [src/pages/index.html](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/pages/index.html)
-- [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css)
-- [src/styles/critical.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/critical.css)
+1. Hero
+2. Step 1
+3. Step 2
+4. Step 3
+5. Step 4
+6. Stats
+7. Reviews
+8. Newsletter
+9. Download CTA
 
-Tasks:
-- Keep the existing desktop hero composition.
-- On mobile, reduce the visual weight of the product mockup in the hero.
-- Use either:
-  - a compact cropped preview below the CTA area, or
-  - a much shorter framed phone section with only the top of the app visible.
-- Ensure the headline, lead, and store badges remain readable without the phone colliding into them.
+Mobile:
 
-Verification:
-- The hero should feel finished before the phone enters.
-- The CTA area should remain visible even with the cookie banner present.
+1. Hero
+2. Step 1
+3. Step 2
+4. Step 3
+5. Step 4
+6. Stats
+7. Reviews
+8. Newsletter
+9. Download CTA
 
-### Phase 5: Make the Cookie Banner Less Destructive on Mobile
-
-Goal:
-- Keep consent behavior, reduce viewport damage.
-
-Files:
-- [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css)
-- [src/scripts/consent.js](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/scripts/consent.js) only if behavior changes are required
-
-Tasks:
-- Keep the banner functional.
-- Shorten the copy on mobile styling treatment.
-- Reduce vertical padding and button footprint.
-- Consider a more compact inset layout on phone instead of a full-width heavy bar.
-
-Verification:
-- The banner should no longer cover critical portions of the mobile hero and journey previews.
-
-### Phase 6: Tighten the Mobile Rhythm of the Lower Sections
-
-Goal:
-- Make the rest of the page feel intentionally paced on phone.
-
-Files:
-- [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css)
-
-Tasks:
-- Reduce spacing between the story sections and the following stats/reviews sections on mobile.
-- Ensure the visual hierarchy remains:
-  - story section
-  - proof/stats
-  - reviews
-  - newsletter/download
-- Review card heights, section padding, and inter-section gaps on phone.
-
-Verification:
-- Scrolling down the page should feel continuous rather than sectionally overpadded.
+The structural change is inside the step content blocks and mobile ordering, not in the number or compression of sections.
 
 ## Coding Approach
 
-To keep this modular and easy to maintain:
+To keep this maintainable:
 
-1. Do not mutate the existing desktop phone partials to fit mobile.
-2. Add dedicated mobile preview partials instead of overloading one markup set for all contexts.
-3. Group all mobile-only preview CSS under a clearly labeled section in [src/styles/main.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/main.css).
-4. Mirror any hero-above-the-fold changes in [src/styles/critical.css](/Users/reioinnos/Project Claude/projects/maatriks/maatriks/src/styles/critical.css).
-5. Update both Astro and legacy page sources together to preserve build parity.
+1. Do not implement any desktop or mobile story compression under this plan.
+2. Keep the hero and lower sections stable unless they directly support the approved scope.
+3. Build a reusable step-text pattern instead of writing one-off markup per section.
+4. Reuse the existing preview system where it still fits mobile.
+5. Keep Astro and legacy page sources in sync.
+6. Mirror above-the-fold homepage changes in critical CSS.
 
 ## Execution Order
 
 Recommended implementation order:
 
-1. Phase 1: mobile section architecture
-2. Phase 2: mobile-specific visuals
-3. Phase 3: mobile preview style system
-4. Phase 4: hero mobile rework
-5. Phase 5: cookie banner mobile cleanup
-6. Phase 6: lower-section rhythm cleanup
+1. Phase 1: structured step-copy system
+2. Phase 2: mobile text-first journey layout
+3. Phase 3: hero-mobile boundary cleanup
+4. Phase 4: mobile consent cleanup
 
 ## Verification Checklist
 
@@ -214,35 +258,35 @@ After each phase:
 - `node verify-build.js`
 - `npm run astro:verify`
 
-Visual QA after major phases:
+Visual QA:
 
-- `390px` wide
-- `375px` wide
-- `360px` wide
-- `320px` wide
+- mobile widths: `390`, `375`, `360`, `320`
+- desktop widths: `1280`, `1440`
 
-Routes/anchors to inspect:
+Routes and sections to inspect:
 
 - `/`
 - `/#hero`
-- `/#step-onboard`
-- `/#step-log`
-- `/#step-feedback`
-- `/#step-results`
+- `/#step-onboard` if kept
+- `/#step-log` if kept
+- `/#step-feedback` if kept
+- `/#step-results` if kept
+- `/#stats`
+- `/#reviews`
+- `/#newsletter`
+- `/#download`
 
-Desktop regression check:
+Specific QA checks:
 
-- `1280px` and `1440px` widths
-- Header/footer alignment
-- Hero layout
-- Existing journey sections
-- Blog unaffected
+- hero CTA readability on mobile before consent dismissal
+- step-block scan speed
+- desktop step sections remain intact
+- no broken anchor or nav behavior
+- no regression to footer, blog, legal, or auth pages
 
 ## Success Criteria
 
-- Mobile no longer feels like the desktop page stacked vertically.
-- No phone mockup looks unnaturally slim or text-crammed.
-- Every mobile section explains itself before the product visual takes over.
-- The hero has one clear focal point.
-- Cookie consent no longer destroys the first-visit mobile experience.
-- Desktop remains visually unchanged.
+- mobile first view is usable even before dismissing consent
+- text sections are visibly more structured and scannable
+- the adaptive loop is understandable with quick scanning, not only by reading paragraphs
+- the existing four-step story remains intact on both desktop and phone
