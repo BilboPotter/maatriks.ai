@@ -1461,10 +1461,130 @@ input:focus-visible {
 }
 
 .device .screen {
+  --screen-image: none;
+  --screen-position: center;
+  --screen-top-shade: 0.34;
+  --screen-bottom-shade: 0.58;
+  --screen-center-edge: 0.06;
+  --screen-center-opacity: 0.22;
+  --screen-center-start: 18%;
+  --screen-center-end: 82%;
+  --screen-scrim-opacity: 0.42;
   position: absolute;
   inset: 48px 0 0;
   z-index: 2;
   overflow: hidden;
+  background-color: var(--canvas);
+  background-image: var(--screen-image);
+  background-position: var(--screen-position);
+  background-repeat: no-repeat;
+  background-size: cover;
+  isolation: isolate;
+}
+
+.device .screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(8, 8, 12, var(--screen-top-shade)) 0%,
+      rgba(8, 8, 12, 0.2) 36%,
+      rgba(8, 8, 12, 0) 100%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(8, 8, 12, var(--screen-center-edge)) 0%,
+      rgba(8, 8, 12, var(--screen-center-opacity)) var(--screen-center-start),
+      rgba(8, 8, 12, var(--screen-center-opacity)) var(--screen-center-end),
+      rgba(8, 8, 12, var(--screen-center-edge)) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(8, 8, 12, 0) 0%,
+      rgba(8, 8, 12, 0.28) 42%,
+      rgba(8, 8, 12, var(--screen-bottom-shade)) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(8, 8, 12, 0.2) 0%,
+      rgba(8, 8, 12, 0.04) 48%,
+      rgba(8, 8, 12, 0.12) 100%
+    );
+}
+
+.device .screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--canvas);
+  opacity: var(--screen-scrim-opacity);
+}
+
+.device .screen > * {
+  position: relative;
+  z-index: 1;
+}
+
+.device .screen--auth {
+  --screen-image: url("/assets/app-auth-bg.jpg");
+  --screen-bottom-shade: 0.58;
+  --screen-center-edge: 0.06;
+  --screen-center-opacity: 0.22;
+  --screen-center-start: 18%;
+  --screen-center-end: 82%;
+  --screen-scrim-opacity: 0.42;
+  --screen-top-shade: 0.34;
+}
+
+.device .screen--onboarding {
+  --screen-image: url("/assets/app-onboarding-bg.jpg");
+  --screen-bottom-shade: 0.62;
+  --screen-center-edge: 0.08;
+  --screen-center-opacity: 0.24;
+  --screen-center-start: 14%;
+  --screen-center-end: 86%;
+  --screen-scrim-opacity: 0.44;
+  --screen-top-shade: 0.34;
+}
+
+.device .screen--dashboard {
+  --screen-image: url("/assets/app-dashboard-bg.jpg");
+  --screen-bottom-shade: 0.68;
+  --screen-center-edge: 0.09;
+  --screen-center-opacity: 0.3;
+  --screen-center-start: 12%;
+  --screen-center-end: 88%;
+  --screen-scrim-opacity: 0.48;
+  --screen-top-shade: 0.38;
+}
+
+.device .screen--profile {
+  --screen-image: url("/assets/app-profile-bg.jpg");
+  --screen-bottom-shade: 0.72;
+  --screen-center-edge: 0.1;
+  --screen-center-opacity: 0.32;
+  --screen-center-start: 12%;
+  --screen-center-end: 88%;
+  --screen-scrim-opacity: 0.5;
+  --screen-top-shade: 0.4;
+}
+
+.device .screen--workout,
+.device .screen--summary {
+  --screen-image: url("/assets/app-workout-bg.jpg");
+  --screen-bottom-shade: 0.82;
+  --screen-center-edge: 0.12;
+  --screen-center-opacity: 0.42;
+  --screen-center-start: 6%;
+  --screen-center-end: 74%;
+  --screen-scrim-opacity: 0.46;
+  --screen-top-shade: 0.36;
 }
 
 .device .home-indicator {
