@@ -2,6 +2,7 @@
   var TIMEOUT_MS = 3000;
   var ALLOWED_PARAMS = {
     access_token: true,
+    auth_state: true,
     code: true,
     error: true,
     error_code: true,

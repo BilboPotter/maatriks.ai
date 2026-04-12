@@ -56,6 +56,10 @@ function verifyAuthPage({ htmlPath, scriptNamePrefix, expectedDeepLink, expected
     scriptBody.includes('token_hash'),
     `Expected ${scriptFileName} to whitelist token_hash for Supabase flows`
   );
+  assert(
+    scriptBody.includes('auth_state'),
+    `Expected ${scriptFileName} to preserve auth_state for mobile OAuth handoff`
+  );
 }
 
 function main() {
