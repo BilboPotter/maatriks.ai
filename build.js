@@ -29,6 +29,7 @@ const ROOT = __dirname;
 const SRC = path.join(ROOT, 'src');
 const DIST = path.join(ROOT, 'dist');
 const BLOG_SRC = path.join(SRC, 'blog');
+const PUBLIC_STATIC = path.join(ROOT, 'public-static');
 const CONFIG = JSON.parse(fs.readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
 const ASSETS = path.join(SRC, 'assets');
 const PARTIALS = path.join(SRC, 'partials');
@@ -292,6 +293,7 @@ function build() {
 
   // Copy assets
   copyDirSync(ASSETS, path.join(DIST, 'assets'));
+  copyDirSync(PUBLIC_STATIC, DIST);
 
   // Copy root favicon (SVG) for backwards compatibility
   const faviconPath = path.join(ASSETS, 'favicon.svg');

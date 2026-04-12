@@ -4,6 +4,7 @@ import { getPublicAssetManifest } from '../astro-src/lib/public-assets.mjs';
 
 const ROOT = process.cwd();
 const SRC_ASSETS = path.join(ROOT, 'src', 'assets');
+const PUBLIC_STATIC = path.join(ROOT, 'public-static');
 const PUBLIC = path.join(ROOT, 'astro-public');
 const PUBLIC_ASSETS = path.join(PUBLIC, 'assets');
 const PUBLIC_STYLES = path.join(PUBLIC, 'styles');
@@ -82,6 +83,10 @@ function main() {
   resetGeneratedDir(PUBLIC_ASSETS);
   resetGeneratedDir(PUBLIC_STYLES);
   resetGeneratedDir(PUBLIC_SCRIPTS);
+
+  if (fs.existsSync(PUBLIC_STATIC)) {
+    copyRecursive(PUBLIC_STATIC, PUBLIC);
+  }
 
   copyRecursive(SRC_ASSETS, PUBLIC_ASSETS);
 

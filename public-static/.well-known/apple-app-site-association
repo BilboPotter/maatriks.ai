@@ -1,0 +1,16 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "F796PAYWY9.ai.maatriks.app",
+        "paths": [
+          "/auth/callback",
+          "/auth/callback/*",
+          "/update-password",
+          "/update-password/*"
+        ]
+      }
+    ]
+  }
+}

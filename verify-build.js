@@ -62,6 +62,26 @@ function verifyAuthPage({ htmlPath, scriptNamePrefix, expectedDeepLink, expected
   );
 }
 
+function verifyAppleAppSiteAssociation() {
+  const expectedAppId = 'F796PAYWY9.ai.maatriks.app';
+  const locations = [
+    path.join(DIST, '.well-known', 'apple-app-site-association'),
+    path.join(DIST, 'apple-app-site-association'),
+  ];
+
+  locations.forEach((filePath) => {
+    assert(fs.existsSync(filePath), `Missing Apple app-site-association file: ${filePath}`);
+
+    const json = JSON.parse(readFile(filePath));
+    const details = json?.applinks?.details;
+    assert(Array.isArray(details), `Expected applinks.details array in ${filePath}`);
+    assert(
+      details.some((entry) => entry?.appID === expectedAppId),
+      `Expected ${filePath} to include appID ${expectedAppId}`
+    );
+  });
+}
+
 function main() {
   verifyAuthPage({
     htmlPath: path.join(DIST, 'auth', 'callback', 'index.html'),
@@ -76,6 +96,8 @@ function main() {
     expectedDeepLink: CONFIG.passwordResetDeepLink,
     expectedActionId: 'id="open-app"',
   });
+
+  verifyAppleAppSiteAssociation();
 
   console.log('Verified auth handoff build output.');
 }

@@ -103,6 +103,8 @@ compareBlogPosts();
   '.nojekyll',
   'favicon.svg',
   'favicon.ico',
+  '.well-known/apple-app-site-association',
+  'apple-app-site-association',
 ].forEach((file) => compareFile(file, file.endsWith('.ico') ? 'binary' : 'text'));
 
 compareDirectory('styles');
