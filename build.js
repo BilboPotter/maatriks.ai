@@ -73,9 +73,9 @@ const ROUTES = [
     pageClass: '',
     mainStyle: 'style="padding:0;"',
     title: 'maatriks — Workout App That Adapts to You',
-    description: 'Not sure what to do at the gym? maatriks builds a personalized workout plan, tracks what you actually did, and adjusts your next session automatically. Built for beginners.',
+    description: 'maatriks builds a personalized workout plan, tracks what you actually did, and adjusts your next session automatically. Simple enough for beginners, smart enough for experienced lifters.',
     socialTitle: 'maatriks — Workout App That Adapts to You',
-    socialDescription: 'A personalized workout app for beginners. maatriks builds your plan, tracks what you actually did, and adjusts your next session automatically.',
+    socialDescription: 'maatriks builds your workout plan, tracks what you actually did, and adjusts your next session automatically. Easy to use. Hard to outgrow.',
     siteName: 'maatriks',
     structuredData: [
       {
@@ -84,7 +84,7 @@ const ROUTES = [
         name: 'maatriks',
         applicationCategory: 'HealthApplication',
         operatingSystem: 'iOS, Android',
-        description: 'Adaptive workout programming app that builds personalized plans for beginners, tracks real performance, and adjusts automatically after every session.',
+        description: 'Adaptive workout programming app that builds personalized plans, tracks real performance, and adjusts automatically after every session. Works for any experience level.',
         url: 'https://maatriks.ai',
         author: {
           '@type': 'Organization',
@@ -107,7 +107,7 @@ const ROUTES = [
             name: 'Do I need gym experience to use maatriks?',
             acceptedAnswer: {
               '@type': 'Answer',
-              text: "No. The app is built for beginners. Tell it your schedule and goals, and it builds your first workout from there. You don't need to know exercises or programming — the app handles that.",
+              text: "No. Tell it your schedule and goals, and it builds your first workout from there. You do not need to know exercises or programming. The app handles that. Experienced lifters get the same adaptive engine without managing their own spreadsheets.",
             },
           },
           {
