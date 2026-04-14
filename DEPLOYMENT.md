@@ -1,71 +1,91 @@
 # Deployment
 
-## GitHub Pages
+## Current Deployment Target
 
-This repo now deploys the Astro static build:
+The production site is deployed from Astro static output:
 
 ```bash
 npm run astro:build
 ```
 
+Deployable output:
+
+- `astro-dist/`
+
 The legacy builder is still run in CI as a parity baseline:
 
 ```bash
-node build.js
+npm run build
+npm run verify
 npm run astro:verify
 ```
 
-Recommended GitHub Pages setup:
+Legacy output:
 
-1. Push this repo to GitHub.
-2. In GitHub, enable Pages for the repository.
-3. Use the GitHub Actions workflow in `.github/workflows/deploy-pages.yml`.
-4. Set the custom domain to `maatriks.ai`.
-5. Enable HTTPS in Pages settings after DNS resolves.
-6. Verify the custom domain in GitHub Pages settings.
+- `dist/`
 
-The GitHub Actions workflow now:
+## Important Build Notes
+
+- `npm run astro:dev` and `npm run astro:build` both run `npm run astro:prepare` first
+- `astro:prepare` generates `astro-public/`
+- `astro-public/` is generated build input, not a source directory
+- do not edit generated files in `astro-public/` manually
+
+## GitHub Pages
+
+The repo uses `.github/workflows/deploy-pages.yml`.
+
+That workflow currently:
 
 1. installs dependencies with `npm ci`
 2. builds the legacy baseline into `dist/`
-3. verifies auth output
+3. verifies auth handoff output with `npm run verify`
 4. builds Astro into `astro-dist/`
-5. verifies Astro matches the legacy output
+5. verifies Astro parity with `npm run astro:verify`
 6. uploads `astro-dist/` to GitHub Pages
 
-## DNS For `maatriks.ai`
+## Recommended Release Checklist
 
-If you are pointing the apex domain directly to GitHub Pages, GitHub’s current docs say to use these `A` records:
+Before pushing a production change:
+
+1. run `npm run build`
+2. run `npm run verify`
+3. run `npm run astro:build`
+4. run `npm run astro:verify`
+5. push the branch to GitHub
+
+## Custom Domain
+
+The Astro deployment writes `astro-dist/CNAME` from `site.config.json`.
+
+Current production domain:
+
+- `maatriks.ai`
+
+## DNS For GitHub Pages
+
+If the apex domain points directly to GitHub Pages, GitHub currently documents these `A` records:
 
 - `185.199.108.153`
 - `185.199.109.153`
 - `185.199.110.153`
 - `185.199.111.153`
 
-Optional `AAAA` records GitHub documents for IPv6:
+Optional IPv6 `AAAA` records:
 
 - `2606:50c0:8000::153`
 - `2606:50c0:8001::153`
 - `2606:50c0:8002::153`
 - `2606:50c0:8003::153`
 
-If you also want `www.maatriks.ai`, point `www` to the GitHub Pages hostname for the repo with a `CNAME`.
+If `www.maatriks.ai` is also needed, point `www` to the GitHub Pages hostname with a `CNAME`.
 
-Important:
+## DNS Safety Notes
 
-- keep existing mail records unless you intentionally change email providers
-- do not remove unrelated verification TXT records
-- the Astro deployment build writes `astro-dist/CNAME` from `site.config.json`
-
-## Veebimajutus Notes
-
-In Veebimajutus DNS:
-
-1. leave `NS` records alone
-2. add the GitHub Pages `A` records for the apex domain
-3. optionally add the GitHub Pages `AAAA` records
-4. add a `CNAME` for `www` if you want the subdomain too
-5. leave existing `MX` and mail-related `TXT` records unless you are intentionally changing mail
+- leave existing mail-related `MX` and `TXT` records alone unless mail is being moved intentionally
+- leave unrelated verification records alone
+- verify the custom domain inside GitHub Pages settings after DNS resolves
+- enable HTTPS in GitHub Pages after the domain verifies
 
 ## References
 

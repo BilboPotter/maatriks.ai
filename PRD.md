@@ -1,417 +1,196 @@
 # PRD: maatriks.ai Public Website
 
-Last updated: 2026-04-07
+Last updated: 2026-04-14
 
-## 1. Overview
+## Overview
 
-This repository exists for the public website hosted on `maatriks.ai`.
+This repository owns the public website for `maatriks.ai`.
 
-Its job is not to be a full web app.
+The site exists to support the mobile app with:
 
-Its job is to provide the minimum public web surface needed to support:
+1. a clear public homepage
+2. legal and compliance pages
+3. support and deletion guidance
+4. browser-to-app auth handoff pages
+5. a lightweight content surface through the blog
 
-1. the company/developer presence behind the mobile app
-2. Google OAuth production readiness
-3. Apple App Store and Google Play compliance surfaces
-4. support and account-deletion flows
-5. auth handoff pages that return users from browser flows back into the mobile app
+The website is static-first and deploys to GitHub Pages.
 
-The current mobile app working title is `KINETIC`, but the app name is expected to change.
+## Product Goals
 
-Because of that, the website must be built so app-specific branding, copy, URLs, and deep-link scheme can be changed from a centralized configuration layer instead of requiring repo-wide edits.
+The site should:
 
-## 2. Product Goal
+1. explain what the product is
+2. clearly identify the company operating it
+3. expose public privacy, terms, support, and deletion pages
+4. support mobile auth and password-recovery handoff flows
+5. be easy to maintain without a CMS
 
-Ship a thin, static, production-safe website on `maatriks.ai` that:
+## Non-Goals
 
-1. gives Google a real public homepage and privacy policy on a verified domain
-2. gives Apple and Google Play the required privacy/support/deletion surfaces
-3. supports the mobile app's email and OAuth browser handoff flows
-4. is easy to rename and reuse if the app's public name changes
-5. is simple to host on GitHub Pages initially
+The site is not responsible for:
 
-## 3. Non-Goals
+1. authenticated product features
+2. subscription checkout
+3. dashboards or account management in the browser
+4. a full marketing CMS
+5. app backend logic
 
-This website is not responsible for:
-
-1. being a full browser version of the product
-2. authenticated user dashboards
-3. checkout or subscription purchase flows
-4. blog, CMS, or editorial tooling
-5. complex animations or bespoke marketing interactions
-6. app backend logic
-7. admin tools
-
-## 4. Primary Users
+## Primary Audiences
 
 ### Prospective users
 
-People who arrive from:
-
-- App Store or Play Store listing links
-- Google OAuth verification review
-- search results
-- support links
-
-They need to quickly understand what the app is and who operates it.
+They need to quickly understand what the app does and whether it is credible.
 
 ### Existing mobile users
 
-People who need:
+They need help, legal information, and support around auth, password reset, and deletion.
 
-- privacy information
+### Platform and policy reviewers
+
+They need clear public pages for:
+
+- homepage identity
+- privacy policy
+- terms
 - support contact
-- account deletion information
-- browser-to-app auth handoff during login or password recovery
+- account deletion
 
-### Platform reviewers
+## Required Routes
 
-People reviewing the app for:
-
-- Google OAuth production verification
-- App Store review
-- Play Console policy review
-
-They need clear public pages with no ambiguity about ownership, privacy, and support.
-
-## 5. Product Principles
-
-1. Keep it thin.
-2. Keep it static-first.
-3. Keep it rename-safe.
-4. Keep app-support routes stable.
-5. Keep legal and support pages public and easy to reach.
-6. Prefer clarity over marketing excess.
-
-## 6. Information Architecture
-
-The site must support the following routes at launch:
+The current public route surface is:
 
 1. `/`
-2. `/privacy`
-3. `/support`
-4. `/delete-account`
-5. `/auth/callback`
-6. `/update-password`
+2. `/blog`
+3. `/privacy`
+4. `/terms`
+5. `/support`
+6. `/delete-account`
+7. `/forgot-password`
+8. `/auth/callback`
+9. `/update-password`
 
-Optional later routes may be added, but the launch implementation must not depend on them.
+## Route Requirements
 
-If the app is renamed later, these route paths should remain stable unless there is a compelling reason to change them.
-
-## 7. Route Requirements
-
-### 7.1 `/`
+### `/`
 
 Purpose:
 
-- public homepage for the app and/or Maatriks as the developer
-- Google OAuth homepage URL
+- homepage for the app
+- public identity surface for users and reviewers
 
 Must include:
 
-1. clear statement of what the app does
-2. clear statement of who operates it
-3. visible links to:
-   - privacy policy
-   - support
-   - account deletion
-4. support email
-5. app store links area, even if placeholders are used initially
+1. what the app does
+2. direct legal/support navigation
+3. operator identity through shared site configuration
+4. app store CTA area
 
-Should avoid:
-
-- vague holding-page copy with no explanation of the product
-- generic company page that does not mention the app at all
-
-Acceptance criteria:
-
-1. a Google reviewer can understand what product this domain supports
-2. a user can navigate to privacy and support in one click
-3. the page remains valid if the app name changes
-
-### 7.2 `/privacy`
+### `/privacy`
 
 Purpose:
 
-- canonical public privacy policy URL
+- canonical public privacy policy
 
 Must include:
 
 1. operator identity
-2. support contact email
-3. what user data is collected
-4. why data is collected
-5. how authentication data is handled
-6. how workout/product usage data is handled
-7. whether analytics are used
-8. whether third-party processors are used
-9. how users can request deletion or contact support
-10. last updated date
+2. support contact
+3. collected data categories
+4. use of data
+5. third-party processors
+6. retention and deletion information
+7. last updated date
 
-Acceptance criteria:
-
-1. page is public without login
-2. page is linkable from the homepage and app stores
-3. content is written clearly enough for store review and user reference
-
-### 7.3 `/support`
+### `/terms`
 
 Purpose:
 
-- canonical public support page
+- canonical public terms and conditions page
+
+Must include:
+
+1. service agreement language
+2. acceptable-use restrictions
+3. AI/training disclaimer
+4. limitation of liability language
+5. governing law
+6. support contact
+
+### `/support`
+
+Purpose:
+
+- canonical support entrypoint
 
 Must include:
 
 1. support email
-2. support scope:
-   - login issues
-   - password reset issues
-   - account deletion questions
-   - general app help
-3. expected response framing, if you want one
-4. link to privacy policy
-5. link to deletion page
+2. issue categories we support
+3. links to related help and legal pages
 
-Acceptance criteria:
-
-1. page is public
-2. users can identify exactly how to contact support
-3. support email is easy to copy
-
-### 7.4 `/delete-account`
+### `/delete-account`
 
 Purpose:
 
-- public deletion information page required for Google Play compliance
+- public deletion instructions for compliance and user self-service
 
 Must include:
 
-1. that users can initiate deletion in the mobile app
-2. where in the app deletion lives
-3. what happens when an account is deleted
-4. whether any data is retained and why
-5. support contact for deletion issues
-
-This page does not need to perform deletion itself unless product requirements change.
-
-Acceptance criteria:
-
-1. page is public and direct-linkable
-2. copy matches actual app behavior
-3. page clearly explains how a user deletes their account
-
-### 7.5 `/auth/callback`
-
-Purpose:
-
-- browser handoff page for auth flows that return from Supabase/Google into the browser before returning to the mobile app
-
-This route is functional, not marketing.
-
-Must do:
-
-1. parse browser auth parameters from the URL
-2. attempt to open the mobile app through the configured deep-link callback
-3. show a clear loading/status state while handoff is attempted
-4. show fallback instructions if the app does not open automatically
-5. preserve relevant auth parameters when handing off
-
-Must not:
-
-1. act like a full signed-in web session
-2. require a backend just to complete the handoff
-
-Acceptance criteria:
-
-1. valid auth links can hand off cleanly to the installed mobile app
-2. failed handoff produces user-readable fallback instructions
-3. route is static-host compatible
-
-### 7.6 `/update-password`
-
-Purpose:
-
-- password-recovery handoff page for returning users into the mobile app
-
-Must do:
-
-1. parse the recovery URL state
-2. attempt to open the app using the configured deep-link recovery route
-3. show clear fallback instructions if the deep link fails
-4. explain briefly that password update continues inside the app
-
-Acceptance criteria:
-
-1. valid recovery links can hand off to the app
-2. users are not left on a blank or ambiguous page
-3. route is static-host compatible
-
-## 8. Configuration Requirements
-
-The site must be configurable from a small number of centralized values.
-
-At minimum, these values must be easy to change from one place:
-
-1. company/developer name
-2. app display name
-3. support email
-4. base site URL
-5. privacy URL
-6. support URL
-7. delete-account URL
-8. iOS App Store URL
-9. Google Play URL
-10. mobile deep-link scheme
-11. auth callback deep-link target
-12. password reset deep-link target
-
-The implementation must avoid scattering these values across many files.
-
-## 9. Rename-Safe Requirement
-
-The app name is expected to change.
-
-Because of that:
-
-1. the website must not hardcode the current app name in many places
-2. app-specific content should be sourced from centralized config/content
-3. the home page should still make sense if the app name changes late
-4. deep-link targets should be configurable because the app scheme may change later
-
-The website builder should optimize for low-friction rename, not for hardcoded launch copy.
-
-## 10. Content Requirements
-
-The implementation should support placeholder content where final legal copy is still pending, but the structure must exist.
-
-Launch content requirements:
-
-1. short product description
-2. operator/developer identity
-3. support email
-4. privacy policy content
-5. deletion-policy content
-6. app store links or placeholders
-
-The site should make it easy to replace placeholder copy later without reworking route structure.
-
-## 11. Technical Requirements
-
-### Hosting
-
-1. must be deployable to GitHub Pages
-2. must work on custom domain `maatriks.ai`
-3. must not require server-side runtime for launch
-
-### Architecture
-
-1. static-site compatible
-2. minimal client-side JavaScript where possible
-3. auth handoff pages may use client-side logic because they need to parse URL state and open the app
-4. no backend dependency required for standard public pages
-
-### SEO / Metadata
-
-Must support page-level metadata for:
-
-1. homepage title and description
-2. privacy page title
-3. support page title
-4. deletion page title
-
-This is required for clarity and review, not for aggressive SEO work.
-
-### Accessibility
-
-Must meet normal baseline expectations:
-
-1. semantic page structure
-2. keyboard reachable links and actions
-3. readable text hierarchy
-4. no essential information hidden only in images
-
-## 12. External Integration Requirements
-
-### Google OAuth readiness
-
-The website must provide:
-
-1. a real public homepage on `maatriks.ai`
-2. a real public privacy policy URL
-3. clear operator identity
+1. how deletion is initiated in the app
+2. what deletion removes
+3. what may remain temporarily in backups
 4. support contact
 
-### Apple / App Store readiness
+### `/forgot-password`
 
-The website must provide:
+Purpose:
 
-1. a real public privacy policy URL
-2. support contact page
+- lightweight help page for password-recovery issues
 
-### Google Play readiness
+Must include:
 
-The website must provide:
+1. where password reset starts
+2. what to do if the email or app handoff fails
+3. support contact
 
-1. a public deletion-information URL
-2. support contact page
+### `/auth/callback` and `/update-password`
 
-### Mobile app auth handoff
+Purpose:
 
-The website must support:
+- browser-to-app handoff routes for auth and password recovery
 
-1. callback entry from browser auth flows
-2. recovery entry from browser password-reset flows
-3. configurable deep-link handoff back to the app
+Must do:
 
-## 13. Out Of Scope For V1 Website Build
+1. parse the incoming auth payload
+2. attempt to reopen the mobile app
+3. provide a manual fallback path
+4. preserve the required auth parameters
+5. avoid loading optional cookie/analytics surfaces
 
-Do not spend time on these unless specifically requested later:
+## Architecture Constraints
 
-1. CMS integration
-2. multi-language support
-3. blog
-4. press kit
-5. admin dashboard
-6. payment pages
-7. subscription pages
-8. investor/company pages beyond what is needed for trust and support
-9. advanced analytics implementation
-10. account portal
+The current architecture is:
 
-## 14. Delivery Requirements
+1. Astro static build is the deployment target
+2. the legacy `build.js` pipeline is still kept as a parity baseline
+3. generated assets in `astro-public/` are build artifacts, not source files
+4. content should stay file-based and commit-driven
 
-The website build should produce:
+## Editorial Model
 
-1. a deployable static site
-2. a clear place to edit configuration values
-3. the launch routes listed in this PRD
-4. a short deployment guide for GitHub Pages
-5. a short list of DNS records/actions needed for custom domain hookup
+The blog is intentionally simple:
 
-## 15. Definition Of Done
+1. posts are HTML files in `src/blog/`
+2. there is no CMS
+3. content is authored in-repo and deployed with the site
 
-The first website release is done when:
+## Acceptance Criteria
 
-1. `maatriks.ai` serves the public homepage
-2. `/privacy` is public
-3. `/support` is public
-4. `/delete-account` is public
-5. `/auth/callback` exists and can hand off to the app
-6. `/update-password` exists and can hand off to the app
-7. all app/site identity values are editable from centralized config
-8. the site can be deployed on GitHub Pages without server infrastructure
+The site is successful when:
 
-## 16. Open Inputs From Product Owner
-
-These values may still be placeholders when the build starts:
-
-1. final public app name
-2. final short product description
-3. final privacy policy text
-4. final deletion/retention language
-5. final App Store URL
-6. final Google Play URL
-7. final support email if it changes from `support@maatriks.ai`
-8. final deep-link scheme if the mobile app is renamed
-
-The implementation should be built so these can be updated late without restructuring the site.
+1. every public route is accessible without login
+2. legal and support pages are one click away from the main navigation or footer
+3. auth handoff pages work as public callback surfaces
+4. Astro build output matches the legacy baseline
+5. the site can be updated by editing source files and configuration only
