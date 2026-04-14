@@ -6,7 +6,27 @@ const LEGACY_DIST = path.join(ROOT, 'dist');
 const ASTRO_DIST = path.join(ROOT, 'astro-dist');
 
 function normalizeHtml(content) {
-  return content.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim();
+  return decodeHtmlEntities(content.replace(/>\s+</g, '><').replace(/\s+/g, ' ').trim());
+}
+
+function decodeHtmlEntities(content) {
+  const namedEntities = {
+    amp: '&',
+    quot: '"',
+    apos: "'",
+    lt: '<',
+    gt: '>',
+  };
+
+  return content.replace(/&(#x?[0-9a-fA-F]+|[a-zA-Z]+);/g, (match, entity) => {
+    if (entity.startsWith('#')) {
+      const isHex = entity[1]?.toLowerCase() === 'x';
+      const codePoint = Number.parseInt(entity.slice(isHex ? 2 : 1), isHex ? 16 : 10);
+      return Number.isFinite(codePoint) ? String.fromCodePoint(codePoint) : match;
+    }
+
+    return namedEntities[entity] ?? match;
+  });
 }
 
 function assertExists(relativePath, baseDir) {
@@ -77,6 +97,8 @@ function compareBlogPosts() {
 const htmlFiles = [
   'index.html',
   '404.html',
+  'terms/index.html',
+  'terms.html',
   'privacy/index.html',
   'privacy.html',
   'support/index.html',

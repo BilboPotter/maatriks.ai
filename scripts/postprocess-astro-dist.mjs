@@ -39,8 +39,16 @@ function writeFile(relativePath, content) {
   fs.writeFileSync(outputPath, content, 'utf8');
 }
 
+function removeFile(relativePath) {
+  const outputPath = path.join(DIST, relativePath);
+  if (fs.existsSync(outputPath)) {
+    fs.rmSync(outputPath, { force: true });
+  }
+}
+
 function main() {
   const aliasRoutes = [
+    'terms/index.html',
     'privacy/index.html',
     'support/index.html',
     'delete-account/index.html',
@@ -51,6 +59,14 @@ function main() {
 
   aliasRoutes.forEach(copyAlias);
 
+  [
+    'styles/main.css',
+    'scripts/auth-callback.js',
+    'scripts/consent.js',
+    'scripts/main.js',
+    'scripts/update-password.js',
+  ].forEach(removeFile);
+
   writeFile('CNAME', `${getSiteHost(siteConfig.siteUrl)}\n`);
   writeFile('.nojekyll', '');
 
@@ -58,6 +74,7 @@ function main() {
   const sitemapUrls = [
     `${siteConfig.siteUrl}/`,
     `${siteConfig.siteUrl}/privacy`,
+    `${siteConfig.siteUrl}/terms`,
     `${siteConfig.siteUrl}/support`,
     `${siteConfig.siteUrl}/blog`,
     ...posts.map((post) => `${siteConfig.siteUrl}/blog/${post.slug}`),
