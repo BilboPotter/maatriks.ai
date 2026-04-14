@@ -23,6 +23,8 @@ const {
 } = Astro.props;
 
 const assets = getPublicAssetManifest();
+const isDev = import.meta.env.DEV;
+const cssHref = isDev ? '/styles/main.css' : assets.css.href;
 const pageClassName = pageClass ? `page ${pageClass}` : 'page';
 const socialImageUrl = socialImage.startsWith('http')
   ? socialImage
@@ -67,8 +69,8 @@ const inlineConsentScript = (assets.scripts['consent.js']?.content || '').replac
       ))
     }
     <style is:inline set:html={assets.criticalCss}></style>
-    <link rel="preload" href={assets.css.href} as="style" />
-    <link rel="stylesheet" href={assets.css.href} />
+    <link rel="preload" href={cssHref} as="style" />
+    <link rel="stylesheet" href={cssHref} />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>

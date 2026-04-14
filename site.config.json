@@ -6,6 +6,7 @@
   "supportEmail": "info@maatriks.ai",
   "siteUrl": "https://maatriks.ai",
   "privacyUrl": "/privacy",
+  "termsUrl": "/terms",
   "supportUrl": "/support",
   "deleteAccountUrl": "/delete-account",
   "forgotPasswordUrl": "/forgot-password",

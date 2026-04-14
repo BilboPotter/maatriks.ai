@@ -92,9 +92,11 @@ function main() {
 
   const manifest = getPublicAssetManifest();
   fs.writeFileSync(path.join(PUBLIC_STYLES, manifest.css.filename), manifest.css.content, 'utf8');
+  fs.writeFileSync(path.join(PUBLIC_STYLES, 'main.css'), manifest.css.content, 'utf8');
 
-  Object.values(manifest.scripts).forEach((script) => {
+  Object.entries(manifest.scripts).forEach(([sourceName, script]) => {
     fs.writeFileSync(path.join(PUBLIC_SCRIPTS, script.filename), script.content, 'utf8');
+    fs.writeFileSync(path.join(PUBLIC_SCRIPTS, sourceName), script.content, 'utf8');
   });
 
   const faviconSvgPath = path.join(SRC_ASSETS, 'favicon.svg');

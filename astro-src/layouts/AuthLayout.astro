@@ -14,6 +14,8 @@ const {
 } = Astro.props;
 
 const assets = getPublicAssetManifest();
+const isDev = import.meta.env.DEV;
+const cssHref = isDev ? '/styles/main.css' : assets.css.href;
 const socialImageUrl = socialImage.startsWith('http')
   ? socialImage
   : `${siteConfig.siteUrl}${socialImage.startsWith('/') ? socialImage : `/${socialImage}`}`;
@@ -53,8 +55,8 @@ const socialImageUrl = socialImage.startsWith('http')
     <link rel="preload" href={assets.fonts.dmSansHref} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={assets.fonts.jetbrainsMonoHref} as="font" type="font/woff2" crossorigin />
     <style is:inline set:html={assets.criticalCss}></style>
-    <link rel="preload" href={assets.css.href} as="style" />
-    <link rel="stylesheet" href={assets.css.href} />
+    <link rel="preload" href={cssHref} as="style" />
+    <link rel="stylesheet" href={cssHref} />
   </head>
   <body>
     <a href="#main-content" class="skip-link">Skip to main content</a>

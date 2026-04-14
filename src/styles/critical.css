@@ -175,6 +175,10 @@ p.lead {
   line-height: 1.68;
 }
 
+.hero .lead {
+  max-width: 680px;
+}
+
 strong {
   color: var(--text);
 }
@@ -502,8 +506,8 @@ input:focus-visible {
 .hero-inner {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr);
-  gap: 72px;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.84fr);
+  gap: 84px;
   align-items: center;
   z-index: 2;
 }
@@ -511,7 +515,20 @@ input:focus-visible {
 .hero-copy {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
+  max-width: 680px;
+}
+
+.hero-title-intro {
+  white-space: nowrap;
+}
+
+@media (min-width: 1025px) {
+  .hero-copy h1 {
+    width: calc(100% + 72px);
+    max-width: 760px;
+    margin-right: -72px;
+  }
 }
 
 .hero h1 .accent {
@@ -1292,7 +1309,7 @@ input:focus-visible {
   }
 
   .hero-inner {
-    gap: 48px;
+    gap: 56px;
   }
 }
 
