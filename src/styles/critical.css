@@ -713,9 +713,9 @@ input:focus-visible {
     ),
     linear-gradient(
       90deg,
-      rgba(8, 8, 12, 0.98) 0%,
-      rgba(8, 8, 12, 0.92) 42%,
-      rgba(8, 8, 12, 0.42) var(--screen-left-fade-stop),
+      rgba(8, 8, 12, 0.92) 0%,
+      rgba(8, 8, 12, 0.78) 38%,
+      rgba(8, 8, 12, 0.22) var(--screen-left-fade-stop),
       rgba(8, 8, 12, 0) 100%
     ),
     linear-gradient(
@@ -726,9 +726,9 @@ input:focus-visible {
     ),
     linear-gradient(
       180deg,
-      rgba(8, 8, 12, 0.14) 0%,
-      rgba(8, 8, 12, 0.04) 54%,
-      rgba(8, 8, 12, 0.1) 100%
+      rgba(8, 8, 12, 0.08) 0%,
+      rgba(8, 8, 12, 0.02) 54%,
+      rgba(8, 8, 12, 0.06) 100%
     );
 }
 
@@ -1222,47 +1222,47 @@ input:focus-visible {
 }
 
 .device .screen--workout-screenshot {
-  --screen-image-opacity: 0.18;
+  --screen-image-opacity: 0.3;
   --screen-image-width: 76%;
   --screen-image-height: 46%;
-  --screen-left-fade-stop: 68%;
-  --screen-top-shade-soft: 0.26;
-  --screen-top-shade: 0.38;
-  --screen-bottom-shade-mid: 0.36;
-  --screen-bottom-shade: 0.9;
+  --screen-left-fade-stop: 60%;
+  --screen-top-shade-soft: 0.18;
+  --screen-top-shade: 0.28;
+  --screen-bottom-shade-mid: 0.22;
+  --screen-bottom-shade: 0.62;
 }
 
 .device .screen--onboarding-screenshot {
-  --screen-image-opacity: 0.2;
+  --screen-image-opacity: 0.28;
   --screen-image-width: 80%;
   --screen-image-height: 42%;
-  --screen-left-fade-stop: 70%;
-  --screen-top-shade-soft: 0.22;
-  --screen-top-shade: 0.34;
-  --screen-bottom-shade-mid: 0.28;
-  --screen-bottom-shade: 0.74;
+  --screen-left-fade-stop: 62%;
+  --screen-top-shade-soft: 0.16;
+  --screen-top-shade: 0.24;
+  --screen-bottom-shade-mid: 0.16;
+  --screen-bottom-shade: 0.46;
 }
 
 .device .screen--dashboard-screenshot {
-  --screen-image-opacity: 0.16;
+  --screen-image-opacity: 0.28;
   --screen-image-width: 78%;
   --screen-image-height: 44%;
-  --screen-left-fade-stop: 70%;
-  --screen-top-shade-soft: 0.24;
-  --screen-top-shade: 0.38;
-  --screen-bottom-shade-mid: 0.3;
-  --screen-bottom-shade: 0.8;
+  --screen-left-fade-stop: 60%;
+  --screen-top-shade-soft: 0.18;
+  --screen-top-shade: 0.28;
+  --screen-bottom-shade-mid: 0.2;
+  --screen-bottom-shade: 0.56;
 }
 
 .device .screen--summary-screenshot {
-  --screen-image-opacity: 0.16;
+  --screen-image-opacity: 0.28;
   --screen-image-width: 76%;
   --screen-image-height: 46%;
-  --screen-left-fade-stop: 70%;
-  --screen-top-shade-soft: 0.26;
-  --screen-top-shade: 0.42;
-  --screen-bottom-shade-mid: 0.34;
-  --screen-bottom-shade: 0.84;
+  --screen-left-fade-stop: 60%;
+  --screen-top-shade-soft: 0.2;
+  --screen-top-shade: 0.3;
+  --screen-bottom-shade-mid: 0.22;
+  --screen-bottom-shade: 0.6;
 }
 
 .device .screen--onboarding-screenshot .screen-scroll {
@@ -1386,7 +1386,7 @@ input:focus-visible {
   z-index: 2;
   padding: 22px 24px 16px;
   background:
-    linear-gradient(180deg, rgba(8, 8, 12, 0) 0%, rgba(8, 8, 12, 0.76) 24%, rgba(8, 8, 12, 0.94) 56%, rgba(8, 8, 12, 0.98) 100%);
+    linear-gradient(180deg, rgba(8, 8, 12, 0) 0%, rgba(8, 8, 12, 0.48) 24%, rgba(8, 8, 12, 0.72) 56%, rgba(8, 8, 12, 0.88) 100%);
 }
 
 .device .app-screen-footer--button-only {
