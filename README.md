@@ -2,7 +2,7 @@
 
 Public website for the `maatriks.ai` mobile app.
 
-The site is deployed as Astro static output. The older `build.js` pipeline is still kept in the repo as a parity baseline until the Astro migration is fully retired.
+The site is deployed as Astro static output. Astro is the single build path for local development, CI, and GitHub Pages deployment.
 
 ## What This Repo Owns
 
@@ -54,25 +54,25 @@ Start the Astro dev server:
 npm run astro:dev
 ```
 
-Build the deployed Astro output:
-
-```bash
-npm run astro:build
-```
-
-Build the legacy parity baseline:
+Build the production site:
 
 ```bash
 npm run build
 ```
 
-Verify the legacy auth-handoff output:
+Explicit Astro build alias:
+
+```bash
+npm run astro:build
+```
+
+Verify Astro output:
 
 ```bash
 npm run verify
 ```
 
-Verify Astro output matches the legacy build:
+Explicit Astro verify alias:
 
 ```bash
 npm run astro:verify
@@ -83,7 +83,6 @@ npm run astro:verify
 ## Output Directories
 
 - `astro-dist/` — deployable Astro output
-- `dist/` — legacy static baseline used for parity checks
 - `astro-public/` — generated public asset mirror for Astro dev/build
 
 ## Blog Authoring

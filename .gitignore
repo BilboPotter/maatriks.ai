@@ -2,8 +2,8 @@
 node_modules/
 .astro/
 astro-dist/
+astro-public/
 design-system/
-dist/
 *.jpeg
 *.png
 !src/assets/favicon-*.png

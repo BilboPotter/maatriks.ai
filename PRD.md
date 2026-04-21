@@ -172,10 +172,9 @@ Must do:
 
 The current architecture is:
 
-1. Astro static build is the deployment target
-2. the legacy `build.js` pipeline is still kept as a parity baseline
-3. generated assets in `astro-public/` are build artifacts, not source files
-4. content should stay file-based and commit-driven
+1. Astro static build is the single deployment path
+2. generated assets in `astro-public/` are build artifacts, not source files
+3. content should stay file-based and commit-driven
 
 ## Editorial Model
 
@@ -192,5 +191,5 @@ The site is successful when:
 1. every public route is accessible without login
 2. legal and support pages are one click away from the main navigation or footer
 3. auth handoff pages work as public callback surfaces
-4. Astro build output matches the legacy baseline
+4. the Astro build passes output verification before deployment
 5. the site can be updated by editing source files and configuration only

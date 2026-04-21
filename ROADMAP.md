@@ -9,7 +9,6 @@ This roadmap only tracks work that is still relevant. Completed migration/fix ch
 The site already has:
 
 - Astro static deployment output
-- legacy parity build and verification
 - homepage
 - blog
 - privacy policy
@@ -21,19 +20,7 @@ The site already has:
 
 ## Next Priorities
 
-### 1. Retire the legacy parity pipeline
-
-The repo still ships two build systems:
-
-- Astro deployment output
-- legacy `build.js` parity baseline
-
-Target outcome:
-
-- move any remaining required behavior out of the legacy path
-- delete parity-only duplication once Astro is the single source of truth
-
-### 2. Tighten homepage content and layout
+### 1. Tighten homepage content and layout
 
 Current homepage work should focus on:
 
@@ -42,7 +29,7 @@ Current homepage work should focus on:
 - sharper CTA presentation
 - less duplicated messaging
 
-### 3. Replace placeholder app store links
+### 2. Replace placeholder app store links
 
 Current store badges still use placeholders.
 
@@ -52,7 +39,7 @@ Target outcome:
 - real Google Play URL
 - no dead CTA behavior
 
-### 4. Keep legal/support pages aligned with product reality
+### 3. Keep legal/support pages aligned with product reality
 
 Legal and support pages should stay synchronized with the live app.
 
@@ -64,7 +51,7 @@ Review whenever product behavior changes:
 - data retention details
 - support commitments
 
-### 5. Improve deployment confidence
+### 4. Improve deployment confidence
 
 Keep production deployment simple and auditable.
 
@@ -75,7 +62,7 @@ Potential improvements:
 - explicit checks for auth handoff page behavior
 - clearer release checklist around domain and Pages health
 
-### 6. Content expansion through the blog
+### 5. Content expansion through the blog
 
 The blog is already live, but it should stay selective.
 

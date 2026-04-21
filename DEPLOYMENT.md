@@ -5,24 +5,12 @@
 The production site is deployed from Astro static output:
 
 ```bash
-npm run astro:build
+npm run build
 ```
 
 Deployable output:
 
 - `astro-dist/`
-
-The legacy builder is still run in CI as a parity baseline:
-
-```bash
-npm run build
-npm run verify
-npm run astro:verify
-```
-
-Legacy output:
-
-- `dist/`
 
 ## Important Build Notes
 
@@ -38,11 +26,9 @@ The repo uses `.github/workflows/deploy-pages.yml`.
 That workflow currently:
 
 1. installs dependencies with `npm ci`
-2. builds the legacy baseline into `dist/`
-3. verifies auth handoff output with `npm run verify`
-4. builds Astro into `astro-dist/`
-5. verifies Astro parity with `npm run astro:verify`
-6. uploads `astro-dist/` to GitHub Pages
+2. builds the Astro site into `astro-dist/`
+3. verifies the Astro output
+4. uploads `astro-dist/` to GitHub Pages
 
 ## Recommended Release Checklist
 
@@ -50,9 +36,7 @@ Before pushing a production change:
 
 1. run `npm run build`
 2. run `npm run verify`
-3. run `npm run astro:build`
-4. run `npm run astro:verify`
-5. push the branch to GitHub
+3. push the branch to GitHub
 
 ## Custom Domain
 

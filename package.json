@@ -2,13 +2,13 @@
   "name": "maatriks-ai-site",
   "private": true,
   "scripts": {
-    "build": "node build.js",
-    "verify": "node verify-build.js",
+    "build": "npm run astro:build",
+    "verify": "node verify-astro-output.mjs",
     "social:build": "node scripts/build-social-assets.mjs",
     "astro:prepare": "node scripts/prepare-astro-public.mjs",
     "astro:dev": "npm run astro:prepare && astro dev",
     "astro:build": "npm run astro:prepare && astro build && node scripts/postprocess-astro-dist.mjs",
-    "astro:verify": "node verify-astro-build.mjs",
+    "astro:verify": "npm run verify",
     "astro:preview": "astro preview"
   },
   "devDependencies": {
