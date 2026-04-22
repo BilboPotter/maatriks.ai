@@ -95,6 +95,8 @@ function verifyStaticArtifacts() {
     'favicon.ico',
     '.well-known/apple-app-site-association',
     'apple-app-site-association',
+    'assets/social-home.png',
+    'assets/social-blog.png',
   ].forEach(assertExists);
 
   const cname = readFile('CNAME').trim();
@@ -121,6 +123,10 @@ function verifyAssetFingerprinting() {
 
   assert(cssMatch?.[1], 'Homepage is missing the hashed stylesheet reference');
   assertExists(cssMatch[1].slice(1));
+  assert(
+    indexHtml.includes(`${CONFIG.siteUrl}/assets/social-home.png`),
+    'Homepage metadata is missing the current social preview image'
+  );
 
   assert(
     !fs.existsSync(path.join(DIST, 'styles', 'main.css')),

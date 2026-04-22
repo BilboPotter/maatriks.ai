@@ -23,6 +23,172 @@ function escapeXml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function writeCard({ fileName, svg }) {
+  const svgPath = path.join(ASSETS, `${fileName}.svg`);
+  const pngPath = path.join(ASSETS, `${fileName}.png`);
+  fs.writeFileSync(svgPath, svg, 'utf8');
+
+  const resvg = new Resvg(svg, {
+    fitTo: {
+      mode: 'width',
+      value: 1200,
+    },
+    font: {
+      loadSystemFonts: true,
+      fontFiles: [DM_SANS, JETBRAINS_MONO],
+    },
+  });
+
+  fs.writeFileSync(pngPath, resvg.render().asPng());
+  console.log(`  built: assets/${fileName}.svg`);
+  console.log(`  built: assets/${fileName}.png`);
+}
+
+function renderHomeCard() {
+  const lockupHref = svgDataUri(BRAND_LOCKUP);
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="maatriks homepage social card">
+  <defs>
+    <linearGradient id="bgWash" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#121015"/>
+      <stop offset="45%" stop-color="#090a0d"/>
+      <stop offset="100%" stop-color="#050506"/>
+    </linearGradient>
+    <linearGradient id="edgeGlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ff8a1f"/>
+      <stop offset="100%" stop-color="#ffb347"/>
+    </linearGradient>
+    <linearGradient id="screenBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#181820"/>
+      <stop offset="55%" stop-color="#0c0d11"/>
+      <stop offset="100%" stop-color="#07080a"/>
+    </linearGradient>
+    <linearGradient id="screenGlow" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0%" stop-color="rgba(255,179,71,0.18)"/>
+      <stop offset="100%" stop-color="rgba(255,138,31,0.02)"/>
+    </linearGradient>
+    <radialGradient id="heroGlow" cx="82%" cy="28%" r="44%">
+      <stop offset="0%" stop-color="rgba(255,179,71,0.26)"/>
+      <stop offset="56%" stop-color="rgba(255,138,31,0.10)"/>
+      <stop offset="100%" stop-color="rgba(255,138,31,0)"/>
+    </radialGradient>
+    <radialGradient id="phoneGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(255,138,31,0.48)"/>
+      <stop offset="64%" stop-color="rgba(255,138,31,0.14)"/>
+      <stop offset="100%" stop-color="rgba(255,138,31,0)"/>
+    </radialGradient>
+    <pattern id="gridDots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.1" fill="#24242c"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bgWash)"/>
+  <rect width="1200" height="630" fill="url(#gridDots)" opacity="0.42"/>
+  <rect width="1200" height="630" fill="url(#heroGlow)"/>
+  <rect x="0" y="0" width="1200" height="10" fill="url(#edgeGlow)"/>
+
+  <path d="M782 0H1200V630H676C696 534 732 468 790 412C840 363 896 332 950 282C1014 223 1053 148 1076 0Z" fill="rgba(255,255,255,0.02)"/>
+  <path d="M748 28C888 -10 1050 82 1138 244C1182 324 1202 411 1200 508L1089 561C1051 482 1000 418 938 368C870 313 790 274 734 210C697 168 676 118 670 60Z" fill="rgba(255,138,31,0.08)"/>
+
+  <image href="${lockupHref}" x="84" y="58" width="284" height="55"/>
+
+  <text x="84" y="156" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="19" font-weight="600" letter-spacing="4.8">ADAPTIVE WORKOUT APP</text>
+
+  <text x="84" y="244" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="76" font-weight="800" letter-spacing="-3.6">
+    <tspan x="84" dy="0">Just show up.</tspan>
+    <tspan x="84" dy="84">We&apos;ll handle</tspan>
+    <tspan x="84" dy="84">the plan.</tspan>
+  </text>
+
+  <text x="84" y="496" fill="#c7c7d2" font-family="'DM Sans', sans-serif" font-size="30" font-weight="500" letter-spacing="-0.4">Personalized workouts that adapt after every session.</text>
+
+  <g transform="translate(84 536)">
+    <rect x="0" y="0" width="96" height="38" rx="19" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)"/>
+    <rect x="108" y="0" width="80" height="38" rx="19" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)"/>
+    <rect x="200" y="0" width="96" height="38" rx="19" fill="rgba(255,138,31,0.14)" stroke="rgba(255,179,71,0.22)"/>
+    <text x="48" y="24" fill="#f2f2f7" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="500" text-anchor="middle" letter-spacing="1.8">PLAN</text>
+    <text x="148" y="24" fill="#f2f2f7" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="500" text-anchor="middle" letter-spacing="1.8">LOG</text>
+    <text x="248" y="24" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="600" text-anchor="middle" letter-spacing="1.8">ADAPT</text>
+  </g>
+
+  <g transform="translate(808 70)">
+    <circle cx="180" cy="214" r="188" fill="url(#phoneGlow)"/>
+    <rect x="18" y="30" width="258" height="512" rx="46" fill="rgba(0,0,0,0.34)"/>
+
+    <g transform="rotate(6 147 256)">
+      <rect x="0" y="0" width="258" height="512" rx="46" fill="#050507" stroke="rgba(255,255,255,0.14)" stroke-width="1.5"/>
+      <rect x="16" y="16" width="226" height="480" rx="34" fill="url(#screenBg)"/>
+      <rect x="16" y="16" width="226" height="480" rx="34" fill="url(#screenGlow)"/>
+      <rect x="87" y="16" width="84" height="22" rx="0 0 16 16" fill="#050507"/>
+
+      <text x="34" y="54" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="15" font-weight="700">14:00</text>
+      <text x="184" y="54" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.2">LTE</text>
+      <rect x="213" y="44" width="16" height="8" rx="4" fill="#f2f2f7"/>
+
+      <text x="34" y="96" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="600" letter-spacing="1.8">TODAY</text>
+      <text x="34" y="138" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="33" font-weight="700" letter-spacing="-1.6">Full Body C</text>
+      <text x="34" y="164" fill="#b9b9c3" font-family="'DM Sans', sans-serif" font-size="15" font-weight="500">5 exercises ready</text>
+
+      <g transform="translate(30 198)">
+        <text x="0" y="0" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.6">THIS WEEK</text>
+        <text x="146" y="0" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.2">0 / 4</text>
+        <rect x="0" y="18" width="178" height="1" fill="rgba(255,255,255,0.10)"/>
+        <g transform="translate(0 30)">
+          <circle cx="9" cy="0" r="5.5" fill="#ffffff14" stroke="rgba(255,255,255,0.18)"/>
+          <circle cx="35" cy="0" r="5.5" fill="#ff8a1f" opacity="0.92"/>
+          <circle cx="61" cy="0" r="5.5" fill="#ffffff14" stroke="rgba(255,255,255,0.18)"/>
+          <circle cx="87" cy="0" r="5.5" fill="#ffffff14" stroke="rgba(255,255,255,0.18)"/>
+          <circle cx="113" cy="0" r="5.5" fill="#ffffff14" stroke="rgba(255,255,255,0.18)"/>
+          <circle cx="139" cy="0" r="5.5" fill="#ffffff14" stroke="rgba(255,255,255,0.18)"/>
+          <circle cx="165" cy="0" r="5.5" fill="#ffffff14" stroke="rgba(255,255,255,0.18)"/>
+        </g>
+        <text x="2" y="50" fill="#6b6b76" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" letter-spacing="1.1">MON</text>
+        <text x="28" y="50" fill="#f2f2f7" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" letter-spacing="1.1">TUE</text>
+        <text x="54" y="50" fill="#6b6b76" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" letter-spacing="1.1">WED</text>
+        <text x="80" y="50" fill="#6b6b76" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" letter-spacing="1.1">THU</text>
+        <text x="106" y="50" fill="#6b6b76" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" letter-spacing="1.1">FRI</text>
+        <text x="132" y="50" fill="#6b6b76" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" letter-spacing="1.1">SAT</text>
+        <text x="158" y="50" fill="#6b6b76" font-family="'JetBrains Mono', monospace" font-size="8.5" font-weight="600" letter-spacing="1.1">SUN</text>
+      </g>
+
+      <g transform="translate(30 286)">
+        <rect width="182" height="72" rx="18" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)"/>
+        <text x="18" y="26" fill="#ffb347" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.6">COACH REVIEW</text>
+        <text x="18" y="49" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="17" font-weight="700">Adjusts after</text>
+        <text x="18" y="69" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="17" font-weight="700">what you log</text>
+        <text x="156" y="44" fill="#ffb347" font-family="'DM Sans', sans-serif" font-size="18" font-weight="700">→</text>
+      </g>
+
+      <g transform="translate(30 378)">
+        <text x="0" y="0" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="9.5" font-weight="600" letter-spacing="1.5">UP NEXT</text>
+        <g transform="translate(0 18)">
+          <rect width="182" height="40" rx="12" fill="rgba(255,255,255,0.04)"/>
+          <text x="14" y="24" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="14" font-weight="600">Front squat</text>
+          <text x="124" y="24" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.2">3 x 5</text>
+        </g>
+        <g transform="translate(0 64)">
+          <rect width="182" height="40" rx="12" fill="rgba(255,255,255,0.04)"/>
+          <text x="14" y="24" fill="#f2f2f7" font-family="'DM Sans', sans-serif" font-size="14" font-weight="600">RDL</text>
+          <text x="138" y="24" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="600" letter-spacing="1.2">3 x 8</text>
+        </g>
+      </g>
+
+      <g transform="translate(30 440)">
+        <rect width="182" height="42" rx="14" fill="url(#edgeGlow)"/>
+        <text x="20" y="26" fill="#120b05" font-family="'DM Sans', sans-serif" font-size="15" font-weight="800">Start session</text>
+        <text x="150" y="26" fill="#120b05" font-family="'DM Sans', sans-serif" font-size="18" font-weight="800">→</text>
+      </g>
+    </g>
+  </g>
+
+</svg>`;
+
+  writeCard({
+    fileName: 'social-home',
+    svg,
+  });
+}
+
 function renderCard({
   fileName,
   label,
@@ -92,37 +258,10 @@ function renderCard({
   <text x="96" y="586" fill="#8e8e9a" font-family="'JetBrains Mono', monospace" font-size="18" font-weight="500" letter-spacing="2.4">${escapeXml(footer)}</text>
 </svg>`;
 
-  const svgPath = path.join(ASSETS, `${fileName}.svg`);
-  const pngPath = path.join(ASSETS, `${fileName}.png`);
-  fs.writeFileSync(svgPath, svg, 'utf8');
-
-  const resvg = new Resvg(svg, {
-    fitTo: {
-      mode: 'width',
-      value: 1200,
-    },
-    font: {
-      loadSystemFonts: true,
-      fontFiles: [DM_SANS, JETBRAINS_MONO],
-    },
-  });
-
-  fs.writeFileSync(pngPath, resvg.render().asPng());
-  console.log(`  built: assets/${fileName}.svg`);
-  console.log(`  built: assets/${fileName}.png`);
+  writeCard({ fileName, svg });
 }
 
-renderCard({
-  fileName: 'social-default',
-  label: 'ADAPTIVE WORKOUT PROGRAMMING',
-  titleLines: [
-    'Training that adapts',
-    'after every session.',
-  ],
-  description: 'maatriks.ai builds the workout, captures what you actually did, and adjusts the next session accordingly.',
-  footer: 'maatriks.ai',
-  accentTitle: 'Built for real training',
-});
+renderHomeCard();
 
 renderCard({
   fileName: 'social-blog',
