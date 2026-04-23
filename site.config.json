@@ -1,5 +1,6 @@
 {
   "companyName": "Riverin OÜ",
+  "companyAddress": "Ida-Viru maakond, Lüganuse vald, Lüganuse alevik, Papli tn 5c, 43301, Estonia",
   "appName": "maatriks.ai",
   "appTagline": "Adaptive workout programming",
   "appDescription": "A mobile training app that builds workouts, captures what you actually did, generates structured feedback, and prepares your next session.",
@@ -14,5 +15,5 @@
   "googlePlayUrl": "#",
   "authCallbackDeepLink": "maatriks://auth/callback",
   "passwordResetDeepLink": "maatriks://update-password",
-  "lastUpdated": "2026-04-10"
+  "lastUpdated": "2026-04-23"
 }
