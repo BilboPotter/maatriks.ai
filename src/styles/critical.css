@@ -626,8 +626,8 @@ input:focus-visible {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 122px;
-  height: 33px;
+  width: min(122px, 40%);
+  aspect-ratio: 122 / 33;
   border-radius: 0 0 19px 19px;
   background: #000;
   z-index: 4;
@@ -735,6 +735,23 @@ input:focus-visible {
 .device .screen > * {
   position: relative;
   z-index: 1;
+}
+
+.device .screen--screenshot-image {
+  background: #050507;
+}
+
+.device .screen--screenshot-image::before,
+.device .screen--screenshot-image::after {
+  display: none;
+}
+
+.device-screenshot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .device .screen--auth {
