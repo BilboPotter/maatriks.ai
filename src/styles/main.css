@@ -75,7 +75,7 @@
   --motion-slow: var(--slow);
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
 
-  --device-width: 320px;
+  --device-width: 288px;
   --snake-width: 2px;
 }
 
@@ -551,7 +551,7 @@ input:focus-visible {
 .hero {
   display: flex;
   align-items: center;
-  padding: 120px 0 48px;
+  padding: 80px 0 88px;
 }
 
 .hero-bg,
@@ -1193,7 +1193,7 @@ input:focus-visible {
 }
 
 .hero-phone .device {
-  width: min(338px, 100%);
+  width: min(304px, 100%);
 }
 
 .device-inner {
@@ -4095,7 +4095,7 @@ input:focus-visible {
 @media (max-width: 1180px) {
   :root {
     --page-pad: 40px;
-    --device-width: 300px;
+    --device-width: 270px;
   }
 
   .hero-inner,
@@ -4228,7 +4228,7 @@ input:focus-visible {
   :root {
     --page-pad: var(--page-pad-mobile);
     --section-pad: 80px;
-    --device-width: clamp(210px, 64vw, 276px);
+    --device-width: clamp(189px, 58vw, 248px);
   }
 
   body::before,
@@ -4307,9 +4307,12 @@ input:focus-visible {
     display: none;
   }
 
-  .hero-phone > .device,
   .journey-inner .story-phone {
     width: 100%;
+  }
+
+  .hero-phone > .device {
+    width: min(var(--device-width), 100%);
   }
 
   .hero-phone > .device,

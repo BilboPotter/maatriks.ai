@@ -94,7 +94,7 @@
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   --shadow-xl: 0 28px 80px rgba(0, 0, 0, 0.46);
   --shadow-card: 0 18px 48px rgba(0, 0, 0, 0.18);
-  --device-width: 320px;
+  --device-width: 288px;
 }
 
 *,
@@ -469,7 +469,7 @@ input:focus-visible {
 .hero {
   display: flex;
   align-items: center;
-  padding: 120px 0 48px;
+  padding: 80px 0 88px;
 }
 
 .hero-bg {
@@ -599,7 +599,7 @@ input:focus-visible {
 }
 
 .hero-phone .device {
-  width: min(338px, 100%);
+  width: min(304px, 100%);
 }
 
 .device-inner {
@@ -2108,7 +2108,7 @@ input:focus-visible {
 @media (max-width: 1180px) {
   :root {
     --page-pad: 40px;
-    --device-width: 300px;
+    --device-width: 270px;
   }
 
   .hero-inner {
@@ -2133,7 +2133,7 @@ input:focus-visible {
 @media (max-width: 768px) {
   :root {
     --page-pad: var(--page-pad-mobile);
-    --device-width: clamp(210px, 64vw, 276px);
+    --device-width: clamp(189px, 58vw, 248px);
   }
 
   body::before,
@@ -2203,7 +2203,7 @@ input:focus-visible {
   }
 
   .hero-phone > .device {
-    width: 100%;
+    width: min(var(--device-width), 100%);
     margin: 0 auto;
   }
 
