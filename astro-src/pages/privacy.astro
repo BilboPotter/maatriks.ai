@@ -38,7 +38,7 @@ import { siteConfig } from '../lib/site.mjs';
       <ul>
         <li>Email/password credentials handled through the authentication system</li>
         <li>Authentication session data and security-related logs</li>
-        <li>Provider identifiers and basic profile details we receive if you choose Google sign-in</li>
+        <li>Provider identifiers and basic profile details we receive if you choose Google or Apple sign-in. If you use Sign in with Apple and choose to hide your email, we receive a private Apple relay address instead of your real email</li>
       </ul>
 
       <h3>Workout and service data</h3>
@@ -67,18 +67,18 @@ import { siteConfig } from '../lib/site.mjs';
       <h3>Technical, device, and website data</h3>
       <ul>
         <li>Device type, operating system, and app version</li>
-        <li>Crash information, diagnostics, request telemetry, and security logs</li>
-        <li>Feature usage or navigation events collected to operate, secure, and improve the service</li>
+        <li>IP address, request metadata, and security logs processed by our hosting and backend providers when the app or website communicates with our servers</li>
         <li>Cookie-consent state on the website</li>
-        <li>Website analytics and tag-management data where consent is required and has been given</li>
-        <li>IP address, browser information, and similar online identifiers collected through normal web requests</li>
+        <li>Website analytics and tag-management data, collected on the website only where you have given consent through the cookie banner</li>
+        <li>Browser information and similar online identifiers collected through normal web requests</li>
       </ul>
+      <p>The mobile app does not currently run third-party product-analytics or crash-reporting tools, and we do not collect usage analytics, diagnostics, or advertising identifiers in the app. We also do not collect precise location, contacts, photos, or health-sensor data.</p>
 
       <h2>How we collect data</h2>
       <ul>
         <li>Directly from you when you sign up, complete onboarding, log workouts, contact support, or manage your account</li>
         <li>Automatically when you use the app and website</li>
-        <li>From Google if you choose Google sign-in</li>
+        <li>From Google or Apple if you choose those sign-in methods</li>
         <li>From service providers that help us operate authentication, hosting, analytics, AI-assisted features, and app distribution</li>
       </ul>
 
@@ -88,14 +88,15 @@ import { siteConfig } from '../lib/site.mjs';
         <li><strong>To provide the service</strong> — create and manage accounts, authenticate users, store workouts, and deliver workout planning and AI-assisted feedback. Legal basis: performance of a contract.</li>
         <li><strong>To personalize the training experience</strong> — use onboarding answers, training preferences, and workout history to tailor the app experience. Legal basis: performance of a contract.</li>
         <li><strong>To respond to support requests</strong> — review support emails, screenshots, and account details needed to help you. Legal basis: legitimate interests and, where applicable, performance of a contract.</li>
-        <li><strong>To operate, secure, and improve the service</strong> — use diagnostics, security logs, and usage information to prevent abuse, troubleshoot problems, and improve the app and website. Legal basis: legitimate interests.</li>
+        <li><strong>To operate, secure, and improve the service</strong> — use security logs and limited technical information to prevent abuse, troubleshoot problems, and keep the service reliable. Legal basis: legitimate interests.</li>
         <li><strong>To run consent-based website analytics</strong> — process website analytics and tag-management data only where consent is required and has been given. Legal basis: consent.</li>
         <li><strong>To comply with legal obligations</strong> — retain or disclose data when required for legal, tax, accounting, fraud-prevention, or compliance reasons. Legal basis: legal obligation and legitimate interests.</li>
       </ul>
 
       <h2>AI processing</h2>
-      <p>Some features use one or more third-party AI providers or model platforms to generate workout feedback, session review text, and related outputs. To do that, we may send relevant workout context, profile information, comments, and technical metadata needed to generate the requested response.</p>
-      <p>AI outputs may be stored with your workout history so the service can show past feedback and maintain continuity between sessions. We do not use your workout data for advertising.</p>
+      <p>Some features use one or more third-party AI or model-platform providers, acting on our instructions as processors, to generate workout feedback and session review text. To do that, we send relevant workout context — such as exercise names, planned and performed sets, reps and weights, progression signals, and any free-text comments you wrote.</p>
+      <p>We do not send your name, email address, or password to the AI provider. Under our agreements with these providers, your data is processed only to return the requested output and is not used to train their models. Because free-text comments are included, please avoid entering sensitive personal or health details in comments.</p>
+      <p>AI outputs may be stored with your workout history so the service can show past feedback and maintain continuity between sessions. We do not use your workout data for advertising. Your training program and next-session logic are generated by deterministic, rule-based software, not by an AI model. Where AI providers process data outside the EEA, that transfer is protected by appropriate safeguards (see International transfers).</p>
 
       <h2>Cookies and website analytics</h2>
       <p>The public website uses a cookie banner to ask for consent before loading optional analytics and tag-management tooling. Those tools are used to understand website usage and improve the public site, not for cross-site advertising profiles.</p>
@@ -114,7 +115,7 @@ import { siteConfig } from '../lib/site.mjs';
       </ul>
 
       <h2>International transfers</h2>
-      <p>Our service providers may process data outside your home country. Where required by law, we use appropriate safeguards for international transfers.</p>
+      <p>Some of our service providers process personal data outside your home country, including in the United States. Where we transfer personal data outside the European Economic Area, we rely on appropriate safeguards — typically the European Commission's Standard Contractual Clauses together with supplementary measures — to protect your data. You can contact us for more information.</p>
 
       <h2>Data retention</h2>
       <p>We keep personal data for as long as needed to provide the service and for legitimate business or legal purposes.</p>

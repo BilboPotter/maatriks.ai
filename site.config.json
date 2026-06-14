@@ -15,5 +15,5 @@
   "googlePlayUrl": "#",
   "authCallbackDeepLink": "maatriks://auth/callback",
   "passwordResetDeepLink": "maatriks://update-password",
-  "lastUpdated": "2026-04-23"
+  "lastUpdated": "2026-06-14"
 }
