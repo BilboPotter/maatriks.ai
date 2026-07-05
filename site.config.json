@@ -11,7 +11,7 @@
   "supportUrl": "/support",
   "deleteAccountUrl": "/delete-account",
   "forgotPasswordUrl": "/forgot-password",
-  "iosAppStoreUrl": "#",
+  "iosAppStoreUrl": "https://apps.apple.com/app/id6779895703",
   "googlePlayUrl": "#",
   "authCallbackDeepLink": "maatriks://auth/callback",
   "passwordResetDeepLink": "maatriks://update-password",
