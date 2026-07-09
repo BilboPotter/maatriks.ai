@@ -17,6 +17,8 @@ The site already has:
 - account deletion page
 - password reset help page
 - auth handoff pages
+- real App Store and Google Play links
+- iOS Universal Links and Android App Links association files for the auth handoff routes
 
 ## Next Priorities
 
@@ -29,17 +31,7 @@ Current homepage work should focus on:
 - sharper CTA presentation
 - less duplicated messaging
 
-### 2. Replace placeholder app store links
-
-Current store badges still use placeholders.
-
-Target outcome:
-
-- real App Store URL
-- real Google Play URL
-- no dead CTA behavior
-
-### 3. Keep legal/support pages aligned with product reality
+### 2. Keep legal/support pages aligned with product reality
 
 Legal and support pages should stay synchronized with the live app.
 
@@ -51,7 +43,7 @@ Review whenever product behavior changes:
 - data retention details
 - support commitments
 
-### 4. Improve deployment confidence
+### 3. Improve deployment confidence
 
 Keep production deployment simple and auditable.
 
@@ -62,7 +54,7 @@ Potential improvements:
 - explicit checks for auth handoff page behavior
 - clearer release checklist around domain and Pages health
 
-### 5. Content expansion through the blog
+### 4. Content expansion through the blog
 
 The blog is already live, but it should stay selective.
 

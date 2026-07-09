@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ai.maatriks.app",
+      "sha256_cert_fingerprints": [
+        "18:77:6E:6A:D6:5C:B7:83:A8:71:9D:0E:CD:E1:32:13:62:2A:A6:16:61:56:94:82:33:7D:BE:0E:A8:AC:70:35"
+      ]
+    }
+  }
+]

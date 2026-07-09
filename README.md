@@ -43,6 +43,8 @@ Important keys:
 - `supportUrl`
 - `deleteAccountUrl`
 - `forgotPasswordUrl`
+- `iosAppStoreUrl`
+- `googlePlayUrl`
 - `authCallbackDeepLink`
 - `passwordResetDeepLink`
 

@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appID": "F796PAYWY9.ai.maatriks.app",
+        "appID": "Y29W4CL48T.ai.maatriks.app",
         "paths": [
           "/auth/callback",
           "/auth/callback/*",

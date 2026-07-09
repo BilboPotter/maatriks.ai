@@ -71,14 +71,15 @@ function verifyBlogPosts() {
   const posts = loadBlogPosts();
   const expectedSlugs = posts.map((post) => post.slug).sort();
   const blogDir = path.join(DIST, 'blog');
-  const builtSlugs = fs.readdirSync(blogDir, { withFileTypes: true })
+  const builtSlugs = fs
+    .readdirSync(blogDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
 
   assert(
     builtSlugs.join('\n') === expectedSlugs.join('\n'),
-    'Blog post directories in astro-dist do not match src/blog slugs'
+    'Blog post directories in astro-dist do not match src/blog slugs',
   );
 
   expectedSlugs.forEach((slug) => assertExists(path.join('blog', slug, 'index.html')));
@@ -94,6 +95,7 @@ function verifyStaticArtifacts() {
     'favicon.svg',
     'favicon.ico',
     '.well-known/apple-app-site-association',
+    '.well-known/assetlinks.json',
     'apple-app-site-association',
     'assets/social-home.png',
     'assets/social-blog.png',
@@ -103,7 +105,10 @@ function verifyStaticArtifacts() {
   assert(cname === getSiteHost(CONFIG.siteUrl), `Unexpected CNAME value: ${cname}`);
 
   const robots = readFile('robots.txt');
-  assert(robots.includes(`Sitemap: ${CONFIG.siteUrl}/sitemap.xml`), 'robots.txt is missing the sitemap URL');
+  assert(
+    robots.includes(`Sitemap: ${CONFIG.siteUrl}/sitemap.xml`),
+    'robots.txt is missing the sitemap URL',
+  );
 
   const sitemap = readFile('sitemap.xml');
   [
@@ -125,23 +130,18 @@ function verifyAssetFingerprinting() {
   assertExists(cssMatch[1].slice(1));
   assert(
     indexHtml.includes(`${CONFIG.siteUrl}/assets/social-home.png`),
-    'Homepage metadata is missing the current social preview image'
+    'Homepage metadata is missing the current social preview image',
   );
 
   assert(
     !fs.existsSync(path.join(DIST, 'styles', 'main.css')),
-    'astro-dist/styles/main.css should not exist after postprocess cleanup'
+    'astro-dist/styles/main.css should not exist after postprocess cleanup',
   );
 
-  [
-    'auth-callback.js',
-    'update-password.js',
-    'main.js',
-    'consent.js',
-  ].forEach((fileName) => {
+  ['auth-callback.js', 'update-password.js', 'main.js', 'consent.js'].forEach((fileName) => {
     assert(
       !fs.existsSync(path.join(DIST, 'scripts', fileName)),
-      `astro-dist/scripts/${fileName} should not exist after postprocess cleanup`
+      `astro-dist/scripts/${fileName} should not exist after postprocess cleanup`,
     );
   });
 }
@@ -152,32 +152,84 @@ function verifyAuthPage({ htmlPath, scriptNamePrefix, expectedDeepLink, expected
   assert(html.includes(expectedActionId), `Missing ${expectedActionId} in ${htmlPath}`);
   assert(html.includes('content="no-referrer"'), `Expected no-referrer policy in ${htmlPath}`);
   assert(html.includes('Content-Security-Policy'), `Expected CSP meta in ${htmlPath}`);
-  assert(!html.includes('id="cookie-banner"'), `Auth page should not include cookie banner: ${htmlPath}`);
-  assert(!html.includes('/scripts/consent'), `Auth page should not include consent script: ${htmlPath}`);
+  assert(
+    !html.includes('id="cookie-banner"'),
+    `Auth page should not include cookie banner: ${htmlPath}`,
+  );
+  assert(
+    !html.includes('/scripts/consent'),
+    `Auth page should not include consent script: ${htmlPath}`,
+  );
 
   const scriptBody = readFile(path.join('scripts', scriptFileName));
-  assert(scriptBody.includes(expectedDeepLink), `Expected ${scriptFileName} to contain ${expectedDeepLink}`);
-  assert(scriptBody.includes('history.replaceState'), `Expected ${scriptFileName} to clear sensitive URL state`);
-  assert(scriptBody.includes('token_hash'), `Expected ${scriptFileName} to whitelist token_hash for Supabase flows`);
-  assert(scriptBody.includes('auth_state'), `Expected ${scriptFileName} to preserve auth_state for mobile OAuth handoff`);
+  assert(
+    scriptBody.includes(expectedDeepLink),
+    `Expected ${scriptFileName} to contain ${expectedDeepLink}`,
+  );
+  assert(
+    scriptBody.includes('history.replaceState'),
+    `Expected ${scriptFileName} to clear sensitive URL state`,
+  );
+  assert(
+    scriptBody.includes('token_hash'),
+    `Expected ${scriptFileName} to whitelist token_hash for Supabase flows`,
+  );
+  assert(
+    scriptBody.includes('auth_state'),
+    `Expected ${scriptFileName} to preserve auth_state for mobile OAuth handoff`,
+  );
 }
 
 function verifyAppleAppSiteAssociation() {
-  const expectedAppId = 'F796PAYWY9.ai.maatriks.app';
+  const expectedAppId = 'Y29W4CL48T.ai.maatriks.app';
 
-  [
-    '.well-known/apple-app-site-association',
-    'apple-app-site-association',
-  ].forEach((relativePath) => {
-    const json = JSON.parse(readFile(relativePath));
-    const details = json?.applinks?.details;
+  ['.well-known/apple-app-site-association', 'apple-app-site-association'].forEach(
+    (relativePath) => {
+      const json = JSON.parse(readFile(relativePath));
+      const details = json?.applinks?.details;
 
-    assert(Array.isArray(details), `Expected applinks.details array in ${relativePath}`);
-    assert(
-      details.some((entry) => entry?.appID === expectedAppId),
-      `Expected ${relativePath} to include appID ${expectedAppId}`
-    );
-  });
+      assert(Array.isArray(details), `Expected applinks.details array in ${relativePath}`);
+      assert(
+        details.some((entry) => entry?.appID === expectedAppId),
+        `Expected ${relativePath} to include appID ${expectedAppId}`,
+      );
+    },
+  );
+}
+
+function verifyAndroidAssetLinks() {
+  const json = JSON.parse(readFile('.well-known/assetlinks.json'));
+  const expectedFingerprint =
+    '18:77:6E:6A:D6:5C:B7:83:A8:71:9D:0E:CD:E1:32:13:62:2A:A6:16:61:56:94:82:33:7D:BE:0E:A8:AC:70:35';
+
+  assert(Array.isArray(json), 'Expected assetlinks.json to be an array');
+  assert(
+    json.some((entry) => {
+      return (
+        entry?.target?.namespace === 'android_app' &&
+        entry?.target?.package_name === 'ai.maatriks.app' &&
+        entry?.relation?.includes('delegate_permission/common.handle_all_urls') &&
+        entry?.target?.sha256_cert_fingerprints?.includes(expectedFingerprint)
+      );
+    }),
+    'Expected assetlinks.json to include the maatriks Android app association',
+  );
+}
+
+function verifyStoreLinks() {
+  assert(
+    CONFIG.iosAppStoreUrl === 'https://apps.apple.com/app/id6779895703',
+    `Unexpected App Store URL: ${CONFIG.iosAppStoreUrl}`,
+  );
+  assert(
+    CONFIG.googlePlayUrl === 'https://play.google.com/store/apps/details?id=ai.maatriks.app',
+    `Unexpected Google Play URL: ${CONFIG.googlePlayUrl}`,
+  );
+  assert(CONFIG.googlePlayUrl !== '#', 'Google Play URL must not be a placeholder');
+
+  const indexHtml = readFile('index.html');
+  assert(indexHtml.includes(CONFIG.iosAppStoreUrl), 'Homepage is missing the App Store URL');
+  assert(indexHtml.includes(CONFIG.googlePlayUrl), 'Homepage is missing the Google Play URL');
 }
 
 function main() {
@@ -201,6 +253,8 @@ function main() {
   });
 
   verifyAppleAppSiteAssociation();
+  verifyAndroidAssetLinks();
+  verifyStoreLinks();
 
   console.log('Verified Astro build output.');
 }

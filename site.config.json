@@ -12,8 +12,8 @@
   "deleteAccountUrl": "/delete-account",
   "forgotPasswordUrl": "/forgot-password",
   "iosAppStoreUrl": "https://apps.apple.com/app/id6779895703",
-  "googlePlayUrl": "#",
+  "googlePlayUrl": "https://play.google.com/store/apps/details?id=ai.maatriks.app",
   "authCallbackDeepLink": "maatriks://auth/callback",
   "passwordResetDeepLink": "maatriks://update-password",
-  "lastUpdated": "2026-06-14"
+  "lastUpdated": "2026-07-09"
 }
