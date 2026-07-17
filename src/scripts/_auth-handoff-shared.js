@@ -14,26 +14,51 @@
     refresh_token: true,
     token_hash: true,
     token_type: true,
-    type: true
+    type: true,
   };
+
+  function hasOwn(object, key) {
+    return Object.prototype.hasOwnProperty.call(object, key);
+  }
 
   function getAllowedParams() {
     var hash = window.location.hash.substring(1);
     var search = window.location.search.substring(1);
-    var raw = hash || search;
-    if (!raw) {
-      return null;
+    var params = Object.create(null);
+    var hasAllowedParam = false;
+    var hasConflict = false;
+
+    function merge(raw) {
+      if (!raw || hasConflict) {
+        return;
+      }
+
+      var parsed = new URLSearchParams(raw);
+      parsed.forEach(function (value, key) {
+        if (!hasOwn(ALLOWED_PARAMS, key) || hasConflict) {
+          return;
+        }
+
+        if (hasOwn(params, key)) {
+          if (params[key] !== value) {
+            hasConflict = true;
+          }
+          return;
+        }
+
+        params[key] = value;
+        hasAllowedParam = true;
+      });
     }
 
-    var params = {};
-    var parsed = new URLSearchParams(raw);
-    parsed.forEach(function (value, key) {
-      if (ALLOWED_PARAMS[key]) {
-        params[key] = value;
-      }
-    });
+    merge(search);
+    merge(hash);
 
-    return Object.keys(params).length > 0 ? params : null;
+    if (hasConflict) {
+      return { valid: false, params: null };
+    }
+
+    return { valid: true, params: hasAllowedParam ? params : null };
   }
 
   function clearSensitiveUrl() {
@@ -56,6 +81,8 @@
 
     return deepLink + separator + queryParts.join('&');
   }
+
+  window.__maatriksAuthHandoffContract = 'query-fragment-merge-v2';
 
   window.__maatriksInitAuthHandoff = function initAuthHandoff(config) {
     var card = document.getElementById('auth-card');
@@ -104,8 +131,32 @@
       }
     }
 
-    var params = getAllowedParams();
-    var deepLink = buildDeepLink(config.deepLink, params);
+    function showInvalid() {
+      didResolve = true;
+      if (spinner) {
+        spinner.style.display = 'none';
+      }
+      setStatus('Invalid authentication link');
+      if (card) {
+        card.classList.add('auth-error');
+      }
+      if (fallback) {
+        fallback.classList.add('visible');
+      }
+      if (openAppButton) {
+        openAppButton.removeAttribute('href');
+        openAppButton.setAttribute('aria-disabled', 'true');
+      }
+    }
+
+    var parsedParams = getAllowedParams();
+    if (!parsedParams.valid) {
+      clearSensitiveUrl();
+      showInvalid();
+      return;
+    }
+
+    var deepLink = buildDeepLink(config.deepLink, parsedParams.params);
 
     if (openAppButton) {
       openAppButton.setAttribute('href', deepLink);

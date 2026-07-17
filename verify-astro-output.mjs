@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { loadBlogPosts } from './astro-src/lib/blog.mjs';
 
 const ROOT = process.cwd();
@@ -146,6 +147,284 @@ function verifyAssetFingerprinting() {
   });
 }
 
+function createAuthHandoffElement() {
+  const attributes = new Map();
+  const classes = new Set();
+
+  return {
+    attributes,
+    classList: {
+      add(value) {
+        classes.add(value);
+      },
+      contains(value) {
+        return classes.has(value);
+      },
+    },
+    getAttribute(name) {
+      return attributes.get(name) ?? null;
+    },
+    removeAttribute(name) {
+      attributes.delete(name);
+    },
+    setAttribute(name, value) {
+      attributes.set(name, String(value));
+    },
+    style: {},
+    textContent: '',
+  };
+}
+
+function runAuthHandoffFixture({ hash = '', pathname, scriptBody, search = '' }) {
+  const events = [];
+  const elements = Object.fromEntries(
+    ['auth-card', 'spinner', 'open-app', 'status', 'fallback'].map((id) => [
+      id,
+      createAuthHandoffElement(),
+    ]),
+  );
+  elements['open-app'].setAttribute('href', '#');
+  const calls = {
+    listeners: [],
+    redirects: [],
+    timeouts: [],
+  };
+  const document = {
+    hidden: false,
+    title: 'maatriks.ai auth handoff',
+    addEventListener(type) {
+      calls.listeners.push(type);
+    },
+    getElementById(id) {
+      return elements[id] ?? null;
+    },
+  };
+  const window = {
+    history: {
+      replaceState(_state, _title, nextPathname) {
+        events.push('scrub');
+        assert(nextPathname === pathname, `Unexpected scrub pathname: ${nextPathname}`);
+      },
+    },
+    location: {
+      hash,
+      pathname,
+      search,
+      replace(target) {
+        events.push('redirect');
+        calls.redirects.push(target);
+      },
+    },
+  };
+  window.window = window;
+
+  vm.runInNewContext(
+    scriptBody,
+    {
+      URLSearchParams,
+      document,
+      encodeURIComponent,
+      setTimeout(callback, delay) {
+        calls.timeouts.push({ callback, delay });
+        return calls.timeouts.length;
+      },
+      window,
+    },
+    {
+      filename: pathname,
+      timeout: 1_000,
+    },
+  );
+
+  return { calls, elements, events, window };
+}
+
+function expectedDeepLink(deepLink, entries) {
+  if (entries.length === 0) {
+    return deepLink;
+  }
+
+  return `${deepLink}?${entries
+    .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
+    .join('&')}`;
+}
+
+function verifyValidAuthHandoffFixture({
+  deepLink,
+  entries,
+  hash,
+  label,
+  pathname,
+  scriptBody,
+  search,
+}) {
+  const result = runAuthHandoffFixture({ hash, pathname, scriptBody, search });
+  const expected = expectedDeepLink(deepLink, entries);
+
+  assert(
+    result.calls.redirects.length === 1 && result.calls.redirects[0] === expected,
+    `${label}: unexpected redirect ${result.calls.redirects.join(', ')}`,
+  );
+  assert(
+    result.elements['open-app'].getAttribute('href') === expected,
+    `${label}: manual action does not match the redirect`,
+  );
+  assert(
+    result.elements['open-app'].getAttribute('aria-disabled') === null,
+    `${label}: valid manual action is disabled`,
+  );
+  assert(
+    result.events.join(',') === 'scrub,redirect',
+    `${label}: sensitive URL was not scrubbed before redirect`,
+  );
+  assert(result.calls.timeouts.length === 1, `${label}: expected one fallback timer`);
+  assert(
+    result.calls.listeners.join(',') === 'visibilitychange',
+    `${label}: expected one visibility listener`,
+  );
+  assert(
+    result.window.__maatriksAuthHandoffContract === 'query-fragment-merge-v2',
+    `${label}: missing auth handoff contract marker`,
+  );
+
+  const parsedTarget = new URL(expected);
+  entries.forEach(([key, value]) => {
+    assert(
+      parsedTarget.searchParams.get(key) === value,
+      `${label}: destination changed decoded ${key}`,
+    );
+    assert(
+      parsedTarget.searchParams.getAll(key).length === 1,
+      `${label}: destination repeated ${key}`,
+    );
+  });
+}
+
+function verifyInvalidAuthHandoffFixture({ hash, label, pathname, scriptBody, search }) {
+  const result = runAuthHandoffFixture({ hash, pathname, scriptBody, search });
+
+  assert(result.calls.redirects.length === 0, `${label}: invalid input opened the app`);
+  assert(result.calls.timeouts.length === 0, `${label}: invalid input installed a timer`);
+  assert(result.calls.listeners.length === 0, `${label}: invalid input installed a listener`);
+  assert(result.events.join(',') === 'scrub', `${label}: invalid input was not scrubbed`);
+  assert(
+    result.elements.status.textContent === 'Invalid authentication link',
+    `${label}: invalid status copy is missing`,
+  );
+  assert(
+    result.elements['auth-card'].classList.contains('auth-error'),
+    `${label}: invalid card state is missing`,
+  );
+  assert(
+    result.elements.fallback.classList.contains('visible'),
+    `${label}: invalid fallback is hidden`,
+  );
+  assert(
+    result.elements.spinner.style.display === 'none',
+    `${label}: invalid spinner remains visible`,
+  );
+  assert(
+    result.elements['open-app'].getAttribute('href') === null &&
+      result.elements['open-app'].getAttribute('aria-disabled') === 'true',
+    `${label}: invalid manual action remains enabled`,
+  );
+}
+
+function verifyAuthHandoffBehavior({ deepLink, pathname, scriptBody, scriptFileName }) {
+  const base = { deepLink, pathname, scriptBody };
+  const complexToken = 'plus+slash/=and&percent% space õ';
+  const encodedComplexToken = 'plus%2Bslash%2F%3Dand%26percent%25%20space%20%C3%B5';
+
+  assert(
+    scriptBody.includes('query-fragment-merge-v2'),
+    `Expected ${scriptFileName} to contain the reviewed auth handoff contract`,
+  );
+
+  [
+    {
+      entries: [
+        ['auth_state', 'S'],
+        ['access_token', 'A'],
+        ['refresh_token', 'R'],
+        ['type', 'recovery'],
+      ],
+      hash: '#access_token=A&refresh_token=R&type=recovery',
+      label: `${scriptFileName}: combined query and fragment`,
+      search: '?auth_state=S',
+    },
+    {
+      entries: [
+        ['auth_state', 'S'],
+        ['access_token', 'A'],
+      ],
+      hash: '#auth_state=S&access_token=A&access_token=A',
+      label: `${scriptFileName}: identical repeated values`,
+      search: '?auth_state=S&auth_state=%53',
+    },
+    {
+      entries: [
+        ['auth_state', 'S'],
+        ['access_token', 'A'],
+      ],
+      hash: '#access_token=A&constructor=fragment-value',
+      label: `${scriptFileName}: unknown and prototype keys ignored`,
+      search: '?utm_source=x&constructor=query-value&__proto__=polluted&auth_state=S',
+    },
+    {
+      entries: [
+        ['auth_state', 'S'],
+        ['access_token', complexToken],
+      ],
+      hash: `#access_token=${encodedComplexToken}`,
+      label: `${scriptFileName}: canonical safe encoding`,
+      search: '?auth_state=S',
+    },
+    {
+      entries: [
+        ['type', 'signup'],
+        ['access_token', 'A'],
+        ['refresh_token', 'R'],
+      ],
+      hash: '#type=signup&access_token=A&refresh_token=R',
+      label: `${scriptFileName}: fragment-only signup`,
+      search: '',
+    },
+    {
+      entries: [
+        ['token_hash', 'H'],
+        ['type', 'signup'],
+      ],
+      hash: '',
+      label: `${scriptFileName}: query-only token hash`,
+      search: '?token_hash=H&type=signup',
+    },
+    {
+      entries: [],
+      hash: '',
+      label: `${scriptFileName}: empty valid handoff`,
+      search: '',
+    },
+  ].forEach((fixture) => verifyValidAuthHandoffFixture({ ...base, ...fixture }));
+
+  [
+    {
+      hash: '',
+      label: `${scriptFileName}: conflicting query duplicate`,
+      search: '?auth_state=S&auth_state=T',
+    },
+    {
+      hash: '#access_token=A&access_token=B',
+      label: `${scriptFileName}: conflicting fragment duplicate`,
+      search: '',
+    },
+    {
+      hash: '#auth_state=T&access_token=A',
+      label: `${scriptFileName}: conflicting cross-component duplicate`,
+      search: '?auth_state=S',
+    },
+  ].forEach((fixture) => verifyInvalidAuthHandoffFixture({ ...base, ...fixture }));
+}
+
 function verifyAuthPage({ htmlPath, scriptNamePrefix, expectedDeepLink, expectedActionId }) {
   const { html, scriptFileName } = resolveScriptFileFromPage(htmlPath, scriptNamePrefix);
 
@@ -178,6 +457,13 @@ function verifyAuthPage({ htmlPath, scriptNamePrefix, expectedDeepLink, expected
     scriptBody.includes('auth_state'),
     `Expected ${scriptFileName} to preserve auth_state for mobile OAuth handoff`,
   );
+
+  verifyAuthHandoffBehavior({
+    deepLink: expectedDeepLink,
+    pathname: `/${htmlPath.replace(/\/index\.html$/, '')}`,
+    scriptBody,
+    scriptFileName,
+  });
 }
 
 function verifyAppleAppSiteAssociation() {
