@@ -283,7 +283,7 @@ function verifyValidAuthHandoffFixture({
     `${label}: expected one visibility listener`,
   );
   assert(
-    result.window.__maatriksAuthHandoffContract === 'query-fragment-merge-v2',
+    result.window.__maatriksAuthHandoffContract === 'query-fragment-merge-v3',
     `${label}: missing auth handoff contract marker`,
   );
 
@@ -336,36 +336,35 @@ function verifyAuthHandoffBehavior({ deepLink, pathname, scriptBody, scriptFileN
   const encodedComplexToken = 'plus%2Bslash%2F%3Dand%26percent%25%20space%20%C3%B5';
 
   assert(
-    scriptBody.includes('query-fragment-merge-v2'),
+    scriptBody.includes('query-fragment-merge-v3'),
     `Expected ${scriptFileName} to contain the reviewed auth handoff contract`,
   );
+  // F-001: the shipped handoff must never carry raw session tokens in its allow-list.
+  for (const forbidden of ['access_token', 'refresh_token', 'provider_token', 'provider_refresh_token']) {
+    assert(
+      !scriptBody.includes(forbidden),
+      `Expected ${scriptFileName} to NOT forward the raw session token param "${forbidden}" (F-001)`,
+    );
+  }
 
   [
     {
       entries: [
         ['auth_state', 'S'],
-        ['access_token', 'A'],
-        ['refresh_token', 'R'],
         ['type', 'recovery'],
       ],
       hash: '#access_token=A&refresh_token=R&type=recovery',
-      label: `${scriptFileName}: combined query and fragment`,
+      label: `${scriptFileName}: raw tokens dropped, safe params forwarded`,
       search: '?auth_state=S',
     },
     {
-      entries: [
-        ['auth_state', 'S'],
-        ['access_token', 'A'],
-      ],
+      entries: [['auth_state', 'S']],
       hash: '#auth_state=S&access_token=A&access_token=A',
       label: `${scriptFileName}: identical repeated values`,
       search: '?auth_state=S&auth_state=%53',
     },
     {
-      entries: [
-        ['auth_state', 'S'],
-        ['access_token', 'A'],
-      ],
+      entries: [['auth_state', 'S']],
       hash: '#access_token=A&constructor=fragment-value',
       label: `${scriptFileName}: unknown and prototype keys ignored`,
       search: '?utm_source=x&constructor=query-value&__proto__=polluted&auth_state=S',
@@ -373,21 +372,27 @@ function verifyAuthHandoffBehavior({ deepLink, pathname, scriptBody, scriptFileN
     {
       entries: [
         ['auth_state', 'S'],
-        ['access_token', complexToken],
+        ['code', complexToken],
       ],
-      hash: `#access_token=${encodedComplexToken}`,
-      label: `${scriptFileName}: canonical safe encoding`,
+      hash: `#code=${encodedComplexToken}`,
+      label: `${scriptFileName}: canonical safe encoding (pkce code)`,
       search: '?auth_state=S',
     },
     {
-      entries: [
-        ['type', 'signup'],
-        ['access_token', 'A'],
-        ['refresh_token', 'R'],
-      ],
+      entries: [['type', 'signup']],
       hash: '#type=signup&access_token=A&refresh_token=R',
-      label: `${scriptFileName}: fragment-only signup`,
+      label: `${scriptFileName}: fragment-only signup drops its tokens`,
       search: '',
+    },
+    {
+      // Positive PKCE case: the code (and CSRF nonce) forward; the tokens in the fragment are stripped.
+      entries: [
+        ['auth_state', 'S'],
+        ['code', 'abc123'],
+      ],
+      hash: '#access_token=SECRET&refresh_token=SECRET2',
+      label: `${scriptFileName}: pkce code forwarded, tokens stripped`,
+      search: '?auth_state=S&code=abc123',
     },
     {
       entries: [
@@ -413,7 +418,7 @@ function verifyAuthHandoffBehavior({ deepLink, pathname, scriptBody, scriptFileN
       search: '?auth_state=S&auth_state=T',
     },
     {
-      hash: '#access_token=A&access_token=B',
+      hash: '#code=A&code=B',
       label: `${scriptFileName}: conflicting fragment duplicate`,
       search: '',
     },

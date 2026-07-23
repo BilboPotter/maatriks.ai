@@ -1,19 +1,23 @@
 (function () {
   var TIMEOUT_MS = 3000;
+  // F-001: this page forwards Supabase auth callback params to the maatriks:// deep link. It MUST NOT forward
+  // raw session tokens — a maatriks:// custom-scheme URL is interceptable (another installed app can register
+  // the scheme), so a forwarded access_token/refresh_token is an account-takeover vector. The allow-list is
+  // therefore limited to values that are safe to hand off:
+  //   - code       — the PKCE authorization code; useless without the code_verifier held only on the
+  //                   device that initiated the flow.
+  //   - token_hash + type — single-use email OTP, verified server-side (verifyOtp), never a session by itself.
+  //   - auth_state — the app's own CSRF nonce.
+  //   - error / error_code / error_description — so the app can show why a link failed.
+  // Removed (deliberately): access_token, refresh_token, provider_token, provider_refresh_token, token_type,
+  // expires_at, expires_in. The app (flowType: 'pkce') exchanges the code / verifies the OTP itself.
   var ALLOWED_PARAMS = {
-    access_token: true,
     auth_state: true,
     code: true,
     error: true,
     error_code: true,
     error_description: true,
-    expires_at: true,
-    expires_in: true,
-    provider_refresh_token: true,
-    provider_token: true,
-    refresh_token: true,
     token_hash: true,
-    token_type: true,
     type: true,
   };
 
@@ -82,7 +86,9 @@
     return deepLink + separator + queryParts.join('&');
   }
 
-  window.__maatriksAuthHandoffContract = 'query-fragment-merge-v2';
+  // v3: the query+fragment merge contract is unchanged, but the allow-list no longer forwards raw session
+  // tokens (F-001). Bumped so a deployed page's security posture is identifiable and cache-bustable.
+  window.__maatriksAuthHandoffContract = 'query-fragment-merge-v3';
 
   window.__maatriksInitAuthHandoff = function initAuthHandoff(config) {
     var card = document.getElementById('auth-card');
